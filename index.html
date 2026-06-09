@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
 <title>The Last Pepe | Official Memecoin</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -678,27 +678,512 @@ footer{
     text-decoration:none;
 }
 
-@media(max-width:900px){
+/* TABLET OPTIMIZATION (768px - 900px) */
+@media(max-width:1024px){
 
-.hero-text h1{
-    font-size:55px;
+header{
+    padding:15px 30px;
+}
+
+.logo{
+    font-size:22px;
+}
+
+.logo-icon{
+    width:38px;
+    height:38px;
+}
+
+nav{
+    gap:15px;
+}
+
+nav a{
+    font-size:12px;
 }
 
 .hero{
-    text-align:center;
+    padding:120px 30px 60px;
+    gap:40px;
 }
 
-header{
+.hero-text h1{
+    font-size:65px;
+}
+
+.hero-text p{
+    font-size:16px;
+}
+
+.hero-image img{
+    width:350px;
+}
+
+.presale, .buy-stake, .tokenomics, .roadmap{
+    padding:80px 30px;
+}
+
+.presale h2, .buy-stake h2, .tokenomics h2, .roadmap h2{
+    font-size:45px;
+    margin-bottom:40px;
+}
+
+.goal{
+    font-size:18px;
+}
+
+.stat-box{
+    width:200px;
     padding:20px;
+}
+
+.stat-box h3{
+    font-size:24px;
+}
+
+.card{
+    width:240px;
+    padding:25px;
+}
+
+.card h3{
+    font-size:24px;
+}
+
+.phase{
+    width:230px;
+    padding:20px;
+}
+
+.buy-card, .stake-card{
+    min-width:300px;
+    padding:30px;
+}
+
+.buy-card h3, .stake-card h3{
+    font-size:24px;
+}
+
+}
+
+/* MOBILE OPTIMIZATION (max 768px) */
+@media(max-width:768px){
+
+header{
+    padding:12px 15px;
     flex-wrap:wrap;
+}
+
+.logo{
+    font-size:18px;
+    gap:8px;
+}
+
+.logo-icon{
+    width:35px;
+    height:35px;
+}
+
+.logo-icon svg{
+    width:22px;
+    height:22px;
 }
 
 nav{
     display:none;
+    width:100%;
+    flex-direction:column;
+    gap:10px;
+    margin-top:10px;
+}
+
+nav.active{
+    display:flex;
+}
+
+.hero{
+    padding:100px 20px 50px;
+    gap:30px;
+    min-height:auto;
+}
+
+.hero-text{
+    max-width:100%;
+    text-align:center;
+}
+
+.hero-text h1{
+    font-size:42px;
+    line-height:1.2;
+    margin-bottom:15px;
+}
+
+.hero-text p{
+    font-size:15px;
+    line-height:1.5;
+    margin-bottom:25px;
+}
+
+.buttons{
+    justify-content:center;
+    gap:15px;
+}
+
+.btn{
+    padding:12px 24px;
+    font-size:13px;
+}
+
+.hero-image{
+    width:100%;
 }
 
 .hero-image img{
-    width:320px;
+    width:280px;
+    max-width:100%;
+}
+
+.presale, .buy-stake, .tokenomics, .roadmap{
+    padding:60px 20px;
+}
+
+.presale h2, .buy-stake h2, .tokenomics h2, .roadmap h2{
+    font-size:32px;
+    margin-bottom:25px;
+}
+
+.goal{
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+.wallet-address{
+    flex-direction:column;
+    gap:12px;
+    font-size:14px;
+}
+
+.copy-btn{
+    width:100%;
+    padding:10px;
+    font-size:12px;
+}
+
+.progress-container{
+    width:90%;
+}
+
+.progress-bar{
+    height:30px;
+}
+
+.stats{
+    gap:15px;
+    margin-top:30px;
+}
+
+.stat-box{
+    width:100%;
+    max-width:280px;
+    padding:20px;
+}
+
+.stat-box h3{
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.stat-box p{
+    font-size:13px;
+}
+
+.cards{
+    gap:15px;
+}
+
+.card{
+    width:100%;
+    max-width:300px;
+    padding:20px;
+}
+
+.card h3{
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.card p{
+    font-size:13px;
+}
+
+.buy-stake-container{
+    gap:20px;
+    flex-direction:column;
+}
+
+.buy-card, .stake-card{
+    min-width:unset;
+    width:100%;
+    padding:25px;
+    margin:0 -20px;
+    border-radius:0;
+}
+
+.buy-card h3, .stake-card h3{
+    font-size:22px;
+    margin-bottom:20px;
+}
+
+.form-group label{
+    font-size:12px;
+}
+
+.form-group input, .form-group select{
+    padding:10px 12px;
+    font-size:13px;
+}
+
+.currency-select{
+    gap:8px;
+}
+
+.currency-btn{
+    padding:8px;
+    font-size:12px;
+}
+
+.buy-btn, .stake-btn{
+    padding:12px;
+    font-size:14px;
+}
+
+.apy-option{
+    padding:15px;
+}
+
+.apy-option-text{
+    flex-direction:column;
+    gap:8px;
+}
+
+.apy-rate{
+    font-size:16px;
+}
+
+.wallet-status{
+    font-size:12px;
+    padding:8px 12px;
+}
+
+.timeline{
+    gap:15px;
+}
+
+.phase{
+    width:100%;
+    max-width:260px;
+    padding:20px;
+}
+
+.phase h3{
+    font-size:16px;
+    margin-bottom:15px;
+}
+
+.phase p{
+    font-size:12px;
+    line-height:1.6;
+}
+
+footer{
+    padding:30px 20px;
+    font-size:13px;
+}
+
+.socials a{
+    margin:0 8px;
+    font-size:13px;
+}
+
+#wallet-btn{
+    padding:8px 12px;
+    font-size:11px;
+}
+
+.whitepaper h2{
+    font-size:32px;
+}
+
+}
+
+/* SMALL MOBILE (max 480px) */
+@media(max-width:480px){
+
+header{
+    padding:10px;
+}
+
+.logo{
+    font-size:14px;
+    gap:6px;
+}
+
+.logo-icon{
+    width:30px;
+    height:30px;
+}
+
+.logo-icon svg{
+    width:18px;
+    height:18px;
+}
+
+.hero{
+    padding:90px 15px 40px;
+}
+
+.hero-text h1{
+    font-size:32px;
+    margin-bottom:12px;
+}
+
+.hero-text p{
+    font-size:13px;
+    margin-bottom:20px;
+}
+
+.buttons{
+    flex-direction:column;
+}
+
+.btn{
+    width:100%;
+    padding:11px 20px;
+    font-size:12px;
+    text-align:center;
+}
+
+.hero-image img{
+    width:200px;
+}
+
+.presale, .buy-stake, .tokenomics, .roadmap{
+    padding:50px 15px;
+}
+
+.presale h2, .buy-stake h2, .tokenomics h2, .roadmap h2{
+    font-size:26px;
+    margin-bottom:20px;
+}
+
+.goal{
+    font-size:13px;
+}
+
+.wallet-address{
+    font-size:12px;
+}
+
+.wallet-address strong{
+    font-size:11px;
+}
+
+.copy-btn{
+    padding:8px 12px;
+    font-size:11px;
+}
+
+.progress-container{
+    width:95%;
+}
+
+.stats{
+    gap:12px;
+}
+
+.stat-box{
+    padding:15px;
+}
+
+.stat-box h3{
+    font-size:18px;
+}
+
+.card{
+    padding:15px;
+}
+
+.card h3{
+    font-size:18px;
+}
+
+.buy-card, .stake-card{
+    padding:20px;
+    margin:0 -15px;
+}
+
+.buy-card h3, .stake-card h3{
+    font-size:18px;
+}
+
+.form-group label{
+    font-size:11px;
+}
+
+.form-group input, .form-group select{
+    padding:9px 10px;
+    font-size:12px;
+}
+
+.apy-option{
+    padding:12px;
+}
+
+.phase{
+    padding:15px;
+}
+
+.phase h3{
+    font-size:14px;
+}
+
+.phase p{
+    font-size:11px;
+}
+
+footer{
+    padding:20px 15px;
+}
+
+#wallet-btn{
+    padding:7px 10px;
+    font-size:10px;
+}
+
+}
+
+/* EXTRA SMALL (max 360px) */
+@media(max-width:360px){
+
+.hero-text h1{
+    font-size:28px;
+}
+
+.hero-image img{
+    width:160px;
+}
+
+.presale h2, .buy-stake h2, .tokenomics h2, .roadmap h2{
+    font-size:22px;
+}
+
+.btn{
+    font-size:11px;
+    padding:10px 16px;
+}
+
+.stat-box h3, .card h3{
+    font-size:16px;
 }
 
 }
@@ -733,8 +1218,8 @@ nav{
 <a href="#tokenomics">TOKENOMICS</a>
 <a href="#roadmap">ROADMAP</a>
 <a href="#community">COMMUNITY</a>
-<div style="position:relative;">
-    <button id="wallet-btn" onclick="handleWalletClick()">CONNECT WALLET</button>
+<div style="position:relative; width:100%;">
+    <button id="wallet-btn" onclick="handleWalletClick()" style="width:100%;">CONNECT WALLET</button>
     <div id="wallet-menu" class="wallet-menu">
         <div id="wallet-menu-content"></div>
     </div>
@@ -766,7 +1251,7 @@ Join the biggest Pepe movement before launch.
 </div>
 
 <div class="hero-image">
-<img src="pepe.jpeg" alt="The Last Pepe">
+<img src="pepe.jpeg" alt="The Last Pepe" loading="lazy">
 </div>
 
 </section>
@@ -1004,220 +1489,59 @@ Worldwide meme domination
 </section>
 
 <footer>
-<p>&copy; 2025 The Last Pepe. All rights reserved.</p>
+
+<p>© 2024 The Last Pepe. All rights reserved.</p>
+
 <div class="socials">
 <a href="#">Twitter</a>
-<a href="#">Telegram</a>
 <a href="#">Discord</a>
+<a href="#">Telegram</a>
 </div>
+
 </footer>
 
 <script>
-
-// WALLET CONNECTION STATE
-let walletConnected = false;
-let userAddress = null;
-let provider = null;
-let signer = null;
-
-// Handle wallet button click - toggle menu if connected, or initiate connection if not
-function handleWalletClick() {
-    const btn = document.getElementById('wallet-btn');
+// Responsive menu toggle (for future mobile menu implementation)
+function handleWalletClick(){
     const menu = document.getElementById('wallet-menu');
-    
-    if (walletConnected) {
-        // Toggle menu visibility
-        menu.classList.toggle('active');
-    } else {
-        // Initiate manual connection
-        connectWallet();
-    }
+    menu.classList.toggle('active');
 }
 
-// Close wallet menu when clicking outside
-document.addEventListener('click', (e) => {
-    const btn = document.getElementById('wallet-btn');
-    const menu = document.getElementById('wallet-menu');
-    
-    if (!btn.contains(e.target) && !menu.contains(e.target)) {
-        menu.classList.remove('active');
-    }
-});
-
-// Connect wallet manually
-async function connectWallet() {
-    try {
-        // Check if MetaMask or other Web3 provider is available
-        if (!window.ethereum) {
-            alert('Please install MetaMask or another Web3 wallet to connect.');
-            return;
-        }
-        
-        // Request account access
-        const accounts = await window.ethereum.request({
-            method: 'eth_requestAccounts'
-        });
-        
-        if (accounts && accounts.length > 0) {
-            userAddress = accounts[0];
-            walletConnected = true;
-            
-            // Initialize ethers provider
-            provider = new ethers.providers.Web3Provider(window.ethereum);
-            signer = provider.getSigner();
-            
-            updateUI();
-        }
-    } catch (error) {
-        console.error('Error connecting wallet:', error);
-        if (error.code !== -32602) { // Ignore user rejection errors
-            alert('Failed to connect wallet. Please try again.');
-        }
-    }
-}
-
-// Disconnect wallet manually
-function disconnectWallet() {
-    walletConnected = false;
-    userAddress = null;
-    provider = null;
-    signer = null;
-    
-    updateUI();
-    
-    // Close menu
-    document.getElementById('wallet-menu').classList.remove('active');
-}
-
-// Update UI based on connection status
-function updateUI() {
-    const btn = document.getElementById('wallet-btn');
-    const menu = document.getElementById('wallet-menu');
-    const content = document.getElementById('wallet-menu-content');
-    const buyBtn = document.getElementById('buyBtn');
-    const stakeBtn = document.getElementById('stakeBtn');
-    const buyStatus = document.getElementById('buy-wallet-status');
-    const stakeStatus = document.getElementById('stake-wallet-status');
-    const buyInput = document.getElementById('buyWalletInput');
-    const stakeInput = document.getElementById('stake-wallet-address');
-    const buyAddress = document.getElementById('buy-wallet-address');
-    const stakeAddress = document.getElementById('stake-wallet-address');
-    
-    if (walletConnected && userAddress) {
-        // Update button appearance
-        btn.textContent = userAddress.substring(0, 6) + '...' + userAddress.substring(userAddress.length - 4);
-        btn.classList.add('connected');
-        
-        // Show wallet menu content
-        content.innerHTML = `
-            <div class="wallet-menu-item">
-                <strong>Address:</strong> ${userAddress}
-            </div>
-            <button class="disconnect-btn" onclick="disconnectWallet()">DISCONNECT</button>
-        `;
-        
-        // Enable buy and stake buttons
-        buyBtn.disabled = false;
-        buyBtn.textContent = 'BUY NOW';
-        stakeBtn.disabled = false;
-        stakeBtn.textContent = 'STAKE NOW';
-        
-        // Show wallet status
-        buyStatus.style.display = 'block';
-        stakeStatus.style.display = 'block';
-        buyAddress.textContent = userAddress;
-        stakeAddress.textContent = userAddress;
-        buyInput.value = userAddress;
-        
-        // Hide alert
-        document.getElementById('wallet-alert').style.display = 'none';
-    } else {
-        // Update button appearance
-        btn.textContent = 'CONNECT WALLET';
-        btn.classList.remove('connected');
-        
-        // Clear wallet menu
-        content.innerHTML = '';
-        menu.classList.remove('active');
-        
-        // Disable buy and stake buttons
-        buyBtn.disabled = true;
-        buyBtn.textContent = 'CONNECT WALLET TO BUY';
-        stakeBtn.disabled = true;
-        stakeBtn.textContent = 'CONNECT WALLET TO STAKE';
-        
-        // Hide wallet status
-        buyStatus.style.display = 'none';
-        stakeStatus.style.display = 'none';
-        buyInput.value = '';
-        
-        // Show alert
-        document.getElementById('wallet-alert').style.display = 'block';
-    }
-}
-
-// Toggle wallet menu (only if connected)
-function toggleWalletMenu() {
-    if (walletConnected) {
-        document.getElementById('wallet-menu').classList.toggle('active');
-    }
-}
-
-// Select currency for buy form
-function selectCurrency(btn, currency) {
-    document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-}
-
-// Process buy
-function processBuy(event) {
-    event.preventDefault();
-    if (!walletConnected) {
-        alert('Please connect your wallet first');
-        return;
-    }
-    // Add your buy logic here
-    alert('Buy functionality would be implemented here');
-}
-
-// Process stake
-function processStake() {
-    if (!walletConnected) {
-        alert('Please connect your wallet first');
-        return;
-    }
-    // Add your stake logic here
-    alert('Stake functionality would be implemented here');
-}
-
-// Calculate earnings
-function calculateEarnings() {
+// Calculate staking earnings
+function calculateEarnings(){
     const amount = parseFloat(document.getElementById('stakeAmount').value) || 0;
-    const apy = parseFloat(document.querySelector('input[name="apy"]:checked').value);
+    const apy = parseFloat(document.querySelector('input[name="apy"]:checked').value) || 0;
     const dailyEarnings = (amount * apy / 100) / 365;
     document.getElementById('dailyEarnings').textContent = dailyEarnings.toFixed(2) + ' $LASTPEPE';
 }
 
-// Copy address to clipboard
-document.getElementById('copyAddress').addEventListener('click', function() {
+// Copy wallet address
+document.getElementById('copyAddress')?.addEventListener('click', function(){
     const address = document.getElementById('ethAddress').textContent;
-    navigator.clipboard.writeText(address).then(() => {
-        const btn = this;
-        btn.classList.add('copied');
-        btn.textContent = 'COPIED!';
-        setTimeout(() => {
-            btn.classList.remove('copied');
-            btn.textContent = 'Copy address';
-        }, 2000);
-    });
+    navigator.clipboard.writeText(address);
+    this.classList.add('copied');
+    this.textContent = '✓ Copied!';
+    setTimeout(() => {
+        this.classList.remove('copied');
+        this.textContent = 'Copy address';
+    }, 2000);
 });
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    calculateEarnings();
-    updateUI();
-});
+// Currency selection
+function selectCurrency(btn, currency){
+    document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
 
+// Placeholder functions (to be implemented with blockchain)
+function processBuy(e){
+    e.preventDefault();
+    alert('Connect wallet to proceed');
+}
+
+function processStake(){
+    alert('Connect wallet to proceed');
+}
 </script>
 
 </body>
