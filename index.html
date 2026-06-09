@@ -4,8 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
 <title>The Last Pepe | Official Memecoin</title>
-<link rel="icon" href="logo1.jpeg" type="image/jpeg">
-<link rel="shortcut icon" href="logo1.jpeg" type="image/jpeg">
+<link rel="icon" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wgARCASxBJIDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAAECAwQFBv/EABgBAQEBAQEAAAAAAAAAAAAAAAABAgME/9oADAMBAAIQAxAAAAL5QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD0wFQwQAAA0wAAAAYACGgYKACYIAAADCViYDBMEBqhpgAAAAC0xATBDFSgk2ohgBnqrSAAABoYhmCBg0iCGCBoAAGI0xgAAABKvOgAYAGBgAYmBhoAYYBoAABoAAA" type="image/jpeg">
+<link rel="shortcut icon" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wgARCASxBJIDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAAECAwQFBv/EABgBAQEBAQEAAAAAAAAAAAAAAAABAgME/9oADAMBAAIQAxAAAAL5QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD0wFQwQAAA0wAAAAYACGgYKACYIAAADCViYDBMEBqhpgAAAAC0xATBDFSgk2ohgBnqrSAAABoYhmCBg0iCGCBoAAGI0xgAAABKvOgAYAGBgAYmBhoAYYBoAABoAAA" type="image/jpeg">
+<link rel="shortcut icon" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wgARCASxBJIDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAAECAwQFBv/EABgBAQEBAQEAAAAAAAAAAAAAAAABAgME/9oADAMBAAIQAxAAAAL5QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD0wFQwQAAA0wAAAAYACGgYKACYIAAADCViYDBMEBqhpgAAAAC0xATBDFSgk2ohgBnqrSAAABoYhmCBg0iCGCBoAAGI0xgAAABKvOgAYAGBgAYmBhoAYYBoAABoAAA" type="image/jpeg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
@@ -195,15 +196,29 @@ nav a:hover{
 .hero{
     min-height:100vh;
     display:flex;
-    justify-content:center;
-    align-items:center;
+    justify-content:space-between;
+    align-items:flex-start;
     padding:140px 60px 80px;
-    gap:80px;
+    gap:40px;
     flex-wrap:wrap;
 }
 
+.hero-title-section{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    max-width:600px;
+}
+
+.hero-title-section img{
+    width:150px;
+    height:150px;
+    border-radius:15px;
+    flex-shrink:0;
+}
+
 .hero-text{
-    max-width:650px;
+    max-width:400px;
 }
 
 .hero-text h1{
@@ -261,7 +276,7 @@ nav a:hover{
 /* IMAGE */
 
 .hero-image img{
-    width:420px;
+    width:350px;
     border-radius:30px;
     border:5px solid #00ff66;
     box-shadow:0 0 40px rgba(0,255,100,0.7);
@@ -866,6 +881,19 @@ nav.active{
     padding:100px 20px 50px;
     gap:30px;
     min-height:auto;
+    flex-direction:column;
+    align-items:center;
+}
+
+.hero-title-section{
+    flex-direction:column;
+    text-align:center;
+    max-width:100%;
+}
+
+.hero-title-section img{
+    width:120px;
+    height:120px;
 }
 
 .hero-text{
@@ -1085,16 +1113,19 @@ nav.active{
 </header>
 
 <div class="hero">
-    <div class="hero-text">
-        <h1>The Last <span>Pepe</span></h1>
-        <p>The ultimate memecoin revolution. Join thousands of hodlers securing their future with The Last Pepe token.</p>
-        <div class="buttons">
-            <a href="#buy" class="btn buy">Buy Now</a>
-            <a href="#" class="btn whitepaper">Whitepaper</a>
+    <div class="hero-title-section">
+        <img src="pepe1.jpeg" alt="The Last Pepe Coin">
+        <div class="hero-text">
+            <h1>The Last <span>Pepe</span></h1>
+            <p>The ultimate memecoin revolution. Join thousands of hodlers securing their future with The Last Pepe token.</p>
+            <div class="buttons">
+                <a href="#buy" class="btn buy">Buy Now</a>
+                <a href="#" class="btn whitepaper">Whitepaper</a>
+            </div>
         </div>
     </div>
     <div class="hero-image">
-        <img src="https://via.placeholder.com/420x420/00ff66/07130a?text=PEPE" alt="The Last Pepe">
+        <img src="img.jpeg" alt="The Last Pepe Memecoin">
     </div>
 </div>
 
