@@ -734,7 +734,7 @@ nav{
 <a href="#roadmap">ROADMAP</a>
 <a href="#community">COMMUNITY</a>
 <div style="position:relative;">
-    <button id="wallet-btn" onclick="toggleWalletMenu()">CONNECT WALLET</button>
+    <button id="wallet-btn" onclick="handleWalletClick()">CONNECT WALLET</button>
     <div id="wallet-menu" class="wallet-menu">
         <div id="wallet-menu-content"></div>
     </div>
@@ -1003,267 +1003,221 @@ Worldwide meme domination
 
 </section>
 
-<footer id="community">
-
-<h2>THE LAST PEPE</h2>
-
-<p>
-The meme never dies.
-</p>
-
+<footer>
+<p>&copy; 2025 The Last Pepe. All rights reserved.</p>
 <div class="socials">
 <a href="#">Twitter</a>
 <a href="#">Telegram</a>
 <a href="#">Discord</a>
 </div>
-
-<br>
-
-<p>
-© 2025 The Last Pepe. All rights reserved.
-</p>
-
 </footer>
 
 <script>
-// ============== WEB3 WALLET INTEGRATION ==============
 
-let walletProvider = null;
+// WALLET CONNECTION STATE
+let walletConnected = false;
 let userAddress = null;
-const RECEIVING_ADDRESS = '0xcF95Ee7589c129Ef9dB05ca88F8d70a6DF2DB573';
-const TOKEN_PRICE_ETH = 0.01; // 1 token = 0.01 ETH
+let provider = null;
+let signer = null;
 
-// Toggle wallet menu dropdown
-function toggleWalletMenu() {
-    const menu = document.getElementById('wallet-menu');
+// Handle wallet button click - toggle menu if connected, or initiate connection if not
+function handleWalletClick() {
     const btn = document.getElementById('wallet-btn');
+    const menu = document.getElementById('wallet-menu');
     
-    if (userAddress) {
+    if (walletConnected) {
+        // Toggle menu visibility
         menu.classList.toggle('active');
     } else {
+        // Initiate manual connection
         connectWallet();
     }
 }
 
 // Close wallet menu when clicking outside
-document.addEventListener('click', function(event) {
-    const walletBtn = document.getElementById('wallet-btn');
-    const walletMenu = document.getElementById('wallet-menu');
+document.addEventListener('click', (e) => {
+    const btn = document.getElementById('wallet-btn');
+    const menu = document.getElementById('wallet-menu');
     
-    if (!walletBtn.contains(event.target) && !walletMenu.contains(event.target)) {
-        walletMenu.classList.remove('active');
+    if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.remove('active');
     }
 });
 
-// Connect wallet
+// Connect wallet manually
 async function connectWallet() {
     try {
-        // Check if window.ethereum is available
+        // Check if MetaMask or other Web3 provider is available
         if (!window.ethereum) {
-            alert('Please install MetaMask or another Web3 wallet');
+            alert('Please install MetaMask or another Web3 wallet to connect.');
             return;
         }
-
-        // Request account access
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        userAddress = accounts[0];
-        walletProvider = window.ethereum;
-
-        // Update UI
-        updateWalletUI();
-        showSuccessMessage(`✅ Wallet Connected: ${userAddress.substring(0, 6)}...${userAddress.substring(38)}`);
         
-        // Close menu after connecting
-        document.getElementById('wallet-menu').classList.remove('active');
+        // Request account access
+        const accounts = await window.ethereum.request({
+            method: 'eth_requestAccounts'
+        });
+        
+        if (accounts && accounts.length > 0) {
+            userAddress = accounts[0];
+            walletConnected = true;
+            
+            // Initialize ethers provider
+            provider = new ethers.providers.Web3Provider(window.ethereum);
+            signer = provider.getSigner();
+            
+            updateUI();
+        }
     } catch (error) {
-        console.error('Wallet connection error:', error);
-        if (error.code !== 4001) {
-            alert('Failed to connect wallet: ' + error.message);
+        console.error('Error connecting wallet:', error);
+        if (error.code !== -32602) { // Ignore user rejection errors
+            alert('Failed to connect wallet. Please try again.');
         }
     }
 }
 
-// Disconnect wallet
+// Disconnect wallet manually
 function disconnectWallet() {
+    walletConnected = false;
     userAddress = null;
-    walletProvider = null;
-    updateWalletUI();
-    showSuccessMessage('✅ Wallet Disconnected');
+    provider = null;
+    signer = null;
+    
+    updateUI();
+    
+    // Close menu
     document.getElementById('wallet-menu').classList.remove('active');
 }
 
-// Update wallet UI
-function updateWalletUI() {
-    const walletBtn = document.getElementById('wallet-btn');
-    const walletMenu = document.getElementById('wallet-menu');
-    const menuContent = document.getElementById('wallet-menu-content');
-    const buyWalletStatus = document.getElementById('buy-wallet-status');
-    const stakeWalletStatus = document.getElementById('stake-wallet-status');
-    const buyWalletAddress = document.getElementById('buy-wallet-address');
-    const stakeWalletAddress = document.getElementById('stake-wallet-address');
-    const buyWalletInput = document.getElementById('buyWalletInput');
-    const walletAlert = document.getElementById('wallet-alert');
+// Update UI based on connection status
+function updateUI() {
+    const btn = document.getElementById('wallet-btn');
+    const menu = document.getElementById('wallet-menu');
+    const content = document.getElementById('wallet-menu-content');
     const buyBtn = document.getElementById('buyBtn');
     const stakeBtn = document.getElementById('stakeBtn');
-
-    if (userAddress) {
-        // Connected state
-        walletBtn.textContent = `${userAddress.substring(0, 6)}...${userAddress.substring(38)}`;
-        walletBtn.classList.add('connected');
+    const buyStatus = document.getElementById('buy-wallet-status');
+    const stakeStatus = document.getElementById('stake-wallet-status');
+    const buyInput = document.getElementById('buyWalletInput');
+    const stakeInput = document.getElementById('stake-wallet-address');
+    const buyAddress = document.getElementById('buy-wallet-address');
+    const stakeAddress = document.getElementById('stake-wallet-address');
+    
+    if (walletConnected && userAddress) {
+        // Update button appearance
+        btn.textContent = userAddress.substring(0, 6) + '...' + userAddress.substring(userAddress.length - 4);
+        btn.classList.add('connected');
         
-        // Update menu content
-        menuContent.innerHTML = `
+        // Show wallet menu content
+        content.innerHTML = `
             <div class="wallet-menu-item">
-                <strong>Connected Wallet</strong>
-            </div>
-            <div class="wallet-menu-item">
-                ${userAddress}
+                <strong>Address:</strong> ${userAddress}
             </div>
             <button class="disconnect-btn" onclick="disconnectWallet()">DISCONNECT</button>
         `;
         
-        // Show wallet status in forms
-        buyWalletStatus.style.display = 'block';
-        stakeWalletStatus.style.display = 'block';
-        buyWalletAddress.textContent = userAddress;
-        stakeWalletAddress.textContent = userAddress;
-        buyWalletInput.value = userAddress;
-        
-        // Hide alert
-        walletAlert.style.display = 'none';
-        
-        // Enable buttons
+        // Enable buy and stake buttons
         buyBtn.disabled = false;
+        buyBtn.textContent = 'BUY NOW';
         stakeBtn.disabled = false;
-        buyBtn.textContent = 'BUY $LASTPEPE';
         stakeBtn.textContent = 'STAKE NOW';
         
-        // Listen for account changes
-        if (walletProvider) {
-            walletProvider.on('accountsChanged', (accounts) => {
-                if (accounts.length === 0) {
-                    disconnectWallet();
-                } else {
-                    userAddress = accounts[0];
-                    updateWalletUI();
-                }
-            });
-        }
-    } else {
-        // Disconnected state
-        walletBtn.textContent = 'CONNECT WALLET';
-        walletBtn.classList.remove('connected');
-        menuContent.innerHTML = '';
+        // Show wallet status
+        buyStatus.style.display = 'block';
+        stakeStatus.style.display = 'block';
+        buyAddress.textContent = userAddress;
+        stakeAddress.textContent = userAddress;
+        buyInput.value = userAddress;
         
-        // Hide wallet status in forms
-        buyWalletStatus.style.display = 'none';
-        stakeWalletStatus.style.display = 'none';
-        buyWalletInput.value = '';
+        // Hide alert
+        document.getElementById('wallet-alert').style.display = 'none';
+    } else {
+        // Update button appearance
+        btn.textContent = 'CONNECT WALLET';
+        btn.classList.remove('connected');
+        
+        // Clear wallet menu
+        content.innerHTML = '';
+        menu.classList.remove('active');
+        
+        // Disable buy and stake buttons
+        buyBtn.disabled = true;
+        buyBtn.textContent = 'CONNECT WALLET TO BUY';
+        stakeBtn.disabled = true;
+        stakeBtn.textContent = 'CONNECT WALLET TO STAKE';
+        
+        // Hide wallet status
+        buyStatus.style.display = 'none';
+        stakeStatus.style.display = 'none';
+        buyInput.value = '';
         
         // Show alert
-        walletAlert.style.display = 'block';
-        
-        // Disable buttons
-        buyBtn.disabled = true;
-        stakeBtn.disabled = true;
-        buyBtn.textContent = 'CONNECT WALLET TO BUY';
-        stakeBtn.textContent = 'CONNECT WALLET TO STAKE';
+        document.getElementById('wallet-alert').style.display = 'block';
     }
 }
 
-// Show success message
-function showSuccessMessage(message) {
-    const alert = document.createElement('div');
-    alert.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background: rgba(0, 255, 100, 0.2);
-        border: 2px solid #00ff66;
-        color: #78ff7a;
-        padding: 15px 25px;
-        border-radius: 10px;
-        z-index: 2000;
-        font-weight: 700;
-        animation: slideIn 0.3s ease;
-    `;
-    alert.textContent = message;
-    document.body.appendChild(alert);
-    
-    setTimeout(() => {
-        alert.remove();
-    }, 3000);
+// Toggle wallet menu (only if connected)
+function toggleWalletMenu() {
+    if (walletConnected) {
+        document.getElementById('wallet-menu').classList.toggle('active');
+    }
 }
 
-// Copy ETH address
-document.addEventListener('DOMContentLoaded', function() {
-    const copyBtn = document.getElementById('copyAddress');
-    if (copyBtn) {
-        copyBtn.addEventListener('click', function() {
-            const ethAddress = document.getElementById('ethAddress').textContent;
-            navigator.clipboard.writeText(ethAddress).then(() => {
-                copyBtn.textContent = 'Copied!';
-                copyBtn.classList.add('copied');
-                setTimeout(() => {
-                    copyBtn.textContent = 'Copy address';
-                    copyBtn.classList.remove('copied');
-                }, 2000);
-            });
-        });
-    }
-});
+// Select currency for buy form
+function selectCurrency(btn, currency) {
+    document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
 
-// Process buy (placeholder)
+// Process buy
 function processBuy(event) {
     event.preventDefault();
-    if (!userAddress) {
+    if (!walletConnected) {
         alert('Please connect your wallet first');
         return;
     }
-    const amount = document.getElementById('buyAmount').value;
-    showSuccessMessage(`✅ Processing purchase of ${amount} ETH...`);
+    // Add your buy logic here
+    alert('Buy functionality would be implemented here');
 }
 
-// Process stake (placeholder)
+// Process stake
 function processStake() {
-    if (!userAddress) {
+    if (!walletConnected) {
         alert('Please connect your wallet first');
         return;
     }
-    const amount = document.getElementById('stakeAmount').value;
-    showSuccessMessage(`✅ Processing stake of ${amount} $LASTPEPE...`);
-}
-
-// Select currency
-function selectCurrency(element, currency) {
-    const buttons = element.parentElement.querySelectorAll('.currency-btn');
-    buttons.forEach(btn => btn.classList.remove('active'));
-    element.classList.add('active');
+    // Add your stake logic here
+    alert('Stake functionality would be implemented here');
 }
 
 // Calculate earnings
 function calculateEarnings() {
-    const stakeAmount = parseFloat(document.getElementById('stakeAmount').value) || 1000;
+    const amount = parseFloat(document.getElementById('stakeAmount').value) || 0;
     const apy = parseFloat(document.querySelector('input[name="apy"]:checked').value);
-    const dailyEarnings = (stakeAmount * apy / 36500).toFixed(2);
-    document.getElementById('dailyEarnings').textContent = `${dailyEarnings} $LASTPEPE`;
+    const dailyEarnings = (amount * apy / 100) / 365;
+    document.getElementById('dailyEarnings').textContent = dailyEarnings.toFixed(2) + ' $LASTPEPE';
 }
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-    updateWalletUI();
-    calculateEarnings();
-    
-    // Listen for stake amount changes
-    document.getElementById('stakeAmount').addEventListener('change', calculateEarnings);
+// Copy address to clipboard
+document.getElementById('copyAddress').addEventListener('click', function() {
+    const address = document.getElementById('ethAddress').textContent;
+    navigator.clipboard.writeText(address).then(() => {
+        const btn = this;
+        btn.classList.add('copied');
+        btn.textContent = 'COPIED!';
+        setTimeout(() => {
+            btn.classList.remove('copied');
+            btn.textContent = 'Copy address';
+        }, 2000);
+    });
 });
 
-// Add keyup event to buy amount for token calculation
-document.getElementById('buyAmount').addEventListener('keyup', function() {
-    const amount = parseFloat(this.value) || 0;
-    const tokens = (amount / TOKEN_PRICE_ETH).toFixed(0);
-    document.getElementById('tokenAmount').textContent = tokens;
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    calculateEarnings();
+    updateUI();
 });
+
 </script>
 
 </body>
