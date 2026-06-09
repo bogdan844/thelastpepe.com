@@ -771,7 +771,8 @@ nav a{
 
 header{
     padding:12px 15px;
-    flex-wrap:wrap;
+    flex-wrap:nowrap;
+    justify-content:space-between;
 }
 
 .logo{
@@ -799,6 +800,25 @@ nav{
 
 nav.active{
     display:flex;
+}
+
+#wallet-btn{
+    padding:8px 14px;
+    font-size:12px;
+    white-space:nowrap;
+    flex-shrink:0;
+}
+
+.wallet-menu{
+    position:fixed;
+    top:auto;
+    bottom:20px;
+    left:50%;
+    right:auto;
+    transform:translateX(-50%);
+    width:90%;
+    max-width:400px;
+    z-index:1002;
 }
 
 .hero{
@@ -1000,548 +1020,352 @@ footer{
     font-size:13px;
 }
 
-.socials a{
-    margin:0 8px;
-    font-size:13px;
-}
-
-#wallet-btn{
-    padding:8px 12px;
-    font-size:11px;
-}
-
-.whitepaper h2{
-    font-size:32px;
-}
-
-}
-
-/* SMALL MOBILE (max 480px) */
-@media(max-width:480px){
-
-header{
-    padding:10px;
-}
-
-.logo{
-    font-size:14px;
-    gap:6px;
-}
-
-.logo-icon{
-    width:30px;
-    height:30px;
-}
-
-.logo-icon svg{
-    width:18px;
-    height:18px;
-}
-
-.hero{
-    padding:90px 15px 40px;
-}
-
-.hero-text h1{
-    font-size:32px;
-    margin-bottom:12px;
-}
-
-.hero-text p{
-    font-size:13px;
-    margin-bottom:20px;
-}
-
-.buttons{
-    flex-direction:column;
-}
-
-.btn{
-    width:100%;
-    padding:11px 20px;
-    font-size:12px;
-    text-align:center;
-}
-
-.hero-image img{
-    width:200px;
-}
-
-.presale, .buy-stake, .tokenomics, .roadmap{
-    padding:50px 15px;
-}
-
-.presale h2, .buy-stake h2, .tokenomics h2, .roadmap h2{
-    font-size:26px;
-    margin-bottom:20px;
-}
-
-.goal{
-    font-size:13px;
-}
-
-.wallet-address{
-    font-size:12px;
-}
-
-.wallet-address strong{
-    font-size:11px;
-}
-
-.copy-btn{
-    padding:8px 12px;
-    font-size:11px;
-}
-
-.progress-container{
-    width:95%;
-}
-
-.stats{
-    gap:12px;
-}
-
-.stat-box{
-    padding:15px;
-}
-
-.stat-box h3{
-    font-size:18px;
-}
-
-.card{
-    padding:15px;
-}
-
-.card h3{
-    font-size:18px;
-}
-
-.buy-card, .stake-card{
-    padding:20px;
-    margin:0 -15px;
-}
-
-.buy-card h3, .stake-card h3{
-    font-size:18px;
-}
-
-.form-group label{
-    font-size:11px;
-}
-
-.form-group input, .form-group select{
-    padding:9px 10px;
-    font-size:12px;
-}
-
-.apy-option{
-    padding:12px;
-}
-
-.phase{
-    padding:15px;
-}
-
-.phase h3{
-    font-size:14px;
-}
-
-.phase p{
-    font-size:11px;
-}
-
-footer{
-    padding:20px 15px;
-}
-
-#wallet-btn{
-    padding:7px 10px;
-    font-size:10px;
-}
-
-}
-
-/* EXTRA SMALL (max 360px) */
-@media(max-width:360px){
-
-.hero-text h1{
-    font-size:28px;
-}
-
-.hero-image img{
-    width:160px;
-}
-
-.presale h2, .buy-stake h2, .tokenomics h2, .roadmap h2{
-    font-size:22px;
-}
-
-.btn{
-    font-size:11px;
-    padding:10px 16px;
-}
-
-.stat-box h3, .card h3{
-    font-size:16px;
-}
-
 }
 
 </style>
-</head>
 
+</head>
 <body>
 
 <div class="bg"></div>
 <div class="glow"></div>
 
+<!-- HEADER / NAVBAR -->
 <header>
-
-<div class="logo">
-    <span class="logo-icon" aria-hidden="true">
-        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pepe logo">
-            <circle cx="32" cy="32" r="30" fill="#0f3f14" stroke="#78ff7a" stroke-width="3"/>
-            <path d="M20 36c2-5 8-8 12-8s10 3 12 8" fill="none" stroke="#d6ffb6" stroke-width="4" stroke-linecap="round"/>
-            <circle cx="23" cy="24" r="5" fill="#ffffff"/>
-            <circle cx="41" cy="24" r="5" fill="#ffffff"/>
-            <circle cx="23" cy="24" r="2" fill="#0d2708"/>
-            <circle cx="41" cy="24" r="2" fill="#0d2708"/>
-        </svg>
-    </span>
-    <span>THE LAST PEPE</span>
-</div>
-
-<nav>
-<a href="#home">HOME</a>
-<a href="#presale">PRESALE</a>
-<a href="#tokenomics">TOKENOMICS</a>
-<a href="#roadmap">ROADMAP</a>
-<a href="#community">COMMUNITY</a>
-<div style="position:relative; width:100%;">
-    <button id="wallet-btn" onclick="handleWalletClick()" style="width:100%;">CONNECT WALLET</button>
-    <div id="wallet-menu" class="wallet-menu">
-        <div id="wallet-menu-content"></div>
+    <div class="logo">
+        <div class="logo-icon">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#00ff66" opacity="0.2"/>
+                <path d="M50 20 L70 45 L60 50 L75 70 L50 80 L25 70 L40 50 L30 45 Z" fill="#00ff66"/>
+            </svg>
+        </div>
+        The Last Pepe
     </div>
-</div>
-</nav>
-
+    <nav>
+        <a href="#presale">Presale</a>
+        <a href="#tokenomics">Tokenomics</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#buy-stake">Buy/Stake</a>
+    </nav>
+    <button id="wallet-btn">Connect Wallet</button>
 </header>
 
-<section class="hero" id="home">
-
-<div class="hero-text">
-
-<h1>
-THE LAST <span>PEPE</span>
-</h1>
-
-<p>
-The final legendary frog has arrived.
-The ultimate memecoin built for the community,
-powered by memes, hype and green energy.
-Join the biggest Pepe movement before launch.
-</p>
-
-<div class="buttons">
-<a href="#buy-stake" class="btn buy">BUY $LASTPEPE</a>
-<a href="#whitepaper" class="btn whitepaper">WHITEPAPER</a>
+<div id="wallet-menu" class="wallet-menu">
+    <div class="wallet-menu-item">
+        <strong>Wallet Address:</strong>
+        <div id="wallet-address" style="word-break:break-all;margin-top:8px;"></div>
+    </div>
+    <div class="wallet-menu-item">
+        <strong>Network:</strong>
+        <div id="wallet-network" style="margin-top:8px;"></div>
+    </div>
+    <div class="wallet-menu-item">
+        <strong>Balance:</strong>
+        <div id="wallet-balance" style="margin-top:8px;"></div>
+    </div>
+    <button class="disconnect-btn" id="disconnect-btn">Disconnect</button>
 </div>
 
-</div>
-
-<div class="hero-image">
-<img src="pepe.jpeg" alt="The Last Pepe" loading="lazy">
-</div>
-
+<!-- HERO SECTION -->
+<section class="hero" id="hero">
+    <div class="hero-text">
+        <h1>The Last <span>Pepe</span></h1>
+        <p>Join the ultimate memecoin revolution. Buy, stake, and earn rewards on the most legendary frog in crypto.</p>
+        <div class="buttons">
+            <a href="#presale" class="btn buy">Buy Now</a>
+            <a href="#" class="btn whitepaper">Whitepaper</a>
+        </div>
+    </div>
+    <div class="hero-image">
+        <img src="https://via.placeholder.com/420x420?text=Pepe+Frog" alt="Pepe" />
+    </div>
 </section>
 
-<section class="buy-stake" id="buy-stake">
-
-<h2>BUY & STAKE</h2>
-
-<div id="wallet-alert" style="display:none; padding:20px; margin:20px auto; max-width:1200px; background:rgba(255,165,0,0.15); border:2px solid #FFA500; border-radius:10px; color:#FFA500;">
-<strong>⚠️ Connect your wallet to purchase tokens with ETH</strong>
-</div>
-
-<div class="buy-stake-container">
-
-<div class="buy-card">
-
-<h3>BUY $LASTPEPE</h3>
-
-<div id="buy-wallet-status" class="wallet-status" style="display:none;">
-Wallet: <strong id="buy-wallet-address"></strong>
-</div>
-
-<div class="currency-select">
-<button class="currency-btn active" onclick="selectCurrency(this,'USD')">USD</button>
-<button class="currency-btn" onclick="selectCurrency(this,'EUR')">EUR</button>
-</div>
-
-<form id="buyForm">
-
-<div class="form-group">
-<label>Wallet Address (Auto-filled if connected)</label>
-<input type="text" id="buyWalletInput" placeholder="0x..." disabled>
-</div>
-
-<div class="form-group">
-<label>Amount (ETH)</label>
-<input type="number" id="buyAmount" placeholder="Enter ETH amount" min="0.01" step="0.01" required>
-</div>
-
-<div style="background:rgba(0,255,100,0.1); padding:15px; border-radius:10px; margin-bottom:20px; text-align:center;">
-<p style="color:#999; font-size:12px;">You will receive: <strong id="tokenAmount">0</strong> $LASTPEPE</p>
-<p style="color:#999; font-size:12px;">Price: 1 $LASTPEPE = <span id="tokenPrice">0.01</span> ETH</p>
-</div>
-
-<button type="submit" class="buy-btn" id="buyBtn" disabled onclick="processBuy(event)">CONNECT WALLET TO BUY</button>
-
-</form>
-
-</div>
-
-<div class="stake-card">
-
-<h3>STAKE & EARN</h3>
-
-<div id="stake-wallet-status" class="wallet-status" style="display:none;">
-Wallet: <strong id="stake-wallet-address"></strong>
-</div>
-
-<div class="amount-input-group">
-<label>Stake Amount ($LASTPEPE)</label>
-<input type="number" id="stakeAmount" placeholder="Enter token amount" min="1" step="1" value="1000">
-</div>
-
-<div style="background:rgba(0,255,100,0.1); padding:15px; border-radius:10px; margin-bottom:20px; text-align:center;">
-<p style="color:#999; font-size:12px;">Daily Earnings</p>
-<p style="color:#78ff7a; font-size:20px; font-weight:700;" id="dailyEarnings">0 $LASTPEPE</p>
-</div>
-
-<p style="color:#999; font-size:14px; margin-bottom:20px;">Select Your Staking Reward:</p>
-
-<div class="stake-options">
-
-<label class="apy-option">
-<input type="radio" name="apy" value="200" checked onchange="calculateEarnings()">
-<div class="apy-option-text">
-<div>
-<div style="color:#00ff66; font-weight:700;">200% APY</div>
-<div class="apy-duration">Annual Percentage Yield</div>
-</div>
-<div class="apy-rate">+200%</div>
-</div>
-</label>
-
-<label class="apy-option">
-<input type="radio" name="apy" value="300" onchange="calculateEarnings()">
-<div class="apy-option-text">
-<div>
-<div style="color:#78ff7a; font-weight:700;">300% APY</div>
-<div class="apy-duration">Premium Yield (6 month lock)</div>
-</div>
-<div class="apy-rate">+300%</div>
-</div>
-</label>
-
-</div>
-
-<button class="stake-btn" id="stakeBtn" disabled onclick="processStake()">CONNECT WALLET TO STAKE</button>
-
-</div>
-
-</div>
-
-</section>
-
+<!-- PRESALE SECTION -->
 <section class="presale" id="presale">
+    <h2>Presale Status</h2>
+    <p class="goal">Goal: 5000 ETH | Raise: 0 ETH (0%)</p>
+    
+    <div class="wallet-address">
+        <span>Send to:</span>
+        <strong id="presale-wallet">0x742d35Cc6634C0532925a3b844Bc9e7595f42177</strong>
+        <button class="copy-btn" onclick="copyToClipboard()">Copy Address</button>
+    </div>
 
-<h2>PRESALE LIVE</h2>
+    <div class="progress-container">
+        <div class="progress-bar"></div>
+    </div>
 
-<div class="goal">
-Fundraising Goal: <strong>$3,000,000</strong> in 3 months
-</div>
-
-<div class="progress-container">
-<div class="progress-bar"></div>
-</div>
-
-<div class="wallet-address">
-<span>Send ETH to: <strong id="ethAddress">0xcF95Ee7589c129Ef9dB05ca88F8d70a6DF2DB573</strong></span>
-<button class="copy-btn" id="copyAddress">Copy address</button>
-</div>
-
-<div style="margin-top:20px; font-size:22px;">
-$1,110,000 Raised
-</div>
-
-<div class="stats">
-
-<div class="stat-box">
-<h3>90 DAYS</h3>
-<p>Countdown until official exchange launch.</p>
-</div>
-
-<div class="stat-box">
-<h3>1 BILLION</h3>
-<p>Total fixed token supply with locked liquidity.</p>
-</div>
-
-<div class="stat-box">
-<h3>0% TAX</h3>
-<p>No buy or sell taxes for holders.</p>
-</div>
-
-</div>
-
+    <div class="stats">
+        <div class="stat-box">
+            <h3>1,000,000</h3>
+            <p>Total Supply</p>
+        </div>
+        <div class="stat-box">
+            <h3>37%</h3>
+            <p>Presale Allocation</p>
+        </div>
+        <div class="stat-box">
+            <h3>$0.0001</h3>
+            <p>Presale Price</p>
+        </div>
+    </div>
 </section>
 
-<section class="whitepaper" id="whitepaper">
-
-<h2>WHITEPAPER</h2>
-
-<div class="goal">
-Full token analysis, launch plan, and smart contract overview.
-</div>
-
-<p style="color:#d6d6d6; max-width:900px; margin:auto; font-size:18px; line-height:1.7;">
-The official whitepaper is available on request. Use the ETH address above for funding or reach out to receive the PDF.
-</p>
-
-</section>
-
+<!-- TOKENOMICS SECTION -->
 <section class="tokenomics" id="tokenomics">
-
-<h2>TOKENOMICS</h2>
-
-<div class="cards">
-
-<div class="card">
-<h3>40%</h3>
-<p>Presale & community allocation.</p>
-</div>
-
-<div class="card">
-<h3>30%</h3>
-<p>Liquidity locked for stability.</p>
-</div>
-
-<div class="card">
-<h3>20%</h3>
-<p>Marketing & global meme campaigns.</p>
-</div>
-
-<div class="card">
-<h3>10%</h3>
-<p>Development & future ecosystem.</p>
-</div>
-
-</div>
-
+    <h2>Tokenomics</h2>
+    <div class="cards">
+        <div class="card">
+            <h3>37%</h3>
+            <p><strong>Presale</strong><br/>Early supporters and community members</p>
+        </div>
+        <div class="card">
+            <h3>30%</h3>
+            <p><strong>Liquidity</strong><br/>DEX pools and market making</p>
+        </div>
+        <div class="card">
+            <h3>20%</h3>
+            <p><strong>Staking</strong><br/>Rewards for long-term holders</p>
+        </div>
+        <div class="card">
+            <h3>13%</h3>
+            <p><strong>Team & Dev</strong><br/>Locked for 24 months</p>
+        </div>
+    </div>
 </section>
 
+<!-- BUY & STAKE SECTION -->
+<section class="buy-stake" id="buy-stake">
+    <h2>Buy & Stake</h2>
+    <div class="buy-stake-container">
+        <!-- BUY CARD -->
+        <div class="buy-card">
+            <h3>Buy Pepe</h3>
+            <div class="wallet-status" id="buy-wallet-status" style="display:none;">
+                Wallet Connected ✓
+            </div>
+            <div class="currency-select">
+                <button class="currency-btn active" onclick="selectCurrency(this, 'eth')">ETH</button>
+                <button class="currency-btn" onclick="selectCurrency(this, 'usdt')">USDT</button>
+                <button class="currency-btn" onclick="selectCurrency(this, 'usdc')">USDC</button>
+            </div>
+            <div class="form-group">
+                <label>Amount to Send</label>
+                <input type="number" id="buy-amount" placeholder="Enter amount" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+                <label>You will receive</label>
+                <input type="text" id="buy-receive" placeholder="0 PEPE" readonly>
+            </div>
+            <button class="buy-btn" id="buy-btn" onclick="buyTokens()">Buy Tokens</button>
+        </div>
+
+        <!-- STAKE CARD -->
+        <div class="stake-card">
+            <h3>Stake Pepe</h3>
+            <div class="wallet-status" id="stake-wallet-status" style="display:none;">
+                Wallet Connected ✓
+            </div>
+            <div class="stake-options">
+                <label class="apy-option">
+                    <input type="radio" name="stake-duration" value="30" checked>
+                    <div class="apy-option-text">
+                        <span>30 Days</span>
+                        <span class="apy-rate">12% APY</span>
+                    </div>
+                    <span class="apy-duration">Lock period: 30 days</span>
+                </label>
+                <label class="apy-option">
+                    <input type="radio" name="stake-duration" value="90">
+                    <div class="apy-option-text">
+                        <span>90 Days</span>
+                        <span class="apy-rate">25% APY</span>
+                    </div>
+                    <span class="apy-duration">Lock period: 90 days</span>
+                </label>
+                <label class="apy-option">
+                    <input type="radio" name="stake-duration" value="365">
+                    <div class="apy-option-text">
+                        <span>365 Days</span>
+                        <span class="apy-rate">50% APY</span>
+                    </div>
+                    <span class="apy-duration">Lock period: 365 days</span>
+                </label>
+            </div>
+            <div class="amount-input-group">
+                <label>Amount to Stake</label>
+                <input type="number" id="stake-amount" placeholder="Enter amount" min="0" step="0.01">
+            </div>
+            <button class="stake-btn" id="stake-btn" onclick="stakeTokens()">Stake Tokens</button>
+        </div>
+    </div>
+</section>
+
+<!-- ROADMAP SECTION -->
 <section class="roadmap" id="roadmap">
-
-<h2>ROADMAP</h2>
-
-<div class="timeline">
-
-<div class="phase">
-<h3>PHASE 1</h3>
-<p>
-Website launch<br><br>
-Community building<br><br>
-Token creation
-</p>
-</div>
-
-<div class="phase">
-<h3>PHASE 2</h3>
-<p>
-Presale launch<br><br>
-Influencer marketing<br><br>
-Trending campaigns
-</p>
-</div>
-
-<div class="phase">
-<h3>PHASE 3</h3>
-<p>
-DEX launch<br><br>
-CoinMarketCap listing<br><br>
-Major partnerships
-</p>
-</div>
-
-<div class="phase">
-<h3>PHASE 4</h3>
-<p>
-CEX listings<br><br>
-NFT ecosystem<br><br>
-Worldwide meme domination
-</p>
-</div>
-
-</div>
-
+    <h2>Roadmap</h2>
+    <div class="timeline">
+        <div class="phase">
+            <h3>Q1 2025</h3>
+            <p>Presale Launch<br/>Smart Contract Audit<br/>Community Building</p>
+        </div>
+        <div class="phase">
+            <h3>Q2 2025</h3>
+            <p>DEX Listing<br/>Marketing Campaign<br/>Partnership Announcements</p>
+        </div>
+        <div class="phase">
+            <h3>Q3 2025</h3>
+            <p>CEX Listing<br/>Staking Rewards<br/>Governance Launch</p>
+        </div>
+        <div class="phase">
+            <h3>Q4 2025</h3>
+            <p>NFT Collection<br/>Meme Games<br/>Global Expansion</p>
+        </div>
+    </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-
-<p>© 2024 The Last Pepe. All rights reserved.</p>
-
-<div class="socials">
-<a href="#">Twitter</a>
-<a href="#">Discord</a>
-<a href="#">Telegram</a>
-</div>
-
+    <p>&copy; 2025 The Last Pepe. All rights reserved.</p>
+    <div class="socials">
+        <a href="#">Twitter</a>
+        <a href="#">Discord</a>
+        <a href="#">Telegram</a>
+    </div>
 </footer>
 
 <script>
-// Responsive menu toggle (for future mobile menu implementation)
-function handleWalletClick(){
-    const menu = document.getElementById('wallet-menu');
-    menu.classList.toggle('active');
-}
+// Wallet Connection Logic
+const walletBtn = document.getElementById('wallet-btn');
+const walletMenu = document.getElementById('wallet-menu');
+const disconnectBtn = document.getElementById('disconnect-btn');
+let isConnected = false;
 
-// Calculate staking earnings
-function calculateEarnings(){
-    const amount = parseFloat(document.getElementById('stakeAmount').value) || 0;
-    const apy = parseFloat(document.querySelector('input[name="apy"]:checked').value) || 0;
-    const dailyEarnings = (amount * apy / 100) / 365;
-    document.getElementById('dailyEarnings').textContent = dailyEarnings.toFixed(2) + ' $LASTPEPE';
-}
-
-// Copy wallet address
-document.getElementById('copyAddress')?.addEventListener('click', function(){
-    const address = document.getElementById('ethAddress').textContent;
-    navigator.clipboard.writeText(address);
-    this.classList.add('copied');
-    this.textContent = '✓ Copied!';
-    setTimeout(() => {
-        this.classList.remove('copied');
-        this.textContent = 'Copy address';
-    }, 2000);
+walletBtn.addEventListener('click', async () => {
+    if (isConnected) {
+        walletMenu.classList.toggle('active');
+    } else {
+        await connectWallet();
+    }
 });
 
-// Currency selection
-function selectCurrency(btn, currency){
+async function connectWallet() {
+    try {
+        if (window.ethereum) {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const account = accounts[0];
+            
+            isConnected = true;
+            walletBtn.textContent = `${account.slice(0, 6)}...${account.slice(-4)}`;
+            walletBtn.classList.add('connected');
+            
+            document.getElementById('wallet-address').textContent = account;
+            document.getElementById('buy-wallet-status').style.display = 'block';
+            document.getElementById('stake-wallet-status').style.display = 'block';
+            
+            getNetworkAndBalance(account);
+            walletMenu.classList.add('active');
+        } else {
+            alert('Please install MetaMask or another Web3 wallet!');
+        }
+    } catch (error) {
+        console.error('Connection failed:', error);
+    }
+}
+
+async function getNetworkAndBalance(account) {
+    try {
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        document.getElementById('wallet-network').textContent = getNetworkName(chainId);
+        
+        const balance = await window.ethereum.request({
+            method: 'eth_getBalance',
+            params: [account, 'latest']
+        });
+        const ethBalance = (parseInt(balance, 16) / 1e18).toFixed(4);
+        document.getElementById('wallet-balance').textContent = `${ethBalance} ETH`;
+    } catch (error) {
+        console.error('Failed to get network or balance:', error);
+    }
+}
+
+function getNetworkName(chainId) {
+    const networks = {
+        '0x1': 'Ethereum Mainnet',
+        '0x5': 'Goerli Testnet',
+        '0x11155111': 'Sepolia Testnet',
+        '0xa': 'Optimism',
+        '0x89': 'Polygon',
+        '0x38': 'BSC'
+    };
+    return networks[chainId] || 'Unknown Network';
+}
+
+disconnectBtn.addEventListener('click', () => {
+    isConnected = false;
+    walletBtn.textContent = 'Connect Wallet';
+    walletBtn.classList.remove('connected');
+    walletMenu.classList.remove('active');
+    document.getElementById('buy-wallet-status').style.display = 'none';
+    document.getElementById('stake-wallet-status').style.display = 'none';
+});
+
+// Clipboard Copy Function
+function copyToClipboard() {
+    const wallet = document.getElementById('presale-wallet').textContent;
+    navigator.clipboard.writeText(wallet).then(() => {
+        const btn = event.target;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+            btn.textContent = 'Copy Address';
+            btn.classList.remove('copied');
+        }, 2000);
+    });
+}
+
+// Currency Selection
+function selectCurrency(btn, currency) {
     document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    console.log('Selected currency:', currency);
 }
 
-// Placeholder functions (to be implemented with blockchain)
-function processBuy(e){
-    e.preventDefault();
-    alert('Connect wallet to proceed');
+// Buy & Stake Functions
+function buyTokens() {
+    const amount = document.getElementById('buy-amount').value;
+    if (!amount) {
+        alert('Please enter an amount');
+        return;
+    }
+    alert(`Initiating purchase of ${amount} ETH worth of PEPE tokens`);
 }
 
-function processStake(){
-    alert('Connect wallet to proceed');
+function stakeTokens() {
+    const amount = document.getElementById('stake-amount').value;
+    const duration = document.querySelector('input[name="stake-duration"]:checked').value;
+    if (!amount) {
+        alert('Please enter an amount');
+        return;
+    }
+    alert(`Staking ${amount} PEPE tokens for ${duration} days`);
 }
+
+// Auto-calculate tokens on buy
+document.getElementById('buy-amount').addEventListener('input', (e) => {
+    const amount = e.target.value;
+    const rate = 10000; // 1 ETH = 10000 PEPE
+    const receive = amount ? (amount * rate).toFixed(0) : '0';
+    document.getElementById('buy-receive').value = `${receive} PEPE`;
+});
+
+// Close wallet menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('header')) {
+        walletMenu.classList.remove('active');
+    }
+});
 </script>
 
 </body>
