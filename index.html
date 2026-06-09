@@ -626,6 +626,45 @@ nav a:hover{
     color:#78ff7a;
 }
 
+.toast-message{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#00ff66;
+    color:black;
+    padding:15px 25px;
+    border-radius:10px;
+    font-weight:700;
+    z-index:2000;
+    animation:slideIn 0.3s ease;
+}
+
+.toast-message.error{
+    background:#ff6b6b;
+    color:white;
+}
+
+.toast-message.success{
+    background:#00ff66;
+    color:black;
+}
+
+.toast-message.warning{
+    background:#ffa500;
+    color:black;
+}
+
+@keyframes slideIn{
+    from{
+        transform:translateX(400px);
+        opacity:0;
+    }
+    to{
+        transform:translateX(0);
+        opacity:1;
+    }
+}
+
 /* ROADMAP */
 
 .roadmap{
@@ -999,27 +1038,6 @@ nav.active{
     gap:15px;
 }
 
-.phase{
-    width:100%;
-    max-width:260px;
-    padding:20px;
-}
-
-.phase h3{
-    font-size:16px;
-    margin-bottom:15px;
-}
-
-.phase p{
-    font-size:12px;
-    line-height:1.6;
-}
-
-footer{
-    padding:30px 20px;
-    font-size:13px;
-}
-
 }
 
 </style>
@@ -1030,13 +1048,12 @@ footer{
 <div class="bg"></div>
 <div class="glow"></div>
 
-<!-- HEADER / NAVBAR -->
 <header>
     <div class="logo">
         <div class="logo-icon">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="45" fill="#00ff66" opacity="0.2"/>
-                <path d="M50 20 L70 45 L60 50 L75 70 L50 80 L25 70 L40 50 L30 45 Z" fill="#00ff66"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <path d="M12 6v6l4 2" stroke-width="2" stroke-linecap="round"/>
             </svg>
         </div>
         The Last Pepe
@@ -1044,190 +1061,188 @@ footer{
     <nav>
         <a href="#presale">Presale</a>
         <a href="#tokenomics">Tokenomics</a>
+        <a href="#buy">Buy</a>
         <a href="#roadmap">Roadmap</a>
-        <a href="#buy-stake">Buy/Stake</a>
     </nav>
     <button id="wallet-btn">Connect Wallet</button>
+    <div class="wallet-menu" id="wallet-menu">
+        <div class="wallet-menu-item">
+            <strong>Wallet:</strong>
+            <div id="wallet-address-display">Not Connected</div>
+        </div>
+        <div class="wallet-menu-item">
+            <strong>Network:</strong>
+            <div id="network-display">Not Connected</div>
+        </div>
+        <div class="wallet-menu-item">
+            <strong>Balance:</strong>
+            <div id="balance-display">0 ETH</div>
+        </div>
+        <button class="disconnect-btn" id="disconnect-btn">Disconnect</button>
+    </div>
 </header>
 
-<div id="wallet-menu" class="wallet-menu">
-    <div class="wallet-menu-item">
-        <strong>Wallet Address:</strong>
-        <div id="wallet-address" style="word-break:break-all;margin-top:8px;"></div>
-    </div>
-    <div class="wallet-menu-item">
-        <strong>Network:</strong>
-        <div id="wallet-network" style="margin-top:8px;"></div>
-    </div>
-    <div class="wallet-menu-item">
-        <strong>Balance:</strong>
-        <div id="wallet-balance" style="margin-top:8px;"></div>
-    </div>
-    <button class="disconnect-btn" id="disconnect-btn">Disconnect</button>
-</div>
-
-<!-- HERO SECTION -->
-<section class="hero" id="hero">
+<div class="hero">
     <div class="hero-text">
         <h1>The Last <span>Pepe</span></h1>
-        <p>Join the ultimate memecoin revolution. Buy, stake, and earn rewards on the most legendary frog in crypto.</p>
+        <p>The ultimate memecoin revolution. Join thousands of hodlers securing their future with The Last Pepe token.</p>
         <div class="buttons">
-            <a href="#presale" class="btn buy">Buy Now</a>
+            <a href="#buy" class="btn buy">Buy Now</a>
             <a href="#" class="btn whitepaper">Whitepaper</a>
         </div>
     </div>
     <div class="hero-image">
-        <img src="https://via.placeholder.com/420x420?text=Pepe+Frog" alt="Pepe" />
+        <img src="https://via.placeholder.com/420x420/00ff66/07130a?text=PEPE" alt="The Last Pepe">
     </div>
-</section>
+</div>
 
-<!-- PRESALE SECTION -->
-<section class="presale" id="presale">
-    <h2>Presale Status</h2>
-    <p class="goal">Goal: 5000 ETH | Raise: 0 ETH (0%)</p>
-    
+<section id="presale" class="presale">
+    <h2>Presale</h2>
+    <p class="goal">Raise: $100,000 | Sold: 37%</p>
     <div class="wallet-address">
-        <span>Send to:</span>
-        <strong id="presale-wallet">0x742d35Cc6634C0532925a3b844Bc9e7595f42177</strong>
-        <button class="copy-btn" onclick="copyToClipboard()">Copy Address</button>
+        <span>Contract Address:</span>
+        <strong id="contract-address">0x1234567890abcdef1234567890abcdef12345678</strong>
+        <button class="copy-btn" onclick="copyAddress()">Copy</button>
     </div>
-
     <div class="progress-container">
         <div class="progress-bar"></div>
     </div>
-
     <div class="stats">
         <div class="stat-box">
-            <h3>1,000,000</h3>
-            <p>Total Supply</p>
+            <h3>$37,000</h3>
+            <p>Raised</p>
         </div>
         <div class="stat-box">
-            <h3>37%</h3>
-            <p>Presale Allocation</p>
+            <h3>3,700</h3>
+            <p>Token Sold</p>
         </div>
         <div class="stat-box">
-            <h3>$0.0001</h3>
-            <p>Presale Price</p>
+            <h3>1,250</h3>
+            <p>Participants</p>
         </div>
     </div>
 </section>
 
-<!-- TOKENOMICS SECTION -->
-<section class="tokenomics" id="tokenomics">
+<section id="tokenomics" class="tokenomics">
     <h2>Tokenomics</h2>
     <div class="cards">
         <div class="card">
-            <h3>37%</h3>
-            <p><strong>Presale</strong><br/>Early supporters and community members</p>
+            <h3>Supply</h3>
+            <p>1,000,000,000 PEPE tokens total supply with strategic distribution</p>
         </div>
         <div class="card">
-            <h3>30%</h3>
-            <p><strong>Liquidity</strong><br/>DEX pools and market making</p>
+            <h3>Distribution</h3>
+            <p>40% Presale | 30% Liquidity | 20% Team | 10% Marketing</p>
         </div>
         <div class="card">
-            <h3>20%</h3>
-            <p><strong>Staking</strong><br/>Rewards for long-term holders</p>
-        </div>
-        <div class="card">
-            <h3>13%</h3>
-            <p><strong>Team & Dev</strong><br/>Locked for 24 months</p>
+            <h3>Tax</h3>
+            <p>5% Buy Tax | 5% Sell Tax | 100% LP Locked</p>
         </div>
     </div>
 </section>
 
-<!-- BUY & STAKE SECTION -->
-<section class="buy-stake" id="buy-stake">
+<section id="buy" class="buy-stake">
     <h2>Buy & Stake</h2>
     <div class="buy-stake-container">
-        <!-- BUY CARD -->
         <div class="buy-card">
-            <h3>Buy Pepe</h3>
-            <div class="wallet-status" id="buy-wallet-status" style="display:none;">
-                Wallet Connected ✓
+            <h3>Buy PEPE</h3>
+            <div class="wallet-status" id="buy-wallet-status">
+                Connect wallet to buy tokens
             </div>
-            <div class="currency-select">
-                <button class="currency-btn active" onclick="selectCurrency(this, 'eth')">ETH</button>
-                <button class="currency-btn" onclick="selectCurrency(this, 'usdt')">USDT</button>
-                <button class="currency-btn" onclick="selectCurrency(this, 'usdc')">USDC</button>
-            </div>
-            <div class="form-group">
-                <label>Amount to Send</label>
-                <input type="number" id="buy-amount" placeholder="Enter amount" min="0" step="0.01">
-            </div>
-            <div class="form-group">
-                <label>You will receive</label>
-                <input type="text" id="buy-receive" placeholder="0 PEPE" readonly>
-            </div>
-            <button class="buy-btn" id="buy-btn" onclick="buyTokens()">Buy Tokens</button>
+            <form id="buy-form">
+                <div class="currency-select">
+                    <button type="button" class="currency-btn active" data-currency="eth">ETH</button>
+                    <button type="button" class="currency-btn" data-currency="usd">USD</button>
+                </div>
+                <div class="form-group">
+                    <label>Amount to Send</label>
+                    <input type="number" id="send-amount" placeholder="0.5" step="0.01" min="0">
+                </div>
+                <div class="form-group">
+                    <label>You will receive</label>
+                    <input type="number" id="receive-amount" placeholder="0 PEPE" disabled>
+                </div>
+                <button type="submit" class="buy-btn" id="buy-button" disabled>Buy Now</button>
+            </form>
         </div>
 
-        <!-- STAKE CARD -->
         <div class="stake-card">
-            <h3>Stake Pepe</h3>
-            <div class="wallet-status" id="stake-wallet-status" style="display:none;">
-                Wallet Connected ✓
+            <h3>Stake PEPE</h3>
+            <div class="wallet-status" id="stake-wallet-status">
+                Connect wallet to stake tokens
             </div>
-            <div class="stake-options">
-                <label class="apy-option">
-                    <input type="radio" name="stake-duration" value="30" checked>
-                    <div class="apy-option-text">
-                        <span>30 Days</span>
-                        <span class="apy-rate">12% APY</span>
+            <form id="stake-form">
+                <div class="form-group">
+                    <label>Amount to Stake</label>
+                    <input type="number" id="stake-amount" placeholder="1000" step="1" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Select Staking Period</label>
+                    <div class="stake-options">
+                        <label class="apy-option">
+                            <input type="radio" name="apy" value="30" checked>
+                            <div class="apy-option-text">
+                                <span>30 Days</span>
+                                <span class="apy-rate">15% APY</span>
+                            </div>
+                            <span class="apy-duration">0.12% Daily</span>
+                        </label>
+                        <label class="apy-option">
+                            <input type="radio" name="apy" value="90">
+                            <div class="apy-option-text">
+                                <span>90 Days</span>
+                                <span class="apy-rate">25% APY</span>
+                            </div>
+                            <span class="apy-duration">0.20% Daily</span>
+                        </label>
+                        <label class="apy-option">
+                            <input type="radio" name="apy" value="180">
+                            <div class="apy-option-text">
+                                <span>180 Days</span>
+                                <span class="apy-rate">40% APY</span>
+                            </div>
+                            <span class="apy-duration">0.33% Daily</span>
+                        </label>
+                        <label class="apy-option">
+                            <input type="radio" name="apy" value="365">
+                            <div class="apy-option-text">
+                                <span>1 Year</span>
+                                <span class="apy-rate">60% APY</span>
+                            </div>
+                            <span class="apy-duration">0.50% Daily</span>
+                        </label>
                     </div>
-                    <span class="apy-duration">Lock period: 30 days</span>
-                </label>
-                <label class="apy-option">
-                    <input type="radio" name="stake-duration" value="90">
-                    <div class="apy-option-text">
-                        <span>90 Days</span>
-                        <span class="apy-rate">25% APY</span>
-                    </div>
-                    <span class="apy-duration">Lock period: 90 days</span>
-                </label>
-                <label class="apy-option">
-                    <input type="radio" name="stake-duration" value="365">
-                    <div class="apy-option-text">
-                        <span>365 Days</span>
-                        <span class="apy-rate">50% APY</span>
-                    </div>
-                    <span class="apy-duration">Lock period: 365 days</span>
-                </label>
-            </div>
-            <div class="amount-input-group">
-                <label>Amount to Stake</label>
-                <input type="number" id="stake-amount" placeholder="Enter amount" min="0" step="0.01">
-            </div>
-            <button class="stake-btn" id="stake-btn" onclick="stakeTokens()">Stake Tokens</button>
+                </div>
+                <button type="submit" class="stake-btn" id="stake-button" disabled>Stake Now</button>
+            </form>
         </div>
     </div>
 </section>
 
-<!-- ROADMAP SECTION -->
-<section class="roadmap" id="roadmap">
+<section id="roadmap" class="roadmap">
     <h2>Roadmap</h2>
     <div class="timeline">
         <div class="phase">
-            <h3>Q1 2025</h3>
-            <p>Presale Launch<br/>Smart Contract Audit<br/>Community Building</p>
+            <h3>Phase 1</h3>
+            <p>Contract Deployment & Presale Launch</p>
         </div>
         <div class="phase">
-            <h3>Q2 2025</h3>
-            <p>DEX Listing<br/>Marketing Campaign<br/>Partnership Announcements</p>
+            <h3>Phase 2</h3>
+            <p>DEX Listing & Community Building</p>
         </div>
         <div class="phase">
-            <h3>Q3 2025</h3>
-            <p>CEX Listing<br/>Staking Rewards<br/>Governance Launch</p>
+            <h3>Phase 3</h3>
+            <p>CEX Listings & Marketing Expansion</p>
         </div>
         <div class="phase">
-            <h3>Q4 2025</h3>
-            <p>NFT Collection<br/>Meme Games<br/>Global Expansion</p>
+            <h3>Phase 4</h3>
+            <p>Global Adoption & Staking Rewards</p>
         </div>
     </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-    <p>&copy; 2025 The Last Pepe. All rights reserved.</p>
+    <p>&copy; 2024 The Last Pepe. All rights reserved.</p>
     <div class="socials">
         <a href="#">Twitter</a>
         <a href="#">Discord</a>
@@ -1236,136 +1251,351 @@ footer{
 </footer>
 
 <script>
-// Wallet Connection Logic
-const walletBtn = document.getElementById('wallet-btn');
-const walletMenu = document.getElementById('wallet-menu');
-const disconnectBtn = document.getElementById('disconnect-btn');
-let isConnected = false;
+// ==================== CONFIGURATION ====================
+// IMPORTANT: Update these values with your actual contract details
 
-walletBtn.addEventListener('click', async () => {
-    if (isConnected) {
-        walletMenu.classList.toggle('active');
-    } else {
-        await connectWallet();
+const CONFIG = {
+    // Your presale/token contract address
+    CONTRACT_ADDRESS: '0x1234567890abcdef1234567890abcdef12345678',
+    
+    // Token price in USD (adjust as needed)
+    TOKEN_PRICE_USD: 0.01,
+    
+    // ETH price in USD (will be fetched from market data)
+    ETH_PRICE_USD: 3000,
+    
+    // Network configuration (currently set for Ethereum mainnet)
+    NETWORK: {
+        chainId: '0x1',
+        chainName: 'Ethereum Mainnet',
+        rpcUrls: ['https://eth.llamarpc.com'],
+        nativeCurrency: {
+            name: 'Ethereum',
+            symbol: 'ETH',
+            decimals: 18
+        },
+        blockExplorerUrls: ['https://etherscan.io']
     }
-});
+};
+
+// ==================== STATE MANAGEMENT ====================
+
+let state = {
+    connected: false,
+    account: null,
+    provider: null,
+    signer: null,
+    selectedCurrency: 'eth',
+    isProcessing: false
+};
+
+// ==================== WALLET CONNECTION ====================
 
 async function connectWallet() {
     try {
-        if (window.ethereum) {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const account = accounts[0];
-            
-            isConnected = true;
-            walletBtn.textContent = `${account.slice(0, 6)}...${account.slice(-4)}`;
-            walletBtn.classList.add('connected');
-            
-            document.getElementById('wallet-address').textContent = account;
-            document.getElementById('buy-wallet-status').style.display = 'block';
-            document.getElementById('stake-wallet-status').style.display = 'block';
-            
-            getNetworkAndBalance(account);
-            walletMenu.classList.add('active');
+        if (!window.ethereum) {
+            showToast('Please install MetaMask or another Web3 wallet', 'error');
+            return;
+        }
+
+        const accounts = await window.ethereum.request({ 
+            method: 'eth_requestAccounts' 
+        });
+        
+        state.account = accounts[0];
+        state.provider = new ethers.providers.Web3Provider(window.ethereum);
+        state.signer = state.provider.getSigner();
+        state.connected = true;
+
+        updateWalletUI();
+        updateBuyStakeUI();
+        
+        showToast('Wallet connected successfully!', 'success');
+    } catch (error) {
+        console.error('Wallet connection error:', error);
+        showToast('Failed to connect wallet', 'error');
+    }
+}
+
+function disconnectWallet() {
+    state.connected = false;
+    state.account = null;
+    state.provider = null;
+    state.signer = null;
+    
+    updateWalletUI();
+    updateBuyStakeUI();
+    
+    showToast('Wallet disconnected', 'warning');
+}
+
+async function updateWalletUI() {
+    const walletBtn = document.getElementById('wallet-btn');
+    const walletMenu = document.getElementById('wallet-menu');
+    const addressDisplay = document.getElementById('wallet-address-display');
+    const networkDisplay = document.getElementById('network-display');
+    const balanceDisplay = document.getElementById('balance-display');
+
+    if (state.connected && state.account) {
+        walletBtn.textContent = `${state.account.substring(0, 6)}...${state.account.substring(38)}`;
+        walletBtn.classList.add('connected');
+        
+        addressDisplay.textContent = state.account;
+        networkDisplay.textContent = 'Ethereum Mainnet';
+        
+        try {
+            const balance = await state.provider.getBalance(state.account);
+            const ethBalance = ethers.utils.formatEther(balance);
+            balanceDisplay.textContent = `${parseFloat(ethBalance).toFixed(4)} ETH`;
+        } catch (error) {
+            console.error('Error fetching balance:', error);
+            balanceDisplay.textContent = '0 ETH';
+        }
+    } else {
+        walletBtn.textContent = 'Connect Wallet';
+        walletBtn.classList.remove('connected');
+        addressDisplay.textContent = 'Not Connected';
+        networkDisplay.textContent = 'Not Connected';
+        balanceDisplay.textContent = '0 ETH';
+    }
+}
+
+function updateBuyStakeUI() {
+    const buyWalletStatus = document.getElementById('buy-wallet-status');
+    const stakeWalletStatus = document.getElementById('stake-wallet-status');
+    const buyButton = document.getElementById('buy-button');
+    const stakeButton = document.getElementById('stake-button');
+    const sendAmountInput = document.getElementById('send-amount');
+    const stakeAmountInput = document.getElementById('stake-amount');
+
+    if (state.connected) {
+        buyWalletStatus.textContent = `Connected: ${state.account.substring(0, 6)}...${state.account.substring(38)}`;
+        stakeWalletStatus.textContent = `Connected: ${state.account.substring(0, 6)}...${state.account.substring(38)}`;
+        buyButton.disabled = false;
+        stakeButton.disabled = false;
+        sendAmountInput.disabled = false;
+        stakeAmountInput.disabled = false;
+    } else {
+        buyWalletStatus.textContent = 'Connect wallet to buy tokens';
+        stakeWalletStatus.textContent = 'Connect wallet to stake tokens';
+        buyButton.disabled = true;
+        stakeButton.disabled = true;
+        sendAmountInput.disabled = true;
+        stakeAmountInput.disabled = true;
+    }
+}
+
+// ==================== BUY FUNCTIONALITY ====================
+
+async function handleBuySubmit(e) {
+    e.preventDefault();
+    
+    if (!state.connected) {
+        showToast('Please connect your wallet first', 'error');
+        return;
+    }
+
+    const sendAmount = document.getElementById('send-amount').value;
+    
+    if (!sendAmount || parseFloat(sendAmount) <= 0) {
+        showToast('Please enter a valid amount', 'error');
+        return;
+    }
+
+    state.isProcessing = true;
+    document.getElementById('buy-button').disabled = true;
+
+    try {
+        const amountWei = ethers.utils.parseEther(sendAmount);
+        
+        // Create transaction object
+        const tx = {
+            to: CONFIG.CONTRACT_ADDRESS,
+            value: amountWei,
+            gasLimit: ethers.utils.hexlify(300000),
+            gasPrice: await state.provider.getGasPrice()
+        };
+
+        showToast('Sending transaction...', 'warning');
+        
+        // Send transaction
+        const transaction = await state.signer.sendTransaction(tx);
+        
+        showToast(`Transaction sent! Hash: ${transaction.hash.substring(0, 10)}...`, 'success');
+        
+        // Wait for confirmation
+        const receipt = await transaction.wait();
+        
+        if (receipt.status === 1) {
+            showToast('Transaction confirmed! Tokens received!', 'success');
+            document.getElementById('buy-form').reset();
+            document.getElementById('receive-amount').value = '';
+            await updateWalletUI();
         } else {
-            alert('Please install MetaMask or another Web3 wallet!');
+            showToast('Transaction failed', 'error');
         }
     } catch (error) {
-        console.error('Connection failed:', error);
+        console.error('Buy error:', error);
+        showToast(`Error: ${error.message || 'Transaction failed'}`, 'error');
+    } finally {
+        state.isProcessing = false;
+        document.getElementById('buy-button').disabled = !state.connected;
     }
 }
 
-async function getNetworkAndBalance(account) {
+function updateReceiveAmount() {
+    const sendAmount = parseFloat(document.getElementById('send-amount').value) || 0;
+    const receiveAmount = state.selectedCurrency === 'eth' 
+        ? (sendAmount * CONFIG.ETH_PRICE_USD) / CONFIG.TOKEN_PRICE_USD
+        : sendAmount / CONFIG.TOKEN_PRICE_USD;
+    
+    document.getElementById('receive-amount').value = receiveAmount > 0 
+        ? receiveAmount.toFixed(2) 
+        : '';
+}
+
+// ==================== STAKE FUNCTIONALITY ====================
+
+async function handleStakeSubmit(e) {
+    e.preventDefault();
+    
+    if (!state.connected) {
+        showToast('Please connect your wallet first', 'error');
+        return;
+    }
+
+    const stakeAmount = document.getElementById('stake-amount').value;
+    const selectedApy = document.querySelector('input[name="apy"]:checked').value;
+    
+    if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
+        showToast('Please enter a valid amount', 'error');
+        return;
+    }
+
+    state.isProcessing = true;
+    document.getElementById('stake-button').disabled = true;
+
     try {
-        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-        document.getElementById('wallet-network').textContent = getNetworkName(chainId);
+        // Calculate estimated returns
+        const apyMap = {
+            '30': 15,
+            '90': 25,
+            '180': 40,
+            '365': 60
+        };
         
-        const balance = await window.ethereum.request({
-            method: 'eth_getBalance',
-            params: [account, 'latest']
-        });
-        const ethBalance = (parseInt(balance, 16) / 1e18).toFixed(4);
-        document.getElementById('wallet-balance').textContent = `${ethBalance} ETH`;
+        const apy = apyMap[selectedApy];
+        const estimatedReward = (parseFloat(stakeAmount) * apy / 365) * parseInt(selectedApy);
+        
+        showToast(`Staking ${stakeAmount} PEPE for ${selectedApy} days at ${apy}% APY. Est. reward: ${estimatedReward.toFixed(2)} PEPE`, 'success');
+        
+        // Note: Actual staking logic would require smart contract interaction
+        // This is a placeholder for demonstration
+        
+        document.getElementById('stake-form').reset();
     } catch (error) {
-        console.error('Failed to get network or balance:', error);
+        console.error('Stake error:', error);
+        showToast(`Error: ${error.message || 'Staking failed'}`, 'error');
+    } finally {
+        state.isProcessing = false;
+        document.getElementById('stake-button').disabled = !state.connected;
     }
 }
 
-function getNetworkName(chainId) {
-    const networks = {
-        '0x1': 'Ethereum Mainnet',
-        '0x5': 'Goerli Testnet',
-        '0x11155111': 'Sepolia Testnet',
-        '0xa': 'Optimism',
-        '0x89': 'Polygon',
-        '0x38': 'BSC'
-    };
-    return networks[chainId] || 'Unknown Network';
-}
+// ==================== EVENT LISTENERS ====================
 
-disconnectBtn.addEventListener('click', () => {
-    isConnected = false;
-    walletBtn.textContent = 'Connect Wallet';
-    walletBtn.classList.remove('connected');
-    walletMenu.classList.remove('active');
-    document.getElementById('buy-wallet-status').style.display = 'none';
-    document.getElementById('stake-wallet-status').style.display = 'none';
+document.getElementById('wallet-btn').addEventListener('click', () => {
+    if (state.connected) {
+        document.getElementById('wallet-menu').classList.toggle('active');
+    } else {
+        connectWallet();
+    }
 });
 
-// Clipboard Copy Function
-function copyToClipboard() {
-    const wallet = document.getElementById('presale-wallet').textContent;
-    navigator.clipboard.writeText(wallet).then(() => {
+document.getElementById('disconnect-btn').addEventListener('click', disconnectWallet);
+
+document.getElementById('buy-form').addEventListener('submit', handleBuySubmit);
+document.getElementById('stake-form').addEventListener('submit', handleStakeSubmit);
+
+document.getElementById('send-amount').addEventListener('input', updateReceiveAmount);
+
+document.querySelectorAll('.currency-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        state.selectedCurrency = e.target.dataset.currency;
+        updateReceiveAmount();
+    });
+});
+
+// Close wallet menu when clicking outside
+document.addEventListener('click', (e) => {
+    const walletBtn = document.getElementById('wallet-btn');
+    const walletMenu = document.getElementById('wallet-menu');
+    
+    if (!walletBtn.contains(e.target) && !walletMenu.contains(e.target)) {
+        walletMenu.classList.remove('active');
+    }
+});
+
+// ==================== UTILITY FUNCTIONS ====================
+
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast-message ${type}`;
+    toast.textContent = message;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 4000);
+}
+
+function copyAddress() {
+    const address = document.getElementById('contract-address').textContent;
+    navigator.clipboard.writeText(address).then(() => {
         const btn = event.target;
+        const originalText = btn.textContent;
         btn.textContent = 'Copied!';
         btn.classList.add('copied');
+        
         setTimeout(() => {
-            btn.textContent = 'Copy Address';
+            btn.textContent = originalText;
             btn.classList.remove('copied');
         }, 2000);
     });
 }
 
-// Currency Selection
-function selectCurrency(btn, currency) {
-    document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    console.log('Selected currency:', currency);
-}
+// ==================== INITIALIZATION ====================
 
-// Buy & Stake Functions
-function buyTokens() {
-    const amount = document.getElementById('buy-amount').value;
-    if (!amount) {
-        alert('Please enter an amount');
-        return;
+window.addEventListener('load', () => {
+    // Check if already connected
+    if (window.ethereum && window.ethereum.selectedAddress) {
+        state.account = window.ethereum.selectedAddress;
+        connectWallet();
     }
-    alert(`Initiating purchase of ${amount} ETH worth of PEPE tokens`);
-}
-
-function stakeTokens() {
-    const amount = document.getElementById('stake-amount').value;
-    const duration = document.querySelector('input[name="stake-duration"]:checked').value;
-    if (!amount) {
-        alert('Please enter an amount');
-        return;
-    }
-    alert(`Staking ${amount} PEPE tokens for ${duration} days`);
-}
-
-// Auto-calculate tokens on buy
-document.getElementById('buy-amount').addEventListener('input', (e) => {
-    const amount = e.target.value;
-    const rate = 10000; // 1 ETH = 10000 PEPE
-    const receive = amount ? (amount * rate).toFixed(0) : '0';
-    document.getElementById('buy-receive').value = `${receive} PEPE`;
+    
+    updateBuyStakeUI();
 });
 
-// Close wallet menu when clicking outside
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('header')) {
-        walletMenu.classList.remove('active');
-    }
-});
+// Listen for wallet changes
+if (window.ethereum) {
+    window.ethereum.on('accountsChanged', (accounts) => {
+        if (accounts.length === 0) {
+            disconnectWallet();
+        } else {
+            state.account = accounts[0];
+            updateWalletUI();
+        }
+    });
+
+    window.ethereum.on('chainChanged', () => {
+        window.location.reload();
+    });
+}
+
 </script>
 
 </body>
