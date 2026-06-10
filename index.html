@@ -1294,17 +1294,18 @@ const CONFIG = {
     // ETH price in USD (will be fetched from market data)
     ETH_PRICE_USD: 3000,
     
-    // Network configuration (currently set for Ethereum mainnet)
+  // Network configuration set for Solana Mainnet Beta
+const CONFIG = {
     NETWORK: {
-        chainId: '0x1',
-        chainName: 'Ethereum Mainnet',
-        rpcUrls: ['https://eth.llamarpc.com'],
+        cluster: 'mainnet-beta',
+        chainName: 'Solana Mainnet Beta',
+        rpcUrls: ['https://solana.com'],
         nativeCurrency: {
-            name: 'Ethereum',
-            symbol: 'ETH',
-            decimals: 18
+            name: 'Solana',
+            symbol: 'SOL',
+            decimals: 9
         },
-        blockExplorerUrls: ['https://etherscan.io']
+        blockExplorerUrls: ['https://solscan.io']
     }
 };
 
