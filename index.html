@@ -9,12 +9,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
-<!-- Web3Modal for Ethereum -->
-<script src="https://cdn.jsdelivr.net/npm/@web3modal/ethers5@latest/dist/index.umd.js"></script>
-
-<!-- Ethers.js -->
-<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-
 <!-- Solana Web3.js -->
 <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@latest/lib/index.iife.min.js"></script>
 
@@ -580,37 +574,6 @@ nav a:hover{
     transform:scale(1.05);
 }
 
-.chain-select{
-    display:flex;
-    gap:10px;
-    margin-bottom:20px;
-    flex-wrap:wrap;
-}
-
-.chain-btn{
-    flex:1;
-    min-width:120px;
-    padding:10px;
-    border:2px solid #00ff66;
-    background:transparent;
-    color:#00ff66;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:700;
-    transition:0.3s;
-    font-family:'Orbitron',sans-serif;
-    font-size:12px;
-}
-
-.chain-btn.active{
-    background:#00ff66;
-    color:black;
-}
-
-.chain-btn:hover{
-    transform:scale(1.05);
-}
-
 .token-select{
     display:grid;
     grid-template-columns:1fr 1fr 1fr;
@@ -782,13 +745,6 @@ nav a:hover{
     color:#c6ffc5;
 }
 
-.stripe-card-element{
-    background:rgba(0,255,100,0.1);
-    padding:12px 15px;
-    border-radius:10px;
-    border:1px solid #00ff66;
-}
-
 .stripe-element{
     padding:12px 15px;
     background:rgba(0,255,100,0.1);
@@ -854,6 +810,16 @@ nav a:hover{
 .bank-details p{
     margin:5px 0;
     word-break:break-all;
+}
+
+.network-badge{
+    display:inline-block;
+    background:linear-gradient(135deg, #9d4edd, #5a189a);
+    padding:8px 16px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:15px;
 }
 
 /* ROADMAP */
@@ -1116,11 +1082,15 @@ nav{
     <button id="wallet-btn">Connect Wallet</button>
     <div class="wallet-menu" id="wallet-menu">
         <div class="wallet-menu-item">
+            <strong>Network:</strong>
+            <span>Solana</span>
+        </div>
+        <div class="wallet-menu-item">
             <strong>Connected Wallet:</strong>
             <span id="wallet-address-display">Not connected</span>
         </div>
         <div class="wallet-menu-item">
-            <strong>Balance:</strong>
+            <strong>Balance (SOL):</strong>
             <span id="wallet-balance-display">--</span>
         </div>
         <button class="disconnect-btn" id="disconnect-btn">Disconnect</button>
@@ -1133,7 +1103,7 @@ nav{
         <img src="https://via.placeholder.com/150" alt="Pepe">
         <div class="hero-text">
             <h1>The <span>Last</span> Pepe</h1>
-            <p>Join the ultimate memecoin revolution. Limited tokens, unlimited potential.</p>
+            <p>Join the ultimate memecoin revolution on Solana. Limited tokens, unlimited potential.</p>
             <div class="buttons">
                 <button class="btn buy" onclick="document.getElementById('buy').scrollIntoView({behavior:'smooth'})">Buy Now</button>
                 <button class="btn whitepaper">Whitepaper</button>
@@ -1147,17 +1117,11 @@ nav{
 
 <!-- PRESALE -->
 <section class="presale" id="presale">
-    <h2>Presale Information</h2>
+    <h2>Solana Network Presale</h2>
     <p class="goal">Help us reach our $500,000 goal</p>
     
     <div class="wallet-address">
-        <span>Ethereum Wallet:</span>
-        <strong id="eth-wallet">0x742d35Cc6634C0532925a3b844Bc9e7595f1bEd0</strong>
-        <button class="copy-btn" onclick="copyToClipboard('eth-wallet')">Copy</button>
-    </div>
-
-    <div class="wallet-address">
-        <span>Solana Wallet:</span>
+        <span>Solana Wallet (SPL):</span>
         <strong id="sol-wallet">ThLpQvJFDUq6r2RDCLVVZZwFvLVGHU9MwkgZBdmXP4k</strong>
         <button class="copy-btn" onclick="copyToClipboard('sol-wallet')">Copy</button>
     </div>
@@ -1188,7 +1152,7 @@ nav{
     <div class="cards">
         <div class="card">
             <h3>Total Supply</h3>
-            <p>1,000,000,000 PEPE tokens distributed across all phases</p>
+            <p>1,000,000,000 PEPE tokens on Solana SPL</p>
         </div>
         <div class="card">
             <h3>Presale Tokens</h3>
@@ -1206,44 +1170,28 @@ nav{
     <h2>Buy & Stake PEPE</h2>
     
     <div class="payment-tabs">
-        <button class="payment-tab active" onclick="switchPaymentMethod('crypto')">Crypto</button>
-        <button class="payment-tab" onclick="switchPaymentMethod('card')">Card Payment</button>
+        <button class="payment-tab active" onclick="switchPaymentMethod('crypto')">SOL Tokens</button>
+        <button class="payment-tab" onclick="switchPaymentMethod('card')">Card Payment (EUR/USD)</button>
     </div>
 
     <div class="buy-stake-container">
-        <!-- CRYPTO BUY CARD -->
+        <!-- SOLANA BUY CARD -->
         <div class="buy-card" id="crypto-buy">
-            <h3>Buy with Crypto</h3>
+            <div class="network-badge">🟣 SOLANA NETWORK</div>
+            <h3>Buy with SOL Tokens</h3>
             
             <div class="form-group">
-                <label>Select Chain:</label>
-                <div class="chain-select">
-                    <button class="chain-btn active" onclick="selectChain('ethereum')">Ethereum</button>
-                    <button class="chain-btn" onclick="selectChain('solana')">Solana</button>
-                </div>
-            </div>
-
-            <div class="form-group" id="eth-tokens">
                 <label>Select Token:</label>
                 <div class="token-select">
-                    <button class="token-btn active" onclick="selectToken('ethereum', 'USDT')">USDT</button>
-                    <button class="token-btn" onclick="selectToken('ethereum', 'USDC')">USDC</button>
-                    <button class="token-btn" onclick="selectToken('ethereum', 'ETH')">ETH</button>
-                </div>
-            </div>
-
-            <div class="form-group" id="sol-tokens" style="display:none;">
-                <label>Select Token:</label>
-                <div class="token-select">
-                    <button class="token-btn active" onclick="selectToken('solana', 'USDC')">USDC</button>
-                    <button class="token-btn" onclick="selectToken('solana', 'USDT')">USDT</button>
-                    <button class="token-btn" onclick="selectToken('solana', 'SOL')">SOL</button>
+                    <button class="token-btn active" onclick="selectToken('USDC')">USDC</button>
+                    <button class="token-btn" onclick="selectToken('USDT')">USDT</button>
+                    <button class="token-btn" onclick="selectToken('SOL')">SOL</button>
                 </div>
             </div>
 
             <div class="form-group">
                 <label>Amount:</label>
-                <input type="number" id="crypto-amount" placeholder="Enter amount" min="0" step="0.01">
+                <input type="number" id="crypto-amount" placeholder="Enter amount" min="0" step="0.01" oninput="calculateCryptoPricing()">
             </div>
 
             <div class="price-calc" id="crypto-price-calc">
@@ -1251,10 +1199,10 @@ nav{
             </div>
 
             <div class="wallet-status" id="wallet-status">
-                📱 Connect wallet to continue
+                🟣 Connect Phantom wallet to continue
             </div>
 
-            <button class="buy-btn" id="crypto-buy-btn" onclick="buyCryptoPay()" disabled>Buy with Crypto</button>
+            <button class="buy-btn" id="crypto-buy-btn" onclick="buySolanaTokens()" disabled>Buy with Solana</button>
         </div>
 
         <!-- CARD PAYMENT CARD -->
@@ -1271,16 +1219,11 @@ nav{
 
             <div class="form-group">
                 <label>Amount:</label>
-                <input type="number" id="card-amount" placeholder="Enter amount" min="0" step="0.01">
+                <input type="number" id="card-amount" placeholder="Enter amount" min="0" step="0.01" oninput="calculateCardPricing()">
             </div>
 
             <div class="price-calc" id="card-price-calc">
                 You will receive: <strong>0 PEPE</strong>
-            </div>
-
-            <div class="form-group">
-                <label>Card Details:</label>
-                <div id="card-element" class="stripe-element"></div>
             </div>
 
             <div class="form-group">
@@ -1295,28 +1238,32 @@ nav{
 
             <!-- BANK DETAILS FOR EUR -->
             <div class="bank-details" id="bank-details-eur">
-                <p><strong>EUR Transfer Details (Revolut):</strong></p>
+                <p><strong>EUR Transfer Details (Revolut - Lithuania):</strong></p>
                 <p><strong>Beneficiary:</strong> BOGDAN-FLORIN JIANU</p>
                 <p><strong>IBAN:</strong> LT48 3250 0511 8316 6063</p>
                 <p><strong>BIC/SWIFT:</strong> REVOLT21</p>
-                <p><strong>Bank:</strong> Revolut Bank UAB, Konstitucijos ave. 21B, 08130, Vilnius, Lithuania</p>
+                <p><strong>Bank:</strong> Revolut Bank UAB</p>
+                <p><strong>Address:</strong> Konstitucijos ave. 21B, 08130, Vilnius, Lithuania</p>
+                <p style="margin-top:10px; font-size:11px; color:#999;"><strong>Correspondent Bank BIC:</strong> CHASDEFX</p>
             </div>
 
             <!-- BANK DETAILS FOR USD -->
             <div class="bank-details hidden" id="bank-details-usd">
-                <p><strong>USD Transfer Details (Revolut):</strong></p>
+                <p><strong>USD Transfer Details (Revolut - Romania):</strong></p>
                 <p><strong>Beneficiary:</strong> BOGDAN-FLORIN JIANU</p>
                 <p><strong>IBAN:</strong> RO40 REVO 0000 1288 3502 1800</p>
                 <p><strong>BIC/SWIFT:</strong> REVOROBB</p>
                 <p><strong>Bank:</strong> Revolut Bank UAB Vilnius Sucursala Bucuresti</p>
                 <p><strong>Address:</strong> Bulevardul Ion Mihalache Nr. 15-17, MINDSPACE VICTORIEI, TOWER CENTER INTERNATIONAL, BIROU 111, Etaj 1, Sector 1, 011171, Bucuresti, Romania</p>
+                <p style="margin-top:10px; font-size:11px; color:#999;"><strong>Correspondent Bank BIC:</strong> CHASGB2L</p>
             </div>
 
-            <button class="buy-btn" id="card-buy-btn" onclick="buyCardPay()" disabled>Complete Purchase</button>
+            <button class="buy-btn" id="card-buy-btn" onclick="buyCardPayment()" disabled>Complete Purchase</button>
         </div>
 
         <!-- STAKE CARD -->
         <div class="stake-card">
+            <div class="network-badge">🟣 SOLANA STAKING</div>
             <h3>Stake & Earn</h3>
             
             <div class="stake-options">
@@ -1350,7 +1297,7 @@ nav{
 
             <div class="amount-input-group">
                 <label>Amount to Stake:</label>
-                <input type="number" id="stake-amount" placeholder="Enter amount" min="0" step="0.01">
+                <input type="number" id="stake-amount" placeholder="Enter amount" min="0" step="0.01" oninput="updateStakeRewards()">
             </div>
 
             <div class="price-calc">
@@ -1368,11 +1315,11 @@ nav{
     <div class="timeline">
         <div class="phase">
             <h3>Q1 2024</h3>
-            <p>Presale Launch & Community Building</p>
+            <p>Solana Presale Launch & Community Building</p>
         </div>
         <div class="phase">
             <h3>Q2 2024</h3>
-            <p>Exchange Listing & DEX Integration</p>
+            <p>DEX Listing (Raydium) & Jupiter Integration</p>
         </div>
         <div class="phase">
             <h3>Q3 2024</h3>
@@ -1380,14 +1327,14 @@ nav{
         </div>
         <div class="phase">
             <h3>Q4 2024</h3>
-            <p>Governance DAO & Expansion</p>
+            <p>Governance DAO & Cross-Chain Bridge</p>
         </div>
     </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-    <p>&copy; 2024 The Last Pepe. All rights reserved.</p>
+    <p>&copy; 2024 The Last Pepe. All rights reserved. | Built on Solana</p>
     <div class="socials">
         <a href="#">Twitter</a>
         <a href="#">Telegram</a>
@@ -1400,20 +1347,15 @@ nav{
 // ============ CONFIGURATION ============
 
 const CONFIG = {
-    // Ethereum Configuration
-    ETHEREUM_RPC: 'https://eth-mainnet.g.alchemy.com/v2/YOUR_ALCHEMY_KEY',
-    ETHEREUM_CHAIN_ID: 1,
-    
-    // Token Contracts (Ethereum)
-    USDT_ADDRESS: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-    USDC_ADDRESS: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-    WETH_ADDRESS: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-    PEPE_RECEIVER: '0x742d35Cc6634C0532925a3b844Bc9e7595f1bEd0',
-    
     // Solana Configuration
     SOLANA_RPC: 'https://api.mainnet-beta.solana.com',
     SOLANA_NETWORK: 'mainnet-beta',
     SOLANA_RECEIVER: 'ThLpQvJFDUq6r2RDCLVVZZwFvLVGHU9MwkgZBdmXP4k',
+    
+    // SPL Token Mints (Solana)
+    USDC_MINT: 'EPjFWaLb3hyMAxLduGDAEs6X4zNzUUf5B5sPtY2DRVaP',
+    USDT_MINT: 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenEX9',
+    SOL_MINT: '11111111111111111111111111111111', // Native SOL
     
     // Token Prices (Update these with real API calls)
     PEPE_PRICE: 0.0000001234, // in USD
@@ -1431,17 +1373,11 @@ const CONFIG = {
 let wallet = {
     connected: false,
     address: null,
-    chainId: null,
     balance: null,
-    provider: null,
-    signer: null,
+    phantom: null,
 };
 
-let selectedChain = 'ethereum';
-let selectedToken = {
-    ethereum: 'USDT',
-    solana: 'USDC'
-};
+let selectedToken = 'USDC';
 let selectedCurrency = 'EUR';
 let selectedStakeDuration = 30;
 
@@ -1449,24 +1385,26 @@ let selectedStakeDuration = 30;
 
 async function connectWallet() {
     try {
-        if (typeof window.ethereum !== 'undefined') {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            wallet.address = accounts[0];
-            wallet.connected = true;
-            
-            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            wallet.chainId = parseInt(chainId, 16);
-            
-            wallet.provider = new ethers.providers.Web3Provider(window.ethereum);
-            wallet.signer = wallet.provider.getSigner();
-            
-            updateWalletUI();
-            await getWalletBalance();
-            
-            showToast(`Wallet connected: ${wallet.address.slice(0, 6)}...${wallet.address.slice(-4)}`, 'success');
-        } else {
-            showToast('MetaMask not installed', 'error');
+        // Check if Phantom is installed
+        const phantom = window.phantom?.solana;
+        
+        if (!phantom?.isConnected) {
+            if (!phantom) {
+                showToast('Phantom wallet not installed. Please install it from phantom.app', 'error');
+                window.open('https://phantom.app', '_blank');
+                return;
+            }
+            await phantom.connect();
         }
+        
+        wallet.phantom = phantom;
+        wallet.address = phantom.publicKey?.toString();
+        wallet.connected = true;
+        
+        updateWalletUI();
+        await getWalletBalance();
+        
+        showToast(`Wallet connected: ${wallet.address.slice(0, 6)}...${wallet.address.slice(-4)}`, 'success');
     } catch (error) {
         showToast('Wallet connection failed: ' + error.message, 'error');
     }
@@ -1476,14 +1414,18 @@ function disconnectWallet() {
     wallet.connected = false;
     wallet.address = null;
     wallet.balance = null;
+    wallet.phantom = null;
     updateWalletUI();
     showToast('Wallet disconnected', 'success');
 }
 
 async function getWalletBalance() {
     try {
-        const balance = await wallet.signer.getBalance();
-        wallet.balance = ethers.utils.formatEther(balance);
+        if (!wallet.phantom || !wallet.connected) return;
+        
+        const connection = new window.solanaWeb3.Connection(CONFIG.SOLANA_RPC, 'confirmed');
+        const balance = await connection.getBalance(new window.solanaWeb3.PublicKey(wallet.address));
+        wallet.balance = balance / window.solanaWeb3.LAMPORTS_PER_SOL;
         updateWalletUI();
     } catch (error) {
         console.error('Error fetching balance:', error);
@@ -1503,7 +1445,7 @@ function updateWalletUI() {
         btn.classList.add('connected');
         btn.textContent = `${wallet.address.slice(0, 6)}...${wallet.address.slice(-4)}`;
         addressDisplay.textContent = wallet.address;
-        balanceDisplay.textContent = wallet.balance ? `${parseFloat(wallet.balance).toFixed(4)} ETH` : '--';
+        balanceDisplay.textContent = wallet.balance ? `${parseFloat(wallet.balance).toFixed(4)} SOL` : '--';
         walletStatus.innerHTML = `✅ Connected: ${wallet.address.slice(0, 6)}...${wallet.address.slice(-4)}`;
         cryptoBuyBtn.disabled = false;
         stakingBtn.disabled = false;
@@ -1512,7 +1454,7 @@ function updateWalletUI() {
         btn.textContent = 'Connect Wallet';
         addressDisplay.textContent = 'Not connected';
         balanceDisplay.textContent = '--';
-        walletStatus.innerHTML = '📱 Connect wallet to continue';
+        walletStatus.innerHTML = '🟣 Connect Phantom wallet to continue';
         cryptoBuyBtn.disabled = true;
         stakingBtn.disabled = true;
     }
@@ -1526,24 +1468,11 @@ function switchPaymentMethod(method) {
     
     document.getElementById('crypto-buy').classList.toggle('hidden', method === 'card');
     document.getElementById('card-buy').classList.toggle('hidden', method === 'crypto');
-    
-    if (method === 'card') {
-        setTimeout(initStripe, 100);
-    }
 }
 
-function selectChain(chain) {
-    selectedChain = chain;
-    document.querySelectorAll('.chain-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-    
-    document.getElementById('eth-tokens').classList.toggle('hidden', chain === 'solana');
-    document.getElementById('sol-tokens').classList.toggle('hidden', chain === 'ethereum');
-}
-
-function selectToken(chain, token) {
-    selectedToken[chain] = token;
-    document.querySelectorAll(`#${chain === 'ethereum' ? 'eth' : 'sol'}-tokens .token-btn`).forEach(btn => btn.classList.remove('active'));
+function selectToken(token) {
+    selectedToken = token;
+    document.querySelectorAll('.token-btn').forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
     calculateCryptoPricing();
 }
@@ -1576,9 +1505,9 @@ function calculateCardPricing() {
 
 // ============ PURCHASE FUNCTIONS ============
 
-async function buyCryptoPay() {
+async function buySolanaTokens() {
     if (!wallet.connected) {
-        showToast('Please connect your wallet first', 'warning');
+        showToast('Please connect your Phantom wallet first', 'warning');
         return;
     }
 
@@ -1590,94 +1519,48 @@ async function buyCryptoPay() {
 
     try {
         document.getElementById('crypto-buy-btn').disabled = true;
-        showToast('Processing payment...', 'warning');
+        showToast('Processing Solana payment...', 'warning');
 
-        if (selectedChain === 'ethereum') {
-            await handleEthereumPayment(amount);
+        const connection = new window.solanaWeb3.Connection(CONFIG.SOLANA_RPC, 'confirmed');
+        const transaction = new window.solanaWeb3.Transaction();
+        
+        let lamports;
+        if (selectedToken === 'SOL') {
+            lamports = amount * window.solanaWeb3.LAMPORTS_PER_SOL;
+            transaction.add(
+                window.solanaWeb3.SystemProgram.transfer({
+                    fromPubkey: new window.solanaWeb3.PublicKey(wallet.address),
+                    toPubkey: new window.solanaWeb3.PublicKey(CONFIG.SOLANA_RECEIVER),
+                    lamports: lamports,
+                })
+            );
         } else {
-            await handleSolanaPayment(amount);
+            // For SPL tokens (USDC, USDT)
+            showToast('SPL token transfers require token program setup. Please contact support.', 'warning');
+            document.getElementById('crypto-buy-btn').disabled = false;
+            return;
         }
+
+        const { blockhash } = await connection.getLatestBlockhash();
+        transaction.recentBlockhash = blockhash;
+        transaction.feePayer = new window.solanaWeb3.PublicKey(wallet.address);
+
+        const signed = await wallet.phantom.signTransaction(transaction);
+        const signature = await connection.sendRawTransaction(signed.serialize());
+        await connection.confirmTransaction(signature, 'confirmed');
+
+        showToast(`✅ Payment successful! Signature: ${signature.slice(0, 20)}...`, 'success');
+        document.getElementById('crypto-amount').value = '';
+        calculateCryptoPricing();
+        await getWalletBalance();
     } catch (error) {
         showToast('Payment failed: ' + error.message, 'error');
+    } finally {
         document.getElementById('crypto-buy-btn').disabled = false;
     }
 }
 
-async function handleEthereumPayment(amount) {
-    try {
-        let tokenAddress;
-        let decimals = 6;
-
-        switch (selectedToken.ethereum) {
-            case 'USDT':
-                tokenAddress = CONFIG.USDT_ADDRESS;
-                break;
-            case 'USDC':
-                tokenAddress = CONFIG.USDC_ADDRESS;
-                break;
-            case 'ETH':
-                // Send raw ETH
-                const tx = await wallet.signer.sendTransaction({
-                    to: CONFIG.PEPE_RECEIVER,
-                    value: ethers.utils.parseEther(amount.toString())
-                });
-                await tx.wait();
-                showToast(`ETH payment successful! TX: ${tx.hash.slice(0, 10)}...`, 'success');
-                return;
-        }
-
-        // For ERC20 tokens (USDT, USDC)
-        const ERC20_ABI = ['function transfer(address to, uint256 amount) returns (bool)'];
-        const contract = new ethers.Contract(tokenAddress, ERC20_ABI, wallet.signer);
-        
-        const amountInWei = ethers.utils.parseUnits(amount.toString(), decimals);
-        const tx = await contract.transfer(CONFIG.PEPE_RECEIVER, amountInWei);
-        await tx.wait();
-
-        showToast(`${selectedToken.ethereum} payment successful! TX: ${tx.hash.slice(0, 10)}...`, 'success');
-        document.getElementById('crypto-amount').value = '';
-        calculateCryptoPricing();
-    } catch (error) {
-        throw error;
-    }
-}
-
-async function handleSolanaPayment(amount) {
-    if (!window.solanaWeb3) {
-        showToast('Solana Web3.js not loaded', 'error');
-        return;
-    }
-
-    try {
-        if (window.phantom?.solana?.isConnected) {
-            // Use Phantom wallet
-            const transaction = new window.solanaWeb3.Transaction().add(
-                window.solanaWeb3.SystemProgram.transfer({
-                    fromPubkey: window.phantom.solana.publicKey,
-                    toPubkey: new window.solanaWeb3.PublicKey(CONFIG.SOLANA_RECEIVER),
-                    lamports: amount * window.solanaWeb3.LAMPORTS_PER_SOL,
-                })
-            );
-
-            const { blockhash } = await window.solanaWeb3.Connection.prototype.getLatestBlockhash();
-            transaction.recentBlockhash = blockhash;
-            transaction.feePayer = window.phantom.solana.publicKey;
-
-            const signed = await window.phantom.solana.signTransaction(transaction);
-            const signature = await window.solanaWeb3.Connection.prototype.sendRawTransaction(signed.serialize());
-
-            showToast(`SOL payment successful! Signature: ${signature.slice(0, 10)}...`, 'success');
-            document.getElementById('crypto-amount').value = '';
-            calculateCryptoPricing();
-        } else {
-            showToast('Phantom wallet not connected', 'error');
-        }
-    } catch (error) {
-        throw error;
-    }
-}
-
-async function buyCardPay() {
+async function buyCardPayment() {
     const amount = parseFloat(document.getElementById('card-amount').value);
     const name = document.getElementById('card-name').value;
     const email = document.getElementById('card-email').value;
@@ -1695,21 +1578,20 @@ async function buyCardPay() {
         document.getElementById('card-buy-btn').disabled = true;
         showToast('Processing card payment...', 'warning');
 
-        // Show bank transfer details instead of processing
-        showToast(`Payment Details Displayed - Please transfer ${amount} ${selectedCurrency} to the bank account shown`, 'success');
-        showToast(`Reference: ${name} | ${email}`, 'success');
+        // Display bank transfer details
+        const pepeAmount = ((amount / CONFIG.EXCHANGE_RATES[selectedCurrency]) / CONFIG.PEPE_PRICE).toFixed(0);
         
-        // In production, you would integrate with your backend to:
-        // 1. Create a Stripe PaymentIntent
-        // 2. Confirm payment with card
-        // 3. Record transaction
+        showToast(`📤 Bank transfer details displayed - Please transfer ${amount} ${selectedCurrency} to the account shown`, 'success');
+        showToast(`You will receive ${pepeAmount} PEPE tokens | Reference: ${name}`, 'success');
         
+        // Reset form
         document.getElementById('card-amount').value = '';
         document.getElementById('card-name').value = '';
         document.getElementById('card-email').value = '';
         calculateCardPricing();
     } catch (error) {
-        showToast('Card payment failed: ' + error.message, 'error');
+        showToast('Payment failed: ' + error.message, 'error');
+    } finally {
         document.getElementById('card-buy-btn').disabled = false;
     }
 }
@@ -1741,11 +1623,11 @@ async function stakeTokens() {
 
     try {
         document.getElementById('stake-btn').disabled = true;
-        showToast('Staking tokens...', 'warning');
+        showToast('Staking tokens on Solana...', 'warning');
 
         // Simulate staking transaction
         setTimeout(() => {
-            showToast(`Successfully staked ${amount} PEPE for ${duration} days!`, 'success');
+            showToast(`✅ Successfully staked ${amount} PEPE for ${duration} days!`, 'success');
             document.getElementById('stake-amount').value = '';
             updateStakeRewards();
             document.getElementById('stake-btn').disabled = false;
@@ -1753,34 +1635,6 @@ async function stakeTokens() {
     } catch (error) {
         showToast('Staking failed: ' + error.message, 'error');
         document.getElementById('stake-btn').disabled = false;
-    }
-}
-
-// ============ STRIPE INITIALIZATION ============
-
-let stripe = null;
-let cardElement = null;
-
-function initStripe() {
-    if (!stripe) {
-        stripe = Stripe(CONFIG.STRIPE_PUBLIC_KEY);
-        const elements = stripe.elements();
-        cardElement = elements.create('card', {
-            style: {
-                base: {
-                    color: '#00ff66',
-                    fontFamily: 'Orbitron, sans-serif',
-                    fontSize: '14px',
-                    '::placeholder': {
-                        color: '#666',
-                    },
-                },
-                invalid: {
-                    color: '#ff6b6b',
-                }
-            }
-        });
-        cardElement.mount('#card-element');
     }
 }
 
@@ -1826,28 +1680,24 @@ document.getElementById('wallet-btn').addEventListener('click', function() {
 
 document.getElementById('disconnect-btn').addEventListener('click', disconnectWallet);
 
-document.getElementById('crypto-amount').addEventListener('input', calculateCryptoPricing);
-document.getElementById('card-amount').addEventListener('input', calculateCardPricing);
-document.getElementById('stake-amount').addEventListener('input', updateStakeRewards);
+// Listen for Phantom wallet connection changes
+if (window.phantom?.solana) {
+    window.phantom.solana.on('connect', () => {
+        wallet.connected = true;
+        updateWalletUI();
+        getWalletBalance();
+    });
 
-document.querySelectorAll('input[name="stake-duration"]').forEach(radio => {
-    radio.addEventListener('change', updateStakeRewards);
-});
+    window.phantom.solana.on('disconnect', () => {
+        disconnectWallet();
+    });
 
-// Listen for wallet connection changes
-if (window.ethereum) {
-    window.ethereum.on('accountsChanged', (accounts) => {
-        if (accounts.length === 0) {
-            disconnectWallet();
-        } else {
-            wallet.address = accounts[0];
+    window.phantom.solana.on('accountChanged', (publicKey) => {
+        if (publicKey) {
+            wallet.address = publicKey.toString();
             updateWalletUI();
             getWalletBalance();
         }
-    });
-
-    window.ethereum.on('chainChanged', (chainId) => {
-        wallet.chainId = parseInt(chainId, 16);
     });
 }
 
