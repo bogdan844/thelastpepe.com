@@ -430,5 +430,67 @@
       updateStakeSummary();
     })();
   </script>
+  <script>
+(function () {
+  function ready(fn){ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',fn);} else {fn();} }
+
+  ready(() => {
+    const btn =
+      document.getElementById('wallet-btn') ||
+      document.querySelector('[data-wallet-connect]') ||
+      document.querySelector('.wallet-connect');
+
+    let statusEl = document.getElementById('wallet-status-inline');
+    if (!statusEl) {
+      statusEl = document.createElement('div');
+      statusEl.id = 'wallet-status-inline';
+      statusEl.style.cssText = 'margin-top:8px;font-size:12px;color:#ffd166;word-break:break-word;';
+      if (btn && btn.parentNode) btn.parentNode.appendChild(statusEl);
+    }
+
+    function setStatus(msg, isErr=false){
+      if(statusEl){
+        statusEl.textContent = msg;
+        statusEl.style.color = isErr ? '#ff6b6b' : '#ffd166';
+      }
+      console.log('[wallet]', msg);
+    }
+
+    function getProvider() {
+      if (window.phantom && window.phantom.solana && window.phantom.solana.isPhantom) return window.phantom.solana;
+      if (window.solana && window.solana.isPhantom) return window.solana;
+      return null;
+    }
+
+    async function connectPhantom() {
+      const provider = getProvider();
+      if (!provider) {
+        setStatus('Phantom not detected. Install/enable extension and refresh.', true);
+        window.open('https://phantom.app/', '_blank');
+        return;
+      }
+
+      try {
+        setStatus('Opening Phantom...');
+        const resp = await provider.connect({ onlyIfTrusted: false });
+        const key = resp?.publicKey?.toString?.() || provider.publicKey?.toString?.();
+        if (!key) throw new Error('No public key returned');
+        setStatus('Connected: ' + key.slice(0,4) + '...' + key.slice(-4));
+        if (btn) btn.textContent = key.slice(0,4) + '...' + key.slice(-4);
+      } catch (e) {
+        setStatus('Connect failed: ' + (e?.message || String(e)), true);
+      }
+    }
+
+    if (!btn) {
+      setStatus('Wallet button not found (#wallet-btn).', true);
+      return;
+    }
+
+    btn.addEventListener('click', connectPhantom);
+    setStatus('Wallet handler armed. Click Connect Wallet.');
+  });
+})();
+</script>
 </body>
 </html>
