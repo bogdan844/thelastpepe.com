@@ -15,9 +15,6 @@
 <!-- SPL Token -->
 <script src="https://cdn.jsdelivr.net/npm/@solana/spl-token@latest/lib/index.iife.js"></script>
 
-<!-- Stripe for Card Payments -->
-<script src="https://js.stripe.com/v3/"></script>
-
 <style>
 
 *{
@@ -825,6 +822,20 @@ nav a:hover{
     margin-bottom:15px;
 }
 
+.price-ticker{
+    padding:10px 15px;
+    background:rgba(0,255,100,0.08);
+    border:1px solid rgba(0,255,100,0.3);
+    border-radius:8px;
+    margin-bottom:15px;
+    font-size:12px;
+    color:#c6ffc5;
+}
+
+.price-ticker strong{
+    color:#00ff66;
+}
+
 /* ROADMAP */
 
 .roadmap{
@@ -1183,6 +1194,10 @@ nav{
             <div class="network-badge">🟣 SOLANA NETWORK</div>
             <h3>Buy with SOL Tokens</h3>
             
+            <div class="price-ticker">
+                SOL: <strong id="sol-price">$0.00</strong> | USDC: <strong id="usdc-price">$1.00</strong> | PEPE: <strong id="pepe-price">$0.00</strong>
+            </div>
+
             <div class="form-group">
                 <label>Select Token:</label>
                 <div class="token-select">
@@ -1366,16 +1381,19 @@ const CONFIG = {
     USDC_DECIMALS: 6,
     USDT_DECIMALS: 6,
     
-    // Token Prices (Update these with real API calls from Raydium/Jupiter)
-    PEPE_PRICE: 0.0000001234, // in USD
+    // Token Prices (Fetched from Jupiter API)
+    PEPE_PRICE: 0.0000001234,
     USDC_PRICE: 1.0,
     USDT_PRICE: 1.0,
-    SOL_PRICE: 150, // Update with real price
+    SOL_PRICE: 150,
     
     EXCHANGE_RATES: {
         'EUR': 0.92,
         'USD': 1.0
     },
+    
+    // Jupiter API
+    JUPITER_API: 'https://price.jup.ag/v4/price'
 };
 
 // ============ GLOBAL STATE ============
@@ -1390,6 +1408,51 @@ let wallet = {
 let selectedToken = 'USDC';
 let selectedCurrency = 'EUR';
 let selectedStakeDuration = 30;
+
+// ============ PRICE FETCHING ============
+
+async function fetchPrices() {
+    try {
+        // Fetch SOL price
+        const solResponse = await fetch(`${CONFIG.JUPITER_API}?ids=So11111111111111111111111111111111111111112`);
+        const solData = await solResponse.json();
+        if (solData.data && solData.data['So11111111111111111111111111111111111111112']) {
+            CONFIG.SOL_PRICE = solData.data['So11111111111111111111111111111111111111112'].price || 150;
+        }
+
+        // Fetch USDC price (should be $1)
+        const usdcResponse = await fetch(`${CONFIG.JUPITER_API}?ids=EPjFWaLb3hyMAxLduGDAEs6X4zNzUUf5B5sPtY2DRVaP`);
+        const usdcData = await usdcResponse.json();
+        if (usdcData.data && usdcData.data['EPjFWaLb3hyMAxLduGDAEs6X4zNzUUf5B5sPtY2DRVaP']) {
+            CONFIG.USDC_PRICE = usdcData.data['EPjFWaLb3hyMAxLduGDAEs6X4zNzUUf5B5sPtY2DRVaP'].price || 1.0;
+        }
+
+        // Fetch USDT price (should be $1)
+        const usdtResponse = await fetch(`${CONFIG.JUPITER_API}?ids=Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenEX9`);
+        const usdtData = await usdtResponse.json();
+        if (usdtData.data && usdtData.data['Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenEX9']) {
+            CONFIG.USDT_PRICE = usdtData.data['Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenEX9'].price || 1.0;
+        }
+
+        // Fetch PEPE price
+        const pepeResponse = await fetch(`${CONFIG.JUPITER_API}?ids=${CONFIG.PEPE_MINT}`);
+        const pepeData = await pepeResponse.json();
+        if (pepeData.data && pepeData.data[CONFIG.PEPE_MINT]) {
+            CONFIG.PEPE_PRICE = pepeData.data[CONFIG.PEPE_MINT].price || 0.0000001234;
+        }
+
+        updatePriceTicker();
+    } catch (error) {
+        console.error('Error fetching prices:', error);
+        // Fallback prices remain in CONFIG
+    }
+}
+
+function updatePriceTicker() {
+    document.getElementById('sol-price').textContent = `$${CONFIG.SOL_PRICE.toFixed(2)}`;
+    document.getElementById('usdc-price').textContent = `$${CONFIG.USDC_PRICE.toFixed(4)}`;
+    document.getElementById('pepe-price').textContent = `$${CONFIG.PEPE_PRICE.toFixed(10)}`;
+}
 
 // ============ WALLET FUNCTIONS ============
 
@@ -1627,7 +1690,6 @@ async function handleSPLTokenTransfer(transaction, amount, connection) {
 }
 
 async function getOrCreateAssociatedTokenAccount(connection, owner, mint, authority) {
-    // Use Phantom's built-in functionality or implement ATA lookup
     try {
         const ataAddress = window.splToken.getAssociatedTokenAddressSync(mint, authority);
         const accountInfo = await connection.getAccountInfo(ataAddress);
@@ -1798,9 +1860,12 @@ if (window.phantom?.solana) {
     });
 }
 
-// Initialize
+// ============ INITIALIZATION ============
+
 document.addEventListener('DOMContentLoaded', () => {
     updateWalletUI();
+    fetchPrices(); // Fetch prices on page load
+    setInterval(fetchPrices, 30000); // Refresh prices every 30 seconds
 });
 
 </script>
