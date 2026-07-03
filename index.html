@@ -531,5 +531,31 @@
   }
 })();
 </script>
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('wallet-btn');
+  if (!btn) return console.error('wallet-btn not found');
+
+  btn.onclick = async () => {
+    console.log('CLICK OK');
+    const provider = window.phantom?.solana || window.solana;
+    console.log('PROVIDER', provider);
+
+    if (!provider || !provider.isPhantom) {
+      alert('Phantom not detected');
+      return;
+    }
+
+    try {
+      const res = await provider.connect({ onlyIfTrusted: false });
+      console.log('CONNECTED', res.publicKey.toString());
+      btn.textContent = res.publicKey.toString().slice(0,4) + '...' + res.publicKey.toString().slice(-4);
+    } catch (e) {
+      console.error('CONNECT ERR', e);
+      alert('Connect error: ' + (e.message || e));
+    }
+  };
+});
+</script>
 </body>
 </html>
