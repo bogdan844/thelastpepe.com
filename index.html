@@ -772,6 +772,16 @@ nav a:hover{
     display:none!important;
 }
 
+.price-calc{
+    padding:10px 15px;
+    background:rgba(0,255,100,0.1);
+    border:1px solid #00ff66;
+    border-radius:10px;
+    margin-bottom:20px;
+    font-size:13px;
+    color:#c6ffc5;
+}
+
 .stripe-card-element{
     background:rgba(0,255,100,0.1);
     padding:12px 15px;
@@ -1237,12 +1247,12 @@ nav.active{
     <p class="goal">🚀 Join Our Pre-Sale: Get 30% Bonus Tokens!</p>
     <div class="wallet-address">
         <strong>Ethereum Address:</strong>
-        <span id="eth-address">0x1234...5678</span>
+        <span id="eth-address">0xYourEthereumPresaleAddressHere</span>
         <button class="copy-btn" onclick="copyToClipboard('eth-address', this)">Copy</button>
     </div>
     <div class="wallet-address">
         <strong>Solana Address:</strong>
-        <span id="sol-address">Sol1234...5678</span>
+        <span id="sol-address">YourSolanaPresaleAddressHere</span>
         <button class="copy-btn" onclick="copyToClipboard('sol-address', this)">Copy</button>
     </div>
     <div class="progress-container">
@@ -1328,7 +1338,11 @@ nav.active{
 
             <div class="amount-input-group">
                 <label>Amount</label>
-                <input type="number" id="crypto-amount" placeholder="Enter amount" min="0" step="0.01">
+                <input type="number" id="crypto-amount" placeholder="Enter amount" min="0" step="0.01" onchange="calculateTokens()">
+            </div>
+
+            <div class="price-calc" id="price-calc">
+                You will receive: <strong id="tokens-to-receive">0</strong> PEPE
             </div>
 
             <div class="wallet-status" id="wallet-status" style="display:none;">
@@ -1352,7 +1366,11 @@ nav.active{
 
             <div class="amount-input-group">
                 <label>Amount</label>
-                <input type="number" id="fiat-amount" placeholder="Enter amount" min="0" step="0.01">
+                <input type="number" id="fiat-amount" placeholder="Enter amount" min="0" step="0.01" onchange="calculateTokens()">
+            </div>
+
+            <div class="price-calc" id="price-calc-fiat">
+                You will receive: <strong id="tokens-to-receive-fiat">0</strong> PEPE
             </div>
 
             <div class="form-group">
@@ -1405,50 +1423,90 @@ nav.active{
 
 <script>
 
-// ============ WALLET CONFIGURATION ============
+// ============ SMART CONTRACT CONFIGURATION ============
+
+// ETHEREUM CONFIG
 const ETH_RPC_URL = 'https://eth.public-rpc.com';
+const ETH_CHAIN_ID = 1; // Mainnet
+const ETH_PRESALE_ADDRESS = '0xYourEthereumPresaleContractAddress'; // Replace with your presale contract
+const PEPE_TOKEN_ADDRESS_ETH = '0xYourPepeTokenAddressEth'; // Replace with PEPE token address on Ethereum
+
+// SOLANA CONFIG
 const SOL_RPC_URL = 'https://api.mainnet-beta.solana.com';
+const SOL_PRESALE_ADDRESS = 'YourSolanaPresaleContractAddress'; // Replace with your presale contract
+const PEPE_TOKEN_ADDRESS_SOL = 'YourPepeTokenAddressSolana'; // Replace with PEPE token address on Solana
 
-// Ethereum Token Addresses (Mainnet)
-const ETH_TOKENS = {
-    'ETH': 'native',
-    'USDT': '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-    'USDC': '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+// TOKEN PRICES (in USD - update these based on market)
+const TOKEN_PRICES = {
+    'ETH': 2500,
+    'USDT': 1,
+    'USDC': 1,
+    'SOL': 150,
+    'USDC-SOL': 1
 };
 
-// Solana Token Addresses
-const SOL_TOKENS = {
-    'SOL': 'native',
-    'USDC-SOL': 'EPjFWaJgt46ggxDF5SRo31SVjcrt3K3HuyAtsT4eNcRu'
-};
+// PEPE PRESALE PRICE (example: $0.001 per token)
+const PEPE_PRESALE_PRICE = 0.001;
+
+// ABI for ERC20 Transfer
+const ERC20_ABI = [
+    "function approve(address spender, uint256 amount) public returns (bool)",
+    "function allowance(address owner, address spender) public view returns (uint256)",
+    "function transfer(address recipient, uint256 amount) public returns (bool)"
+];
+
+// Simple Presale Contract ABI (adjust based on your contract)
+const PRESALE_ABI = [
+    "function buyWithToken(address tokenAddress, uint256 amount) public payable",
+    "function getPepeAmount(uint256 inputAmount, address tokenAddress) public view returns (uint256)"
+];
 
 let currentChain = 'ethereum';
 let currentToken = 'ETH';
 let currentCurrency = 'USD';
 let connectedWallet = null;
 let walletType = null;
+let ethProvider = null;
+let solanaConnection = null;
 
 // ============ WALLET CONNECTION ============
 
 async function connectWallet() {
     try {
+        // Try Ethereum/MetaMask first
         if (typeof window.ethereum !== 'undefined') {
-            walletType = 'ethereum';
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            connectedWallet = accounts[0];
-            currentChain = 'ethereum';
-            updateWalletUI();
-            showToast(`Ethereum wallet connected: ${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`, 'success');
-        } else if (typeof window.phantom?.solana !== 'undefined') {
-            walletType = 'solana';
-            const response = await window.phantom.solana.connect();
-            connectedWallet = response.publicKey.toString();
-            currentChain = 'solana';
-            updateWalletUI();
-            showToast(`Solana wallet connected: ${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`, 'success');
-        } else {
-            showToast('Please install MetaMask or Phantom wallet', 'error');
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                connectedWallet = accounts[0];
+                walletType = 'ethereum';
+                ethProvider = new ethers.providers.Web3Provider(window.ethereum);
+                currentChain = 'ethereum';
+                updateWalletUI();
+                showToast(`Ethereum wallet connected: ${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`, 'success');
+                return;
+            } catch (error) {
+                console.log('MetaMask error:', error);
+            }
         }
+
+        // Try Solana/Phantom
+        if (typeof window.phantom?.solana !== 'undefined') {
+            try {
+                const response = await window.phantom.solana.connect();
+                connectedWallet = response.publicKey.toString();
+                walletType = 'solana';
+                const solanaWeb3 = window.solanaWeb3;
+                solanaConnection = new solanaWeb3.Connection(SOL_RPC_URL);
+                currentChain = 'solana';
+                updateWalletUI();
+                showToast(`Solana wallet connected: ${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`, 'success');
+                return;
+            } catch (error) {
+                console.log('Phantom error:', error);
+            }
+        }
+
+        showToast('Please install MetaMask (Ethereum) or Phantom (Solana) wallet', 'error');
     } catch (error) {
         showToast(`Connection failed: ${error.message}`, 'error');
     }
@@ -1457,6 +1515,8 @@ async function connectWallet() {
 function disconnectWallet() {
     connectedWallet = null;
     walletType = null;
+    ethProvider = null;
+    solanaConnection = null;
     updateWalletUI();
     showToast('Wallet disconnected', 'warning');
 }
@@ -1511,32 +1571,65 @@ function selectChain(chain, btn) {
         document.getElementById('solana-tokens').classList.remove('hidden');
         currentToken = 'SOL';
     }
+    
+    calculateTokens();
 }
 
 function selectToken(token, btn) {
     document.querySelectorAll('.token-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentToken = token;
+    calculateTokens();
 }
 
 function selectCurrency(currency, btn) {
     document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentCurrency = currency;
+    calculateTokens();
 }
 
-// ============ CRYPTO PAYMENT ============
+// ============ TOKEN CALCULATION ============
+
+function calculateTokens() {
+    const cryptoAmount = parseFloat(document.getElementById('crypto-amount').value) || 0;
+    const fiatAmount = parseFloat(document.getElementById('fiat-amount').value) || 0;
+
+    // Crypto calculation
+    if (cryptoAmount > 0) {
+        const tokenPrice = TOKEN_PRICES[currentToken] || 1;
+        const usdValue = cryptoAmount * tokenPrice;
+        const pepeAmount = (usdValue / PEPE_PRESALE_PRICE).toFixed(2);
+        document.getElementById('tokens-to-receive').textContent = pepeAmount;
+    } else {
+        document.getElementById('tokens-to-receive').textContent = '0';
+    }
+
+    // Fiat calculation
+    if (fiatAmount > 0) {
+        const pepeAmount = (fiatAmount / PEPE_PRESALE_PRICE).toFixed(2);
+        document.getElementById('tokens-to-receive-fiat').textContent = pepeAmount;
+    } else {
+        document.getElementById('tokens-to-receive-fiat').textContent = '0';
+    }
+}
+
+// ============ ETHEREUM PAYMENT ============
 
 async function connectAndBuyCrypto() {
     if (!connectedWallet) {
         await connectWallet();
     }
     if (connectedWallet) {
-        processCryptoPayment();
+        if (currentChain === 'ethereum') {
+            await processEthereumPayment();
+        } else {
+            await processSolanaPayment();
+        }
     }
 }
 
-async function processCryptoPayment() {
+async function processEthereumPayment() {
     const amount = document.getElementById('crypto-amount').value;
     
     if (!amount || amount <= 0) {
@@ -1545,16 +1638,93 @@ async function processCryptoPayment() {
     }
 
     try {
-        showToast(`Processing ${currentToken} payment of ${amount}...`, 'warning');
-
-        // Here you would integrate with your backend to process the payment
-        // This is a placeholder that shows the success flow
+        showToast(`Processing ${currentToken} payment...`, 'warning');
         
-        setTimeout(() => {
-            showToast(`Successfully purchased ${amount} ${currentToken}!`, 'success');
+        const signer = ethProvider.getSigner();
+        const presaleContract = new ethers.Contract(ETH_PRESALE_ADDRESS, PRESALE_ABI, signer);
+
+        let tx;
+
+        if (currentToken === 'ETH') {
+            // Send ETH directly
+            const amountWei = ethers.utils.parseEther(amount);
+            tx = await presaleContract.buyWithETH({ value: amountWei });
+        } else {
+            // ERC20 token (USDT or USDC)
+            const tokenAddress = currentToken === 'USDT' 
+                ? '0xdAC17F958D2ee523a2206206994597C13D831ec7' // USDT
+                : '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'; // USDC
+
+            const tokenContract = new ethers.Contract(tokenAddress, ERC20_ABI, signer);
+            const amountWei = ethers.utils.parseUnits(amount, 6); // USDT/USDC use 6 decimals
+
+            // Approve presale contract
+            const approveTx = await tokenContract.approve(ETH_PRESALE_ADDRESS, amountWei);
+            await approveTx.wait();
+            
+            // Buy with token
+            tx = await presaleContract.buyWithToken(tokenAddress, amountWei);
+        }
+
+        const receipt = await tx.wait();
+        
+        if (receipt.status === 1) {
+            const pepeAmount = document.getElementById('tokens-to-receive').textContent;
+            showToast(`✓ Successfully purchased ${pepeAmount} PEPE! TX: ${receipt.transactionHash.slice(0, 10)}...`, 'success');
             document.getElementById('crypto-amount').value = '';
-        }, 2000);
+            calculateTokens();
+        } else {
+            showToast('Transaction failed', 'error');
+        }
     } catch (error) {
+        console.error('Ethereum payment error:', error);
+        showToast(`Payment failed: ${error.message}`, 'error');
+    }
+}
+
+// ============ SOLANA PAYMENT ============
+
+async function processSolanaPayment() {
+    const amount = document.getElementById('crypto-amount').value;
+    
+    if (!amount || amount <= 0) {
+        showToast('Please enter a valid amount', 'warning');
+        return;
+    }
+
+    try {
+        showToast(`Processing ${currentToken} payment on Solana...`, 'warning');
+
+        const solanaWeb3 = window.solanaWeb3;
+        const phantom = window.phantom.solana;
+
+        // Create transaction
+        const transaction = new solanaWeb3.Transaction();
+        
+        // Add instruction to send token to presale contract
+        const lamports = solanaWeb3.LAMPORTS_PER_SOL * parseFloat(amount);
+
+        transaction.add(
+            solanaWeb3.SystemProgram.transfer({
+                fromPubkey: new solanaWeb3.PublicKey(connectedWallet),
+                toPubkey: new solanaWeb3.PublicKey(SOL_PRESALE_ADDRESS),
+                lamports: lamports
+            })
+        );
+
+        // Get recent blockhash
+        const { blockhash } = await solanaConnection.getLatestBlockhash();
+        transaction.recentBlockhash = blockhash;
+        transaction.feePayer = new solanaWeb3.PublicKey(connectedWallet);
+
+        // Sign and send
+        const signed = await phantom.signAndSendTransaction(transaction);
+
+        showToast(`✓ Successfully purchased tokens! TX: ${signed.signature.slice(0, 20)}...`, 'success');
+        document.getElementById('crypto-amount').value = '';
+        calculateTokens();
+    } catch (error) {
+        console.error('Solana payment error:', error);
         showToast(`Payment failed: ${error.message}`, 'error');
     }
 }
@@ -1566,7 +1736,7 @@ let cardElement = null;
 
 function initStripe() {
     if (!stripe) {
-        stripe = Stripe('pk_live_YOUR_STRIPE_KEY'); // Replace with your Stripe key
+        stripe = Stripe('pk_test_YOUR_STRIPE_TEST_KEY'); // Replace with your Stripe key
         const elements = stripe.elements();
         cardElement = elements.create('card', {
             style: {
@@ -1623,9 +1793,11 @@ async function processFiatPayment() {
         if (result.error) {
             showToast(`Payment failed: ${result.error.message}`, 'error');
         } else {
-            showToast('Payment successful! 🎉', 'success');
+            const pepeAmount = document.getElementById('tokens-to-receive-fiat').textContent;
+            showToast(`✓ Payment successful! You will receive ${pepeAmount} PEPE`, 'success');
             document.getElementById('fiat-amount').value = '';
             document.getElementById('fiat-email').value = '';
+            calculateTokens();
         }
     } catch (error) {
         showToast(`Payment error: ${error.message}`, 'error');
