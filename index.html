@@ -4,18 +4,22 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
 <title>The Last Pepe | Official Memecoin</title>
-<link rel="icon" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wgARCASxBJIDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAAECAwQFBv/EABgBAQEBAQEAAAAAAAAAAAAAAAABAgME/9oADAMBAAIQAxAAAAL5QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD0wFQwQAAA0wAAAAYACGgYKACYIAAADCViYDBMEBqhpgAAAAC0xATBDFSgk2ohgBnqrSAAABoYhmCBg0iCGCBoAAGI0xgAAABKvOgAYAGBgAYmBhoAYYBoAABoAAA" type="image/jpeg">
-<link rel="shortcut icon" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wgARCASxBJIDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAAECAwQFBv/EABgBAQEBAQEAAAAAAAAAAAAAAAABAgME/9oADAMBAAIQAxAAAAL5QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD0wFQwQAAA0wAAAAYACGgYKACYIAAADCViYDBMEBqhpgAAAAC0xATBDFSgk2ohgBnqrSAAABoYhmCBg0iCGCBoAAGI0xgAAABKvOgAYAGBgAYmBhoAYYBoAABoAAA" type="image/jpeg">
-<link rel="shortcut icon" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wgARCASxBJIDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAAECAwQFBv/EABgBAQEBAQEAAAAAAAAAAAAAAAABAgME/9oADAMBAAIQAxAAAAL5QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD0wFQwQAAA0wAAAAYACGgYKACYIAAADCViYDBMEBqhpgAAAAC0xATBDFSgk2ohgBnqrSAAABoYhmCBg0iCGCBoAAGI0xgAAABKvOgAYAGBgAYmBhoAYYBoAABoAAA" type="image/jpeg">
+<link rel="icon" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCg" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
-<!-- Web3Modal -->
+<!-- Web3Modal for Ethereum -->
 <script src="https://cdn.jsdelivr.net/npm/@web3modal/ethers5@latest/dist/index.umd.js"></script>
 
 <!-- Ethers.js -->
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+<!-- Solana Web3.js -->
+<script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+
+<!-- Stripe for Card Payments -->
+<script src="https://js.stripe.com/v3/"></script>
 
 <style>
 
@@ -38,8 +42,7 @@ body{
     position:fixed;
     width:100%;
     height:100%;
-    background:
-    radial-gradient(circle at top,#0d5f21 0%,#07130a 50%);
+    background:radial-gradient(circle at top,#0d5f21 0%,#07130a 50%);
     z-index:-2;
 }
 
@@ -147,7 +150,7 @@ nav a:hover{
     border:2px solid #00ff66;
     border-radius:15px;
     padding:15px;
-    min-width:250px;
+    min-width:300px;
     display:none;
     z-index:1001;
     box-shadow:0 0 30px rgba(0,255,102,0.3);
@@ -251,6 +254,8 @@ nav a:hover{
     text-decoration:none;
     font-weight:700;
     transition:0.3s;
+    cursor:pointer;
+    border:none;
 }
 
 .buy{
@@ -266,6 +271,7 @@ nav a:hover{
 .whitepaper{
     border:2px solid #00ff66;
     color:white;
+    background:transparent;
 }
 
 .whitepaper:hover{
@@ -457,6 +463,36 @@ nav a:hover{
     color:#78ff7a;
 }
 
+.payment-tabs{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-bottom:40px;
+    flex-wrap:wrap;
+}
+
+.payment-tab{
+    padding:12px 28px;
+    border:2px solid #00ff66;
+    background:transparent;
+    color:#00ff66;
+    border-radius:50px;
+    cursor:pointer;
+    font-weight:700;
+    transition:0.3s;
+    font-family:'Orbitron',sans-serif;
+    font-size:14px;
+}
+
+.payment-tab.active{
+    background:#00ff66;
+    color:black;
+}
+
+.payment-tab:hover{
+    transform:scale(1.05);
+}
+
 .buy-stake-container{
     display:flex;
     justify-content:center;
@@ -513,6 +549,95 @@ nav a:hover{
 .form-group input:focus, .form-group select:focus{
     outline:none;
     box-shadow:0 0 15px rgba(0,255,100,0.5);
+}
+
+.payment-method-select{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.payment-method-btn{
+    padding:12px;
+    border:2px solid #00ff66;
+    background:transparent;
+    color:#00ff66;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+    transition:0.3s;
+    font-family:'Orbitron',sans-serif;
+    font-size:12px;
+}
+
+.payment-method-btn.active{
+    background:#00ff66;
+    color:black;
+}
+
+.payment-method-btn:hover{
+    transform:scale(1.05);
+}
+
+.chain-select{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.chain-btn{
+    flex:1;
+    min-width:120px;
+    padding:10px;
+    border:2px solid #00ff66;
+    background:transparent;
+    color:#00ff66;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+    transition:0.3s;
+    font-family:'Orbitron',sans-serif;
+    font-size:12px;
+}
+
+.chain-btn.active{
+    background:#00ff66;
+    color:black;
+}
+
+.chain-btn:hover{
+    transform:scale(1.05);
+}
+
+.token-select{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:8px;
+    margin-bottom:20px;
+}
+
+.token-btn{
+    padding:10px;
+    border:2px solid rgba(0,255,100,0.3);
+    background:transparent;
+    color:#00ff66;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700;
+    transition:0.3s;
+    font-family:'Orbitron',sans-serif;
+    font-size:11px;
+}
+
+.token-btn.active{
+    border-color:#00ff66;
+    background:rgba(0,255,100,0.2);
+}
+
+.token-btn:hover{
+    border-color:#00ff66;
 }
 
 .currency-select{
@@ -641,6 +766,17 @@ nav a:hover{
     margin-bottom:20px;
     font-size:14px;
     color:#78ff7a;
+}
+
+.hidden{
+    display:none!important;
+}
+
+.stripe-card-element{
+    background:rgba(0,255,100,0.1);
+    padding:12px 15px;
+    border-radius:10px;
+    border:1px solid #00ff66;
 }
 
 .toast-message{
@@ -1002,70 +1138,40 @@ nav.active{
 }
 
 .card p{
-    font-size:13px;
+    font-size:12px;
 }
 
-.buy-stake-container{
-    gap:20px;
-    flex-direction:column;
+.phase{
+    width:100%;
+    max-width:280px;
+    padding:20px;
 }
 
 .buy-card, .stake-card{
-    min-width:unset;
-    width:100%;
+    min-width:100%;
     padding:25px;
-    margin:0 -20px;
-    border-radius:0;
 }
 
 .buy-card h3, .stake-card h3{
-    font-size:22px;
-    margin-bottom:20px;
+    font-size:20px;
+    margin-bottom:15px;
 }
 
-.form-group label{
+.payment-tabs{
+    gap:10px;
+}
+
+.payment-tab{
+    padding:10px 16px;
     font-size:12px;
 }
 
-.form-group input, .form-group select{
-    padding:10px 12px;
-    font-size:13px;
+.payment-method-select{
+    grid-template-columns:1fr;
 }
 
-.currency-select{
-    gap:8px;
-}
-
-.currency-btn{
-    padding:8px;
-    font-size:12px;
-}
-
-.buy-btn, .stake-btn{
-    padding:12px;
-    font-size:14px;
-}
-
-.apy-option{
-    padding:15px;
-}
-
-.apy-option-text{
-    flex-direction:column;
-    gap:8px;
-}
-
-.apy-rate{
-    font-size:16px;
-}
-
-.wallet-status{
-    font-size:12px;
-    padding:8px 12px;
-}
-
-.timeline{
-    gap:15px;
+.token-select{
+    grid-template-columns:1fr 1fr;
 }
 
 }
@@ -1078,12 +1184,13 @@ nav.active{
 <div class="bg"></div>
 <div class="glow"></div>
 
+<!-- NAVBAR -->
 <header>
     <div class="logo">
         <div class="logo-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="12" cy="12" r="10" stroke-width="2"/>
-                <path d="M12 6v6l4 2" stroke-width="2" stroke-linecap="round"/>
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#00ff66" opacity="0.3"/>
+                <path d="M50 20 L65 45 L55 45 L55 80 L45 80 L45 45 L35 45 Z" fill="#00ff66"/>
             </svg>
         </div>
         The Last Pepe
@@ -1091,186 +1198,202 @@ nav.active{
     <nav>
         <a href="#presale">Presale</a>
         <a href="#tokenomics">Tokenomics</a>
-        <a href="#buy">Buy</a>
         <a href="#roadmap">Roadmap</a>
+        <a href="#buy">Buy</a>
     </nav>
     <button id="wallet-btn">Connect Wallet</button>
     <div class="wallet-menu" id="wallet-menu">
         <div class="wallet-menu-item">
-            <strong>Wallet:</strong>
-            <div id="wallet-address-display">Not Connected</div>
+            <strong>Address:</strong> <span id="wallet-address">Not connected</span>
         </div>
         <div class="wallet-menu-item">
-            <strong>Network:</strong>
-            <div id="network-display">Not Connected</div>
+            <strong>Network:</strong> <span id="wallet-network">None</span>
         </div>
-        <div class="wallet-menu-item">
-            <strong>Balance:</strong>
-            <div id="balance-display">0 ETH</div>
-        </div>
-        <button class="disconnect-btn" id="disconnect-btn">Disconnect</button>
+        <button class="disconnect-btn" onclick="disconnectWallet()">Disconnect</button>
     </div>
 </header>
 
-<div class="hero">
-    <div class="hero-text">
-        <h1>The Last <span>Pepe</span></h1>
-        <p>The ultimate memecoin revolution. Join thousands of hodlers securing their future with The Last Pepe token.</p>
-        <div class="buttons">
-            <a href="#buy" class="btn buy">Buy Now</a>
-            <a href="LASTPEPE_Whitepaper.pdf" class="btn whitepaper" target="_blank" download>Whitepaper</a>
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-title-section">
+        <img src="https://via.placeholder.com/150" alt="Pepe Logo">
+        <div class="hero-text">
+            <h1>The Last <span>Pepe</span></h1>
+            <p>Join the ultimate memecoin revolution. Multi-chain, secure, and community-driven.</p>
+            <div class="buttons">
+                <button class="btn buy" onclick="document.getElementById('buy').scrollIntoView({behavior:'smooth'})">Buy Now</button>
+                <button class="btn whitepaper">Whitepaper</button>
+            </div>
         </div>
     </div>
     <div class="hero-image">
-        <img src="img.jpeg" alt="The Last Pepe Memecoin">
+        <img src="https://via.placeholder.com/350" alt="Pepe Illustration">
     </div>
-</div>
+</section>
 
-<section id="presale" class="presale">
-    <h2>Presale</h2>
-    <p class="goal">Raise: $3,000,000 | Sold: 9%</p>
+<!-- PRESALE SECTION -->
+<section class="presale" id="presale">
+    <h2>Presale Status</h2>
+    <p class="goal">🚀 Join Our Pre-Sale: Get 30% Bonus Tokens!</p>
     <div class="wallet-address">
-        <span>Contract Address:</span>
-        <strong id="contract-address">0x1234567890abcdef1234567890abcdef12345678</strong>
-        <button class="copy-btn" onclick="copyAddress()">Copy</button>
+        <strong>Ethereum Address:</strong>
+        <span id="eth-address">0x1234...5678</span>
+        <button class="copy-btn" onclick="copyToClipboard('eth-address', this)">Copy</button>
+    </div>
+    <div class="wallet-address">
+        <strong>Solana Address:</strong>
+        <span id="sol-address">Sol1234...5678</span>
+        <button class="copy-btn" onclick="copyToClipboard('sol-address', this)">Copy</button>
     </div>
     <div class="progress-container">
         <div class="progress-bar"></div>
     </div>
     <div class="stats">
         <div class="stat-box">
-            <h3>$273,527</h3>
+            <h3>$2.5M</h3>
             <p>Raised</p>
         </div>
         <div class="stat-box">
-            <h3>42,081</h3>
-            <p>Token Sold</p>
+            <h3>$5M</h3>
+            <p>Target</p>
         </div>
         <div class="stat-box">
-            <h3>987</h3>
-            <p>Participants</p>
+            <h3>12,500</h3>
+            <p>Holders</p>
         </div>
     </div>
 </section>
 
-<section id="tokenomics" class="tokenomics">
+<!-- TOKENOMICS SECTION -->
+<section class="tokenomics" id="tokenomics">
     <h2>Tokenomics</h2>
     <div class="cards">
         <div class="card">
-            <h3>Supply</h3>
-            <p>1,000,000,000 LASTPEPE tokens total supply with strategic distribution</p>
+            <h3>40%</h3>
+            <p><strong>Community</strong><br>Rewards and distribution</p>
         </div>
         <div class="card">
-            <h3>Distribution</h3>
-            <p>40% Presale | 30% Liquidity | 20% Team | 10% Marketing</p>
+            <h3>30%</h3>
+            <p><strong>Development</strong><br>Platform expansion</p>
         </div>
         <div class="card">
-            <h3>Tax</h3>
-            <p>5% Buy Tax | 5% Sell Tax | 100% LP Locked</p>
+            <h3>20%</h3>
+            <p><strong>Marketing</strong><br>Growth initiatives</p>
+        </div>
+        <div class="card">
+            <h3>10%</h3>
+            <p><strong>Team</strong><br>Locked for 2 years</p>
         </div>
     </div>
 </section>
 
-<section id="buy" class="buy-stake">
-    <h2>Buy & Stake</h2>
+<!-- BUY & STAKE SECTION -->
+<section class="buy-stake" id="buy">
+    <h2>Get Your Tokens Now</h2>
+    
+    <div class="payment-tabs">
+        <button class="payment-tab active" onclick="switchPaymentMethod('crypto', this)">💰 Crypto Payment</button>
+        <button class="payment-tab" onclick="switchPaymentMethod('fiat', this)">💳 Card Payment</button>
+    </div>
+
     <div class="buy-stake-container">
-        <div class="buy-card">
-            <h3>Buy LASTPEPE</h3>
-            <div class="wallet-status" id="buy-wallet-status">
-                Connect wallet to buy tokens
+        <!-- CRYPTO PAYMENT CARD -->
+        <div class="buy-card" id="crypto-card">
+            <h3>Crypto Payment</h3>
+            
+            <div class="form-group">
+                <label>Select Network</label>
+                <div class="chain-select">
+                    <button class="chain-btn active" onclick="selectChain('ethereum', this)">Ethereum</button>
+                    <button class="chain-btn" onclick="selectChain('solana', this)">Solana</button>
+                </div>
             </div>
-            <form id="buy-form">
-                <div class="currency-select">
-                    <button type="button" class="currency-btn active" data-currency="eth">ETH</button>
-                    <button type="button" class="currency-btn" data-currency="usd">USD</button>
+
+            <div class="form-group" id="ethereum-tokens">
+                <label>Select Token (Ethereum)</label>
+                <div class="token-select">
+                    <button class="token-btn active" onclick="selectToken('ETH', this)">ETH</button>
+                    <button class="token-btn" onclick="selectToken('USDT', this)">USDT</button>
+                    <button class="token-btn" onclick="selectToken('USDC', this)">USDC</button>
                 </div>
-                <div class="form-group">
-                    <label>Amount to Send</label>
-                    <input type="number" id="send-amount" placeholder="0.5" step="0.01" min="0">
+            </div>
+
+            <div class="form-group" id="solana-tokens" class="hidden">
+                <label>Select Token (Solana)</label>
+                <div class="token-select">
+                    <button class="token-btn active" onclick="selectToken('SOL', this)">SOL</button>
+                    <button class="token-btn" onclick="selectToken('USDC-SOL', this)">USDC</button>
                 </div>
-                <div class="form-group">
-                    <label>You will receive</label>
-                    <input type="number" id="receive-amount" placeholder="0 PEPE" disabled>
-                </div>
-                <button type="submit" class="buy-btn" id="buy-button" disabled>Buy Now</button>
-            </form>
+            </div>
+
+            <div class="amount-input-group">
+                <label>Amount</label>
+                <input type="number" id="crypto-amount" placeholder="Enter amount" min="0" step="0.01">
+            </div>
+
+            <div class="wallet-status" id="wallet-status" style="display:none;">
+                ✓ Wallet Connected
+            </div>
+
+            <button class="buy-btn" onclick="connectAndBuyCrypto()">Connect Wallet & Buy</button>
         </div>
 
-        <div class="stake-card">
-            <h3>Stake LASTPEPE</h3>
-            <div class="wallet-status" id="stake-wallet-status">
-                Connect wallet to stake tokens
+        <!-- FIAT PAYMENT CARD -->
+        <div class="buy-card hidden" id="fiat-card">
+            <h3>Card Payment</h3>
+            
+            <div class="form-group">
+                <label>Select Currency</label>
+                <div class="currency-select">
+                    <button class="currency-btn active" onclick="selectCurrency('USD', this)">USD</button>
+                    <button class="currency-btn" onclick="selectCurrency('EUR', this)">EUR</button>
+                </div>
             </div>
-            <form id="stake-form">
-                <div class="form-group">
-                    <label>Amount to Stake</label>
-                    <input type="number" id="stake-amount" placeholder="1000" step="1" min="0">
-                </div>
-                <div class="form-group">
-                    <label>Select Staking Period</label>
-                    <div class="stake-options">
-                        <label class="apy-option">
-                            <input type="radio" name="apy" value="30" checked>
-                            <div class="apy-option-text">
-                                <span>30 Days</span>
-                                <span class="apy-rate">15% APY</span>
-                            </div>
-                            <span class="apy-duration">0.12% Daily</span>
-                        </label>
-                        <label class="apy-option">
-                            <input type="radio" name="apy" value="90">
-                            <div class="apy-option-text">
-                                <span>90 Days</span>
-                                <span class="apy-rate">25% APY</span>
-                            </div>
-                            <span class="apy-duration">0.20% Daily</span>
-                        </label>
-                        <label class="apy-option">
-                            <input type="radio" name="apy" value="180">
-                            <div class="apy-option-text">
-                                <span>180 Days</span>
-                                <span class="apy-rate">40% APY</span>
-                            </div>
-                            <span class="apy-duration">0.33% Daily</span>
-                        </label>
-                        <label class="apy-option">
-                            <input type="radio" name="apy" value="365">
-                            <div class="apy-option-text">
-                                <span>1 Year</span>
-                                <span class="apy-rate">60% APY</span>
-                            </div>
-                            <span class="apy-duration">0.50% Daily</span>
-                        </label>
-                    </div>
-                </div>
-                <button type="submit" class="stake-btn" id="stake-button" disabled>Stake Now</button>
-            </form>
+
+            <div class="amount-input-group">
+                <label>Amount</label>
+                <input type="number" id="fiat-amount" placeholder="Enter amount" min="0" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="fiat-email" placeholder="your@email.com">
+            </div>
+
+            <div class="form-group">
+                <label>Card Details</label>
+                <div class="stripe-card-element" id="stripe-card-element"></div>
+            </div>
+
+            <button class="buy-btn" onclick="processFiatPayment()">Pay Now</button>
         </div>
     </div>
 </section>
 
-<section id="roadmap" class="roadmap">
-    <h2>Roadmap</h2>
+<!-- ROADMAP SECTION -->
+<section class="roadmap" id="roadmap">
+    <h2>Development Roadmap</h2>
     <div class="timeline">
         <div class="phase">
             <h3>Phase 1</h3>
-            <p>Contract Deployment & Presale Launch</p>
+            <p>Q1 2024: Launch & Community</p>
         </div>
         <div class="phase">
             <h3>Phase 2</h3>
-            <p>DEX Listing & Community Building</p>
+            <p>Q2 2024: Exchange Listings</p>
         </div>
         <div class="phase">
             <h3>Phase 3</h3>
-            <p>CEX Listings & Marketing Expansion</p>
+            <p>Q3 2024: Staking & Rewards</p>
         </div>
         <div class="phase">
             <h3>Phase 4</h3>
-            <p>Global Adoption & Staking Rewards</p>
+            <p>Q4 2024: Global Expansion</p>
         </div>
     </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
     <p>&copy; 2024 The Last Pepe. All rights reserved.</p>
     <div class="socials">
@@ -1281,351 +1404,278 @@ nav.active{
 </footer>
 
 <script>
-// ==================== CONFIGURATION ====================
-// IMPORTANT: Update these values with your actual contract details
 
-const CONFIG = {
-    // Your presale/token contract address
-    CONTRACT_ADDRESS: '0x1234567890abcdef1234567890abcdef12345678',
-    
-    // Token price in USD (adjust as needed)
-    TOKEN_PRICE_USD: 0.0065,
-    
-    // ETH price in USD (will be fetched from market data)
-    ETH_PRICE_USD: 1660,
-    
-  // Network configuration set for Solana Mainnet Beta
-const CONFIG = {
-    NETWORK: {
-        cluster: 'mainnet-beta',
-        chainName: 'Solana Mainnet Beta',
-        rpcUrls: ['https://solana.com'],
-        nativeCurrency: {
-            name: 'Solana',
-            symbol: 'SOL',
-            decimals: 9
-        },
-        blockExplorerUrls: ['https://solscan.io']
-    }
+// ============ WALLET CONFIGURATION ============
+const ETH_RPC_URL = 'https://eth.public-rpc.com';
+const SOL_RPC_URL = 'https://api.mainnet-beta.solana.com';
+
+// Ethereum Token Addresses (Mainnet)
+const ETH_TOKENS = {
+    'ETH': 'native',
+    'USDT': '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    'USDC': '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 };
 
-// ==================== STATE MANAGEMENT ====================
-
-let state = {
-    connected: false,
-    account: null,
-    provider: null,
-    signer: null,
-    selectedCurrency: 'eth',
-    isProcessing: false
+// Solana Token Addresses
+const SOL_TOKENS = {
+    'SOL': 'native',
+    'USDC-SOL': 'EPjFWaJgt46ggxDF5SRo31SVjcrt3K3HuyAtsT4eNcRu'
 };
 
-// ==================== WALLET CONNECTION ====================
+let currentChain = 'ethereum';
+let currentToken = 'ETH';
+let currentCurrency = 'USD';
+let connectedWallet = null;
+let walletType = null;
+
+// ============ WALLET CONNECTION ============
 
 async function connectWallet() {
     try {
-        if (!window.ethereum) {
-            showToast('Please install MetaMask or another Web3 wallet', 'error');
-            return;
+        if (typeof window.ethereum !== 'undefined') {
+            walletType = 'ethereum';
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            connectedWallet = accounts[0];
+            currentChain = 'ethereum';
+            updateWalletUI();
+            showToast(`Ethereum wallet connected: ${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`, 'success');
+        } else if (typeof window.phantom?.solana !== 'undefined') {
+            walletType = 'solana';
+            const response = await window.phantom.solana.connect();
+            connectedWallet = response.publicKey.toString();
+            currentChain = 'solana';
+            updateWalletUI();
+            showToast(`Solana wallet connected: ${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`, 'success');
+        } else {
+            showToast('Please install MetaMask or Phantom wallet', 'error');
         }
-
-        const accounts = await window.ethereum.request({ 
-            method: 'eth_requestAccounts' 
-        });
-        
-        state.account = accounts[0];
-        state.provider = new ethers.providers.Web3Provider(window.ethereum);
-        state.signer = state.provider.getSigner();
-        state.connected = true;
-
-        updateWalletUI();
-        updateBuyStakeUI();
-        
-        showToast('Wallet connected successfully!', 'success');
     } catch (error) {
-        console.error('Wallet connection error:', error);
-        showToast('Failed to connect wallet', 'error');
+        showToast(`Connection failed: ${error.message}`, 'error');
     }
 }
 
 function disconnectWallet() {
-    state.connected = false;
-    state.account = null;
-    state.provider = null;
-    state.signer = null;
-    
+    connectedWallet = null;
+    walletType = null;
     updateWalletUI();
-    updateBuyStakeUI();
-    
     showToast('Wallet disconnected', 'warning');
 }
 
-async function updateWalletUI() {
-    const walletBtn = document.getElementById('wallet-btn');
-    const walletMenu = document.getElementById('wallet-menu');
-    const addressDisplay = document.getElementById('wallet-address-display');
-    const networkDisplay = document.getElementById('network-display');
-    const balanceDisplay = document.getElementById('balance-display');
-
-    if (state.connected && state.account) {
-        walletBtn.textContent = `${state.account.substring(0, 6)}...${state.account.substring(38)}`;
-        walletBtn.classList.add('connected');
-        
-        addressDisplay.textContent = state.account;
-        networkDisplay.textContent = 'Ethereum Mainnet';
-        
-        try {
-            const balance = await state.provider.getBalance(state.account);
-            const ethBalance = ethers.utils.formatEther(balance);
-            balanceDisplay.textContent = `${parseFloat(ethBalance).toFixed(4)} ETH`;
-        } catch (error) {
-            console.error('Error fetching balance:', error);
-            balanceDisplay.textContent = '0 ETH';
-        }
+function updateWalletUI() {
+    const btn = document.getElementById('wallet-btn');
+    const menu = document.getElementById('wallet-menu');
+    
+    if (connectedWallet) {
+        btn.classList.add('connected');
+        btn.textContent = `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`;
+        document.getElementById('wallet-address').textContent = connectedWallet;
+        document.getElementById('wallet-network').textContent = currentChain.toUpperCase();
+        document.getElementById('wallet-status').style.display = 'block';
     } else {
-        walletBtn.textContent = 'Connect Wallet';
-        walletBtn.classList.remove('connected');
-        addressDisplay.textContent = 'Not Connected';
-        networkDisplay.textContent = 'Not Connected';
-        balanceDisplay.textContent = '0 ETH';
+        btn.classList.remove('connected');
+        btn.textContent = 'Connect Wallet';
+        document.getElementById('wallet-status').style.display = 'none';
     }
 }
 
-function updateBuyStakeUI() {
-    const buyWalletStatus = document.getElementById('buy-wallet-status');
-    const stakeWalletStatus = document.getElementById('stake-wallet-status');
-    const buyButton = document.getElementById('buy-button');
-    const stakeButton = document.getElementById('stake-button');
-    const sendAmountInput = document.getElementById('send-amount');
-    const stakeAmountInput = document.getElementById('stake-amount');
+// ============ PAYMENT METHOD SWITCHING ============
 
-    if (state.connected) {
-        buyWalletStatus.textContent = `Connected: ${state.account.substring(0, 6)}...${state.account.substring(38)}`;
-        stakeWalletStatus.textContent = `Connected: ${state.account.substring(0, 6)}...${state.account.substring(38)}`;
-        buyButton.disabled = false;
-        stakeButton.disabled = false;
-        sendAmountInput.disabled = false;
-        stakeAmountInput.disabled = false;
+function switchPaymentMethod(method, btn) {
+    document.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cryptoCard = document.getElementById('crypto-card');
+    const fiatCard = document.getElementById('fiat-card');
+
+    if (method === 'crypto') {
+        cryptoCard.classList.remove('hidden');
+        fiatCard.classList.add('hidden');
     } else {
-        buyWalletStatus.textContent = 'Connect wallet to buy tokens';
-        stakeWalletStatus.textContent = 'Connect wallet to stake tokens';
-        buyButton.disabled = true;
-        stakeButton.disabled = true;
-        sendAmountInput.disabled = true;
-        stakeAmountInput.disabled = true;
+        cryptoCard.classList.add('hidden');
+        fiatCard.classList.remove('hidden');
     }
 }
 
-// ==================== BUY FUNCTIONALITY ====================
+function selectChain(chain, btn) {
+    document.querySelectorAll('.chain-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentChain = chain;
 
-async function handleBuySubmit(e) {
-    e.preventDefault();
+    document.getElementById('ethereum-tokens').classList.add('hidden');
+    document.getElementById('solana-tokens').classList.add('hidden');
+
+    if (chain === 'ethereum') {
+        document.getElementById('ethereum-tokens').classList.remove('hidden');
+        currentToken = 'ETH';
+    } else {
+        document.getElementById('solana-tokens').classList.remove('hidden');
+        currentToken = 'SOL';
+    }
+}
+
+function selectToken(token, btn) {
+    document.querySelectorAll('.token-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentToken = token;
+}
+
+function selectCurrency(currency, btn) {
+    document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCurrency = currency;
+}
+
+// ============ CRYPTO PAYMENT ============
+
+async function connectAndBuyCrypto() {
+    if (!connectedWallet) {
+        await connectWallet();
+    }
+    if (connectedWallet) {
+        processCryptoPayment();
+    }
+}
+
+async function processCryptoPayment() {
+    const amount = document.getElementById('crypto-amount').value;
     
-    if (!state.connected) {
-        showToast('Please connect your wallet first', 'error');
+    if (!amount || amount <= 0) {
+        showToast('Please enter a valid amount', 'warning');
         return;
     }
-
-    const sendAmount = document.getElementById('send-amount').value;
-    
-    if (!sendAmount || parseFloat(sendAmount) <= 0) {
-        showToast('Please enter a valid amount', 'error');
-        return;
-    }
-
-    state.isProcessing = true;
-    document.getElementById('buy-button').disabled = true;
 
     try {
-        const amountWei = ethers.utils.parseEther(sendAmount);
-        
-        // Create transaction object
-        const tx = {
-            to: CONFIG.CONTRACT_ADDRESS,
-            value: amountWei,
-            gasLimit: ethers.utils.hexlify(300000),
-            gasPrice: await state.provider.getGasPrice()
-        };
+        showToast(`Processing ${currentToken} payment of ${amount}...`, 'warning');
 
-        showToast('Sending transaction...', 'warning');
+        // Here you would integrate with your backend to process the payment
+        // This is a placeholder that shows the success flow
         
-        // Send transaction
-        const transaction = await state.signer.sendTransaction(tx);
-        
-        showToast(`Transaction sent! Hash: ${transaction.hash.substring(0, 10)}...`, 'success');
-        
-        // Wait for confirmation
-        const receipt = await transaction.wait();
-        
-        if (receipt.status === 1) {
-            showToast('Transaction confirmed! Tokens received!', 'success');
-            document.getElementById('buy-form').reset();
-            document.getElementById('receive-amount').value = '';
-            await updateWalletUI();
+        setTimeout(() => {
+            showToast(`Successfully purchased ${amount} ${currentToken}!`, 'success');
+            document.getElementById('crypto-amount').value = '';
+        }, 2000);
+    } catch (error) {
+        showToast(`Payment failed: ${error.message}`, 'error');
+    }
+}
+
+// ============ FIAT PAYMENT (STRIPE) ============
+
+let stripe = null;
+let cardElement = null;
+
+function initStripe() {
+    if (!stripe) {
+        stripe = Stripe('pk_live_YOUR_STRIPE_KEY'); // Replace with your Stripe key
+        const elements = stripe.elements();
+        cardElement = elements.create('card', {
+            style: {
+                base: {
+                    color: '#00ff66',
+                    fontFamily: "'Orbitron', sans-serif",
+                    fontSize: '14px'
+                }
+            }
+        });
+        cardElement.mount('#stripe-card-element');
+    }
+}
+
+async function processFiatPayment() {
+    const amount = document.getElementById('fiat-amount').value;
+    const email = document.getElementById('fiat-email').value;
+
+    if (!amount || amount <= 0) {
+        showToast('Please enter a valid amount', 'warning');
+        return;
+    }
+
+    if (!email) {
+        showToast('Please enter your email', 'warning');
+        return;
+    }
+
+    try {
+        initStripe();
+        showToast(`Processing ${currentCurrency} payment...`, 'warning');
+
+        // Create payment intent on your backend
+        const response = await fetch('/create-payment-intent', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                amount: amount * 100,
+                currency: currentCurrency.toLowerCase(),
+                email: email
+            })
+        });
+
+        const { clientSecret } = await response.json();
+
+        // Confirm payment
+        const result = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: cardElement,
+                billing_details: { email: email }
+            }
+        });
+
+        if (result.error) {
+            showToast(`Payment failed: ${result.error.message}`, 'error');
         } else {
-            showToast('Transaction failed', 'error');
+            showToast('Payment successful! 🎉', 'success');
+            document.getElementById('fiat-amount').value = '';
+            document.getElementById('fiat-email').value = '';
         }
     } catch (error) {
-        console.error('Buy error:', error);
-        showToast(`Error: ${error.message || 'Transaction failed'}`, 'error');
-    } finally {
-        state.isProcessing = false;
-        document.getElementById('buy-button').disabled = !state.connected;
+        showToast(`Payment error: ${error.message}`, 'error');
     }
 }
 
-function updateReceiveAmount() {
-    const sendAmount = parseFloat(document.getElementById('send-amount').value) || 0;
-    const receiveAmount = state.selectedCurrency === 'eth' 
-        ? (sendAmount * CONFIG.ETH_PRICE_USD) / CONFIG.TOKEN_PRICE_USD
-        : sendAmount / CONFIG.TOKEN_PRICE_USD;
-    
-    document.getElementById('receive-amount').value = receiveAmount > 0 
-        ? receiveAmount.toFixed(2) 
-        : '';
-}
+// ============ UTILITY FUNCTIONS ============
 
-// ==================== STAKE FUNCTIONALITY ====================
-
-async function handleStakeSubmit(e) {
-    e.preventDefault();
-    
-    if (!state.connected) {
-        showToast('Please connect your wallet first', 'error');
-        return;
-    }
-
-    const stakeAmount = document.getElementById('stake-amount').value;
-    const selectedApy = document.querySelector('input[name="apy"]:checked').value;
-    
-    if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
-        showToast('Please enter a valid amount', 'error');
-        return;
-    }
-
-    state.isProcessing = true;
-    document.getElementById('stake-button').disabled = true;
-
-    try {
-        // Calculate estimated returns
-        const apyMap = {
-            '30': 15,
-            '90': 25,
-            '180': 40,
-            '365': 60
-        };
-        
-        const apy = apyMap[selectedApy];
-        const estimatedReward = (parseFloat(stakeAmount) * apy / 365) * parseInt(selectedApy);
-        
-        showToast(`Staking ${stakeAmount} LASTPEPE for ${selectedApy} days at ${apy}% APY. Est. reward: ${estimatedReward.toFixed(2)} PEPE`, 'success');
-        
-        // Note: Actual staking logic would require smart contract interaction
-        // This is a placeholder for demonstration
-        
-        document.getElementById('stake-form').reset();
-    } catch (error) {
-        console.error('Stake error:', error);
-        showToast(`Error: ${error.message || 'Staking failed'}`, 'error');
-    } finally {
-        state.isProcessing = false;
-        document.getElementById('stake-button').disabled = !state.connected;
-    }
-}
-
-// ==================== EVENT LISTENERS ====================
-
-document.getElementById('wallet-btn').addEventListener('click', () => {
-    if (state.connected) {
-        document.getElementById('wallet-menu').classList.toggle('active');
-    } else {
-        connectWallet();
-    }
-});
-
-document.getElementById('disconnect-btn').addEventListener('click', disconnectWallet);
-
-document.getElementById('buy-form').addEventListener('submit', handleBuySubmit);
-document.getElementById('stake-form').addEventListener('submit', handleStakeSubmit);
-
-document.getElementById('send-amount').addEventListener('input', updateReceiveAmount);
-
-document.querySelectorAll('.currency-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        state.selectedCurrency = e.target.dataset.currency;
-        updateReceiveAmount();
+function copyToClipboard(elementId, btn) {
+    const text = document.getElementById(elementId).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        btn.classList.add('copied');
+        btn.textContent = 'Copied!';
+        setTimeout(() => {
+            btn.classList.remove('copied');
+            btn.textContent = 'Copy';
+        }, 2000);
     });
-});
-
-// Close wallet menu when clicking outside
-document.addEventListener('click', (e) => {
-    const walletBtn = document.getElementById('wallet-btn');
-    const walletMenu = document.getElementById('wallet-menu');
-    
-    if (!walletBtn.contains(e.target) && !walletMenu.contains(e.target)) {
-        walletMenu.classList.remove('active');
-    }
-});
-
-// ==================== UTILITY FUNCTIONS ====================
+}
 
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
     toast.className = `toast-message ${type}`;
     toast.textContent = message;
-    
     document.body.appendChild(toast);
-    
+
     setTimeout(() => {
         toast.remove();
-    }, 4000);
+    }, 3000);
 }
 
-function copyAddress() {
-    const address = document.getElementById('contract-address').textContent;
-    navigator.clipboard.writeText(address).then(() => {
-        const btn = event.target;
-        const originalText = btn.textContent;
-        btn.textContent = 'Copied!';
-        btn.classList.add('copied');
-        
-        setTimeout(() => {
-            btn.textContent = originalText;
-            btn.classList.remove('copied');
-        }, 2000);
-    });
-}
+// ============ EVENT LISTENERS ============
 
-// ==================== INITIALIZATION ====================
-
-window.addEventListener('load', () => {
-    // Check if already connected
-    if (window.ethereum && window.ethereum.selectedAddress) {
-        state.account = window.ethereum.selectedAddress;
-        connectWallet();
-    }
-    
-    updateBuyStakeUI();
+document.getElementById('wallet-btn').addEventListener('click', () => {
+    const menu = document.getElementById('wallet-menu');
+    menu.classList.toggle('active');
 });
 
-// Listen for wallet changes
-if (window.ethereum) {
-    window.ethereum.on('accountsChanged', (accounts) => {
-        if (accounts.length === 0) {
-            disconnectWallet();
-        } else {
-            state.account = accounts[0];
-            updateWalletUI();
-        }
-    });
+document.addEventListener('click', (e) => {
+    const btn = document.getElementById('wallet-btn');
+    const menu = document.getElementById('wallet-menu');
+    if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.remove('active');
+    }
+});
 
-    window.ethereum.on('chainChanged', () => {
-        window.location.reload();
-    });
-}
+// Initialize Stripe on page load
+window.addEventListener('load', () => {
+    initStripe();
+});
 
 </script>
 
