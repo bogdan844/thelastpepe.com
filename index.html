@@ -430,66 +430,105 @@
       updateStakeSummary();
     })();
   </script>
-  <script>
-(function () {
-  function ready(fn){ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',fn);} else {fn();} }
+ <script>
+(() => {
+  const WALLET_BTN_ID = "wallet-btn"; // if your button has different id, change here
+  const STATUS_ID = "wallet-status-inline";
 
-  ready(() => {
-    const btn =
-      document.getElementById('wallet-btn') ||
-      document.querySelector('[data-wallet-connect]') ||
-      document.querySelector('.wallet-connect');
+  function log(...a){ console.log("[phantom-fix]", ...a); }
 
-    let statusEl = document.getElementById('wallet-status-inline');
-    if (!statusEl) {
-      statusEl = document.createElement('div');
-      statusEl.id = 'wallet-status-inline';
-      statusEl.style.cssText = 'margin-top:8px;font-size:12px;color:#ffd166;word-break:break-word;';
-      if (btn && btn.parentNode) btn.parentNode.appendChild(statusEl);
+  function ensureStatusEl(btn){
+    let el = document.getElementById(STATUS_ID);
+    if (!el) {
+      el = document.createElement("div");
+      el.id = STATUS_ID;
+      el.style.cssText = "margin-top:8px;font-size:12px;line-height:1.4;word-break:break-word;color:#ffd166;";
+      (btn?.parentElement || document.body).appendChild(el);
     }
+    return el;
+  }
 
-    function setStatus(msg, isErr=false){
-      if(statusEl){
-        statusEl.textContent = msg;
-        statusEl.style.color = isErr ? '#ff6b6b' : '#ffd166';
-      }
-      console.log('[wallet]', msg);
+  function setStatus(msg, isError = false){
+    const btn = document.getElementById(WALLET_BTN_ID);
+    const el = ensureStatusEl(btn);
+    el.style.color = isError ? "#ff6b6b" : "#ffd166";
+    el.textContent = msg;
+    log(msg);
+  }
+
+  function getPhantomProvider(){
+    if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
+    if (window.solana?.isPhantom) return window.solana;
+    return null;
+  }
+
+  async function waitForProvider(ms = 2500){
+    const start = Date.now();
+    while (Date.now() - start < ms) {
+      const p = getPhantomProvider();
+      if (p) return p;
+      await new Promise(r => setTimeout(r, 100));
     }
+    return null;
+  }
 
-    function getProvider() {
-      if (window.phantom && window.phantom.solana && window.phantom.solana.isPhantom) return window.phantom.solana;
-      if (window.solana && window.solana.isPhantom) return window.solana;
-      return null;
-    }
+  function shortKey(k){ return k ? `${k.slice(0,4)}...${k.slice(-4)}` : ""; }
 
-    async function connectPhantom() {
-      const provider = getProvider();
+  async function onConnectClick(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    const btn = ev.currentTarget;
+    btn.disabled = true;
+
+    try {
+      setStatus("Detecting Phantom...");
+      const provider = await waitForProvider(3000);
+
       if (!provider) {
-        setStatus('Phantom not detected. Install/enable extension and refresh.', true);
-        window.open('https://phantom.app/', '_blank');
+        setStatus("Phantom not detected. Enable extension for this site, then refresh.", true);
+        window.open("https://phantom.app/", "_blank");
         return;
       }
 
-      try {
-        setStatus('Opening Phantom...');
-        const resp = await provider.connect({ onlyIfTrusted: false });
-        const key = resp?.publicKey?.toString?.() || provider.publicKey?.toString?.();
-        if (!key) throw new Error('No public key returned');
-        setStatus('Connected: ' + key.slice(0,4) + '...' + key.slice(-4));
-        if (btn) btn.textContent = key.slice(0,4) + '...' + key.slice(-4);
-      } catch (e) {
-        setStatus('Connect failed: ' + (e?.message || String(e)), true);
-      }
-    }
+      // Important: direct user-gesture call
+      setStatus("Opening Phantom popup...");
+      const resp = await provider.connect({ onlyIfTrusted: false });
 
+      const pubkey = resp?.publicKey?.toString?.() || provider.publicKey?.toString?.();
+      if (!pubkey) throw new Error("No public key returned by Phantom.");
+
+      btn.textContent = shortKey(pubkey);
+      btn.setAttribute("data-wallet-connected", "true");
+      setStatus("Connected: " + pubkey);
+    } catch (err) {
+      const msg = err?.message || String(err);
+      setStatus("Connect failed: " + msg, true);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  function arm(){
+    const btn = document.getElementById(WALLET_BTN_ID);
     if (!btn) {
-      setStatus('Wallet button not found (#wallet-btn).', true);
+      setStatus(`Button #${WALLET_BTN_ID} not found.`, true);
       return;
     }
 
-    btn.addEventListener('click', connectPhantom);
-    setStatus('Wallet handler armed. Click Connect Wallet.');
-  });
+    // Remove old handlers by cloning node (nuclear but reliable)
+    const fresh = btn.cloneNode(true);
+    btn.parentNode.replaceChild(fresh, btn);
+
+    fresh.addEventListener("click", onConnectClick, { passive: false });
+    setStatus("Connect handler ready.");
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", arm, { once: true });
+  } else {
+    arm();
+  }
 })();
 </script>
 </body>
