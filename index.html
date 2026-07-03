@@ -1869,7 +1869,318 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+<script>
+(() => {
+  const CONFIG = {
+    RPC_URL: "https://api.mainnet-beta.solana.com",
+    PRESALE_WALLET: "8ZythTksFNm8HKexryS9DceDHcSkkkNbBKHCJAi3HNue",
+    TOKEN_MINT: "4TvNJbBSfgZopxS6QkJRg75exFL4DLt7z4p3rdEf8UCF",
+    TOKEN_DECIMALS: 9,
+    TOKENS_PER_SOL: 100000,
+    MIN_SOL: 0.01
+  };
 
+  const state = {
+    walletConnected: false,
+    walletAddress: "",
+    selectedPayment: "sol",
+    connection: null
+  };
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  function toast(msg, type = "success") {
+    const el = document.createElement("div");
+    el.className = `toast-message ${type}`;
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3200);
+  }
+
+  function short(addr) {
+    return addr ? `${addr.slice(0, 4)}...${addr.slice(-4)}` : "";
+  }
+
+  function parseAmount(v) {
+    return Number(String(v ?? "").replace(/,/g, "").trim());
+  }
+
+  function ensureIds() {
+    const buyInput = $("#buy-amount") || document.querySelector(".buy-card input[type='number'], .buy-card input");
+    if (buyInput && !buyInput.id) buyInput.id = "buy-amount";
+
+    const stakeInput = $("#stake-amount") || document.querySelector(".stake-card input[type='number'], .stake-card input");
+    if (stakeInput && !stakeInput.id) stakeInput.id = "stake-amount";
+  }
+
+  function setWalletUI() {
+    const walletBtn = $("#wallet-btn");
+    const walletStatus = $(".wallet-status");
+
+    if (!walletBtn) return;
+
+    if (state.walletConnected) {
+      walletBtn.classList.add("connected");
+      walletBtn.textContent = `Connected: ${short(state.walletAddress)}`;
+      if (walletStatus) {
+        walletStatus.classList.remove("hidden");
+        walletStatus.textContent = `Wallet connected: ${state.walletAddress}`;
+      }
+    } else {
+      walletBtn.classList.remove("connected");
+      walletBtn.textContent = "Connect Wallet";
+      if (walletStatus) {
+        walletStatus.classList.add("hidden");
+        walletStatus.textContent = "Wallet not connected";
+      }
+    }
+  }
+
+  async function connectWallet() {
+    try {
+      if (!window.solana || !window.solana.isPhantom) {
+        toast("Phantom wallet not found. Install Phantom to buy with SOL.", "error");
+        window.open("https://phantom.app/", "_blank");
+        return false;
+      }
+      const res = await window.solana.connect();
+      state.walletConnected = true;
+      state.walletAddress = res.publicKey.toString();
+      setWalletUI();
+      toast("Wallet connected", "success");
+      return true;
+    } catch (err) {
+      console.error(err);
+      toast("Wallet connection failed", "error");
+      return false;
+    }
+  }
+
+  async function disconnectWallet() {
+    try {
+      if (window.solana?.disconnect) await window.solana.disconnect();
+    } catch {}
+    state.walletConnected = false;
+    state.walletAddress = "";
+    setWalletUI();
+    toast("Wallet disconnected", "warning");
+  }
+
+  function updatePriceCalc() {
+    const input = $("#buy-amount");
+    const box = $(".price-calc");
+    if (!input || !box) return;
+
+    const sol = parseAmount(input.value);
+    if (!Number.isFinite(sol) || sol <= 0) {
+      box.textContent = `Enter SOL amount to preview PEPE output (1 SOL = ${CONFIG.TOKENS_PER_SOL.toLocaleString()} PEPE).`;
+      return;
+    }
+
+    const pepe = sol * CONFIG.TOKENS_PER_SOL;
+    box.textContent = `You will buy ~${pepe.toLocaleString(undefined, { maximumFractionDigits: 4 })} PEPE for ${sol} SOL.`;
+  }
+
+  function saveReceipt(receipt) {
+    const key = "pepe_presale_receipts";
+    const old = JSON.parse(localStorage.getItem(key) || "[]");
+    old.push(receipt);
+    localStorage.setItem(key, JSON.stringify(old));
+  }
+
+  async function sendSolTransaction(fromPubkey, toPubkey, solAmount) {
+    const lamports = Math.round(solAmount * window.solanaWeb3.LAMPORTS_PER_SOL);
+
+    const tx = new window.solanaWeb3.Transaction().add(
+      window.solanaWeb3.SystemProgram.transfer({
+        fromPubkey,
+        toPubkey,
+        lamports
+      })
+    );
+
+    tx.feePayer = fromPubkey;
+    const latest = await state.connection.getLatestBlockhash("finalized");
+    tx.recentBlockhash = latest.blockhash;
+
+    const signed = await window.solana.signTransaction(tx);
+    const sig = await state.connection.sendRawTransaction(signed.serialize(), {
+      skipPreflight: false,
+      preflightCommitment: "confirmed"
+    });
+
+    const conf = await state.connection.confirmTransaction(
+      {
+        signature: sig,
+        blockhash: latest.blockhash,
+        lastValidBlockHeight: latest.lastValidBlockHeight
+      },
+      "confirmed"
+    );
+
+    if (conf.value.err) throw new Error("Transaction failed on-chain");
+    return sig;
+  }
+
+  async function handleBuy(e) {
+    if (e) e.preventDefault();
+
+    const input = $("#buy-amount");
+    const buyBtn = $(".buy-btn");
+    if (!input) return toast("Buy amount field not found", "error");
+
+    const solAmount = parseAmount(input.value);
+
+    if (!Number.isFinite(solAmount) || solAmount <= 0) return toast("Enter a valid SOL amount", "error");
+    if (solAmount < CONFIG.MIN_SOL) return toast(`Minimum buy is ${CONFIG.MIN_SOL} SOL`, "warning");
+
+    if (!state.walletConnected) {
+      const ok = await connectWallet();
+      if (!ok) return;
+    }
+
+    if (state.selectedPayment !== "sol") {
+      return toast("On-chain buy is enabled for SOL only right now.", "warning");
+    }
+
+    if (buyBtn) buyBtn.disabled = true;
+
+    try {
+      const buyer = new window.solanaWeb3.PublicKey(state.walletAddress);
+      const treasury = new window.solanaWeb3.PublicKey(CONFIG.PRESALE_WALLET);
+
+      const signature = await sendSolTransaction(buyer, treasury, solAmount);
+
+      const pepeAmount = solAmount * CONFIG.TOKENS_PER_SOL;
+      const receipt = {
+        time: new Date().toISOString(),
+        buyer: state.walletAddress,
+        presaleWallet: CONFIG.PRESALE_WALLET,
+        tokenMint: CONFIG.TOKEN_MINT,
+        tokenDecimals: CONFIG.TOKEN_DECIMALS,
+        solAmount,
+        pepeAmount,
+        signature,
+        status: "confirmed"
+      };
+      saveReceipt(receipt);
+
+      toast(`Buy confirmed! Tx: ${signature.slice(0, 10)}...`, "success");
+      input.value = "";
+      updatePriceCalc();
+      console.log("Presale receipt:", receipt);
+    } catch (err) {
+      console.error(err);
+      toast(`Buy failed: ${err.message || "unknown error"}`, "error");
+    } finally {
+      if (buyBtn) buyBtn.disabled = false;
+    }
+  }
+
+  function wireWalletControls() {
+    const walletBtn = $("#wallet-btn");
+    const disconnectBtn = $(".disconnect-btn");
+
+    if (walletBtn) {
+      walletBtn.addEventListener("click", async () => {
+        if (!state.walletConnected) await connectWallet();
+        else $(".wallet-menu")?.classList.toggle("active");
+      });
+    }
+
+    if (disconnectBtn) {
+      disconnectBtn.addEventListener("click", () => {
+        $(".wallet-menu")?.classList.remove("active");
+        disconnectWallet();
+      });
+    }
+  }
+
+  function wirePaymentUI() {
+    $$(".payment-method-btn, .payment-tab, .token-btn, .currency-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const parent = btn.parentElement;
+        if (parent) [...parent.children].forEach((x) => x.classList?.remove("active"));
+        btn.classList.add("active");
+
+        const t = (btn.dataset.method || btn.dataset.payment || btn.dataset.value || btn.textContent || "").toLowerCase();
+        if (t.includes("sol")) state.selectedPayment = "sol";
+        else if (t.includes("eth")) state.selectedPayment = "eth";
+        else if (t.includes("bnb")) state.selectedPayment = "bnb";
+        else if (t.includes("usdt")) state.selectedPayment = "usdt";
+        else if (t.includes("usdc")) state.selectedPayment = "usdc";
+        else if (t.includes("card")) state.selectedPayment = "card";
+        else if (t.includes("bank")) state.selectedPayment = "bank";
+
+        updatePriceCalc();
+      });
+    });
+  }
+
+  function wireBuyButtons() {
+    const seen = new Set();
+    [".buy-btn", ".btn.buy", "[data-action='buy']", "#buy-now", "#buy-button"].forEach((sel) => {
+      $$(sel).forEach((btn) => {
+        if (seen.has(btn)) return;
+        seen.add(btn);
+        btn.addEventListener("click", handleBuy);
+      });
+    });
+  }
+
+  function wireCopyButton() {
+    const copyBtn = $(".copy-btn");
+    const walletStrong = $(".wallet-address strong");
+    if (!copyBtn || !walletStrong) return;
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(walletStrong.textContent.trim());
+        copyBtn.classList.add("copied");
+        copyBtn.textContent = "Copied!";
+        setTimeout(() => {
+          copyBtn.classList.remove("copied");
+          copyBtn.textContent = "Copy Address";
+        }, 1200);
+      } catch {
+        toast("Failed to copy address", "error");
+      }
+    });
+  }
+
+  function wireStakePlaceholder() {
+    $(".stake-btn")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      toast("Staking contract integration pending.", "warning");
+    });
+  }
+
+  function initConnection() {
+    if (!window.solanaWeb3) {
+      toast("Solana web3 library not loaded", "error");
+      return false;
+    }
+    state.connection = new window.solanaWeb3.Connection(CONFIG.RPC_URL, "confirmed");
+    return true;
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    ensureIds();
+    if (!initConnection()) return;
+
+    setWalletUI();
+    wireWalletControls();
+    wirePaymentUI();
+    wireBuyButtons();
+    wireCopyButton();
+    wireStakePlaceholder();
+
+    $("#buy-amount")?.addEventListener("input", updatePriceCalc);
+    updatePriceCalc();
+  });
+})();
+</script>
 </body>
     <script>
 (() => {
