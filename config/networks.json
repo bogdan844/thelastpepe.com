@@ -1,0 +1,137 @@
+{
+  "networks": {
+    "ethereum": {
+      "name": "Ethereum Mainnet",
+      "chainId": 1,
+      "rpcUrl": "https://eth.public-rpc.com",
+      "blockExplorer": "https://etherscan.io",
+      "tokens": {
+        "ETH": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "symbol": "ETH",
+          "decimals": 18,
+          "name": "Ethereum"
+        },
+        "USDT": {
+          "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "symbol": "USDT",
+          "decimals": 6,
+          "name": "Tether USD"
+        },
+        "USDC": {
+          "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "symbol": "USDC",
+          "decimals": 6,
+          "name": "USD Coin"
+        }
+      },
+      "presale": {
+        "contractAddress": "0x0000000000000000000000000000000000000000",
+        "treasuryAddress": "0x0000000000000000000000000000000000000000",
+        "pepeTokenAddress": "0x0000000000000000000000000000000000000000"
+      }
+    },
+    "ethereumSepolia": {
+      "name": "Ethereum Sepolia (Testnet)",
+      "chainId": 11155111,
+      "rpcUrl": "https://sepolia.infura.io/v3/YOUR_INFURA_KEY",
+      "blockExplorer": "https://sepolia.etherscan.io",
+      "tokens": {
+        "ETH": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "symbol": "ETH",
+          "decimals": 18,
+          "name": "Ethereum"
+        },
+        "USDT": {
+          "address": "0x7169d38eaf9e7da58dddbdfa00a3ef014bdf63cb",
+          "symbol": "USDT",
+          "decimals": 6,
+          "name": "Tether USD"
+        },
+        "USDC": {
+          "address": "0x6d4dd09982853f08d9966ac3ca4684f16e92341f",
+          "symbol": "USDC",
+          "decimals": 6,
+          "name": "USD Coin"
+        }
+      },
+      "presale": {
+        "contractAddress": "0x0000000000000000000000000000000000000000",
+        "treasuryAddress": "0x0000000000000000000000000000000000000000",
+        "pepeTokenAddress": "0x0000000000000000000000000000000000000000"
+      }
+    },
+    "solana": {
+      "name": "Solana Mainnet",
+      "network": "mainnet-beta",
+      "rpcUrl": "https://api.mainnet-beta.solana.com",
+      "blockExplorer": "https://solscan.io",
+      "tokens": {
+        "SOL": {
+          "symbol": "SOL",
+          "decimals": 9,
+          "name": "Solana"
+        },
+        "USDC": {
+          "mint": "EPjFWaJgt46ggxDF5SRo31SVjcrt3K3HuyAtsT4eNcRu",
+          "symbol": "USDC",
+          "decimals": 6,
+          "name": "USD Coin (Portal)"
+        }
+      },
+      "presale": {
+        "programId": "11111111111111111111111111111111",
+        "presaleConfigAddress": "ProgramDerivedAddress1",
+        "treasuryAddress": "YourSolanaWalletAddress",
+        "pepeMintAddress": "YourPepeMintAddressSolana"
+      }
+    },
+    "solanaDevnet": {
+      "name": "Solana Devnet",
+      "network": "devnet",
+      "rpcUrl": "https://api.devnet.solana.com",
+      "blockExplorer": "https://solscan.io/?cluster=devnet",
+      "tokens": {
+        "SOL": {
+          "symbol": "SOL",
+          "decimals": 9,
+          "name": "Solana"
+        }
+      },
+      "presale": {
+        "programId": "11111111111111111111111111111111",
+        "presaleConfigAddress": "ProgramDerivedAddress1",
+        "treasuryAddress": "YourTestWallet",
+        "pepeMintAddress": "YourTestPepeMint"
+      }
+    }
+  },
+  "presale": {
+    "price": {
+      "usd": 0.001,
+      "description": "Price per PEPE token in USD"
+    },
+    "bonus": {
+      "percentage": 30,
+      "description": "Bonus percentage for early buyers"
+    },
+    "cap": {
+      "tokens": 500000000,
+      "description": "Total PEPE tokens available for presale"
+    },
+    "minimumPurchase": {
+      "usd": 10,
+      "description": "Minimum purchase amount in USD equivalent"
+    }
+  },
+  "stripe": {
+    "publishableKey": "pk_test_YOUR_STRIPE_TEST_KEY",
+    "environment": "test",
+    "supportedCurrencies": ["USD", "EUR"]
+  },
+  "api": {
+    "priceEndpoint": "https://api.coingecko.com/api/v3/simple/price",
+    "cryptoComparePrices": "https://api.cryptocompare.com/data/price"
+  }
+}
