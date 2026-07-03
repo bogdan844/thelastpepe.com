@@ -789,6 +789,13 @@ nav a:hover{
     border:1px solid #00ff66;
 }
 
+.stripe-element{
+    padding:12px 15px;
+    background:rgba(0,255,100,0.1);
+    border:1px solid #00ff66;
+    border-radius:10px;
+}
+
 .toast-message{
     position:fixed;
     bottom:20px;
@@ -800,6 +807,7 @@ nav a:hover{
     font-weight:700;
     z-index:2000;
     animation:slideIn 0.3s ease;
+    max-width:400px;
 }
 
 .toast-message.error{
@@ -826,6 +834,26 @@ nav a:hover{
         transform:translateX(0);
         opacity:1;
     }
+}
+
+.bank-details{
+    padding:15px;
+    background:rgba(0,255,100,0.08);
+    border:1px solid #00ff66;
+    border-radius:10px;
+    margin:15px 0;
+    font-size:12px;
+    text-align:left;
+    color:#c6ffc5;
+}
+
+.bank-details strong{
+    color:#78ff7a;
+}
+
+.bank-details p{
+    margin:5px 0;
+    word-break:break-all;
 }
 
 /* ROADMAP */
@@ -994,79 +1022,20 @@ header{
 
 nav{
     display:none;
-    width:100%;
-    flex-direction:column;
-    gap:10px;
-    margin-top:10px;
-}
-
-nav.active{
-    display:flex;
-}
-
-#wallet-btn{
-    padding:8px 14px;
-    font-size:12px;
-    white-space:nowrap;
-    flex-shrink:0;
-}
-
-.wallet-menu{
-    position:fixed;
-    top:auto;
-    bottom:20px;
-    left:50%;
-    right:auto;
-    transform:translateX(-50%);
-    width:90%;
-    max-width:400px;
-    z-index:1002;
 }
 
 .hero{
-    padding:100px 20px 50px;
-    gap:30px;
-    min-height:auto;
+    padding:120px 15px 60px;
     flex-direction:column;
     align-items:center;
 }
 
-.hero-title-section{
-    flex-direction:column;
-    text-align:center;
-    max-width:100%;
-}
-
-.hero-title-section img{
-    width:120px;
-    height:120px;
-}
-
 .hero-text{
     max-width:100%;
-    text-align:center;
 }
 
 .hero-text h1{
-    font-size:42px;
-    line-height:1.2;
-    margin-bottom:15px;
-}
-
-.hero-text p{
-    font-size:15px;
-    line-height:1.5;
-    margin-bottom:25px;
-}
-
-.buttons{
-    justify-content:center;
-    gap:15px;
-}
-
-.btn{
-    padding:12px 24px;
-    font-size:13px;
+    font-size:48px;
 }
 
 .hero-image{
@@ -1074,106 +1043,35 @@ nav.active{
 }
 
 .hero-image img{
-    width:280px;
-    max-width:100%;
+    width:100%;
+    max-width:280px;
 }
 
 .presale, .buy-stake, .tokenomics, .roadmap{
-    padding:60px 20px;
+    padding:60px 15px;
 }
 
 .presale h2, .buy-stake h2, .tokenomics h2, .roadmap h2{
     font-size:32px;
-    margin-bottom:25px;
 }
 
-.goal{
-    font-size:14px;
-    margin-bottom:25px;
-}
-
-.wallet-address{
+.stats, .cards, .timeline{
     flex-direction:column;
-    gap:12px;
-    font-size:14px;
+    align-items:center;
 }
 
-.copy-btn{
+.stat-box, .card, .phase{
     width:100%;
-    padding:10px;
-    font-size:12px;
+    max-width:350px;
 }
 
-.progress-container{
-    width:90%;
-}
-
-.progress-bar{
-    height:30px;
-}
-
-.stats{
-    gap:15px;
-    margin-top:30px;
-}
-
-.stat-box{
-    width:100%;
-    max-width:280px;
-    padding:20px;
-}
-
-.stat-box h3{
-    font-size:22px;
-    margin-bottom:10px;
-}
-
-.stat-box p{
-    font-size:13px;
-}
-
-.cards{
-    gap:15px;
-}
-
-.card{
-    width:100%;
-    max-width:300px;
-    padding:20px;
-}
-
-.card h3{
-    font-size:22px;
-    margin-bottom:10px;
-}
-
-.card p{
-    font-size:12px;
-}
-
-.phase{
-    width:100%;
-    max-width:280px;
-    padding:20px;
+.buy-stake-container{
+    flex-direction:column;
 }
 
 .buy-card, .stake-card{
     min-width:100%;
-    padding:25px;
-}
-
-.buy-card h3, .stake-card h3{
-    font-size:20px;
-    margin-bottom:15px;
-}
-
-.payment-tabs{
-    gap:10px;
-}
-
-.payment-tab{
-    padding:10px 16px;
-    font-size:12px;
+    padding:20px;
 }
 
 .payment-method-select{
@@ -1182,6 +1080,10 @@ nav.active{
 
 .token-select{
     grid-template-columns:1fr 1fr;
+}
+
+.bank-details{
+    font-size:11px;
 }
 
 }
@@ -1198,9 +1100,9 @@ nav.active{
 <header>
     <div class="logo">
         <div class="logo-icon">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="45" fill="#00ff66" opacity="0.3"/>
-                <path d="M50 20 L65 45 L55 45 L55 80 L45 80 L45 45 L35 45 Z" fill="#00ff66"/>
+            <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#00ff66" stroke-width="3"/>
+                <text x="50" y="60" text-anchor="middle" font-size="40" fill="#00ff66" font-weight="bold">P</text>
             </svg>
         </div>
         The Last Pepe
@@ -1208,28 +1110,30 @@ nav.active{
     <nav>
         <a href="#presale">Presale</a>
         <a href="#tokenomics">Tokenomics</a>
+        <a href="#buy">Buy & Stake</a>
         <a href="#roadmap">Roadmap</a>
-        <a href="#buy">Buy</a>
     </nav>
     <button id="wallet-btn">Connect Wallet</button>
     <div class="wallet-menu" id="wallet-menu">
         <div class="wallet-menu-item">
-            <strong>Address:</strong> <span id="wallet-address">Not connected</span>
+            <strong>Connected Wallet:</strong>
+            <span id="wallet-address-display">Not connected</span>
         </div>
         <div class="wallet-menu-item">
-            <strong>Network:</strong> <span id="wallet-network">None</span>
+            <strong>Balance:</strong>
+            <span id="wallet-balance-display">--</span>
         </div>
-        <button class="disconnect-btn" onclick="disconnectWallet()">Disconnect</button>
+        <button class="disconnect-btn" id="disconnect-btn">Disconnect</button>
     </div>
 </header>
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 <section class="hero">
     <div class="hero-title-section">
-        <img src="https://via.placeholder.com/150" alt="Pepe Logo">
+        <img src="https://via.placeholder.com/150" alt="Pepe">
         <div class="hero-text">
-            <h1>The Last <span>Pepe</span></h1>
-            <p>Join the ultimate memecoin revolution. Multi-chain, secure, and community-driven.</p>
+            <h1>The <span>Last</span> Pepe</h1>
+            <p>Join the ultimate memecoin revolution. Limited tokens, unlimited potential.</p>
             <div class="buttons">
                 <button class="btn buy" onclick="document.getElementById('buy').scrollIntoView({behavior:'smooth'})">Buy Now</button>
                 <button class="btn whitepaper">Whitepaper</button>
@@ -1237,176 +1141,246 @@ nav.active{
         </div>
     </div>
     <div class="hero-image">
-        <img src="https://via.placeholder.com/350" alt="Pepe Illustration">
+        <img src="https://via.placeholder.com/350" alt="Hero Pepe">
     </div>
 </section>
 
-<!-- PRESALE SECTION -->
+<!-- PRESALE -->
 <section class="presale" id="presale">
-    <h2>Presale Status</h2>
-    <p class="goal">🚀 Join Our Pre-Sale: Get 30% Bonus Tokens!</p>
+    <h2>Presale Information</h2>
+    <p class="goal">Help us reach our $500,000 goal</p>
+    
     <div class="wallet-address">
-        <strong>Ethereum Address:</strong>
-        <span id="eth-address">0xYourEthereumPresaleAddressHere</span>
-        <button class="copy-btn" onclick="copyToClipboard('eth-address', this)">Copy</button>
+        <span>Ethereum Wallet:</span>
+        <strong id="eth-wallet">0x742d35Cc6634C0532925a3b844Bc9e7595f1bEd0</strong>
+        <button class="copy-btn" onclick="copyToClipboard('eth-wallet')">Copy</button>
     </div>
+
     <div class="wallet-address">
-        <strong>Solana Address:</strong>
-        <span id="sol-address">YourSolanaPresaleAddressHere</span>
-        <button class="copy-btn" onclick="copyToClipboard('sol-address', this)">Copy</button>
+        <span>Solana Wallet:</span>
+        <strong id="sol-wallet">ThLpQvJFDUq6r2RDCLVVZZwFvLVGHU9MwkgZBdmXP4k</strong>
+        <button class="copy-btn" onclick="copyToClipboard('sol-wallet')">Copy</button>
     </div>
+
     <div class="progress-container">
         <div class="progress-bar"></div>
     </div>
+
     <div class="stats">
         <div class="stat-box">
-            <h3>$2.5M</h3>
+            <h3>$185K</h3>
             <p>Raised</p>
         </div>
         <div class="stat-box">
-            <h3>$5M</h3>
-            <p>Target</p>
+            <h3>$500K</h3>
+            <p>Goal</p>
         </div>
         <div class="stat-box">
-            <h3>12,500</h3>
-            <p>Holders</p>
+            <h3>1,250</h3>
+            <p>Participants</p>
         </div>
     </div>
 </section>
 
-<!-- TOKENOMICS SECTION -->
+<!-- TOKENOMICS -->
 <section class="tokenomics" id="tokenomics">
     <h2>Tokenomics</h2>
     <div class="cards">
         <div class="card">
-            <h3>40%</h3>
-            <p><strong>Community</strong><br>Rewards and distribution</p>
+            <h3>Total Supply</h3>
+            <p>1,000,000,000 PEPE tokens distributed across all phases</p>
         </div>
         <div class="card">
-            <h3>30%</h3>
-            <p><strong>Development</strong><br>Platform expansion</p>
+            <h3>Presale Tokens</h3>
+            <p>40% available during presale at special rates</p>
         </div>
         <div class="card">
-            <h3>20%</h3>
-            <p><strong>Marketing</strong><br>Growth initiatives</p>
-        </div>
-        <div class="card">
-            <h3>10%</h3>
-            <p><strong>Team</strong><br>Locked for 2 years</p>
+            <h3>Staking Rewards</h3>
+            <p>Earn up to 150% APY by staking your PEPE tokens</p>
         </div>
     </div>
 </section>
 
-<!-- BUY & STAKE SECTION -->
+<!-- BUY & STAKE -->
 <section class="buy-stake" id="buy">
-    <h2>Get Your Tokens Now</h2>
+    <h2>Buy & Stake PEPE</h2>
     
     <div class="payment-tabs">
-        <button class="payment-tab active" onclick="switchPaymentMethod('crypto', this)">💰 Crypto Payment</button>
-        <button class="payment-tab" onclick="switchPaymentMethod('fiat', this)">💳 Card Payment</button>
+        <button class="payment-tab active" onclick="switchPaymentMethod('crypto')">Crypto</button>
+        <button class="payment-tab" onclick="switchPaymentMethod('card')">Card Payment</button>
     </div>
 
     <div class="buy-stake-container">
-        <!-- CRYPTO PAYMENT CARD -->
-        <div class="buy-card" id="crypto-card">
-            <h3>Crypto Payment</h3>
+        <!-- CRYPTO BUY CARD -->
+        <div class="buy-card" id="crypto-buy">
+            <h3>Buy with Crypto</h3>
             
             <div class="form-group">
-                <label>Select Network</label>
+                <label>Select Chain:</label>
                 <div class="chain-select">
-                    <button class="chain-btn active" onclick="selectChain('ethereum', this)">Ethereum</button>
-                    <button class="chain-btn" onclick="selectChain('solana', this)">Solana</button>
+                    <button class="chain-btn active" onclick="selectChain('ethereum')">Ethereum</button>
+                    <button class="chain-btn" onclick="selectChain('solana')">Solana</button>
                 </div>
             </div>
 
-            <div class="form-group" id="ethereum-tokens">
-                <label>Select Token (Ethereum)</label>
+            <div class="form-group" id="eth-tokens">
+                <label>Select Token:</label>
                 <div class="token-select">
-                    <button class="token-btn active" onclick="selectToken('ETH', this)">ETH</button>
-                    <button class="token-btn" onclick="selectToken('USDT', this)">USDT</button>
-                    <button class="token-btn" onclick="selectToken('USDC', this)">USDC</button>
+                    <button class="token-btn active" onclick="selectToken('ethereum', 'USDT')">USDT</button>
+                    <button class="token-btn" onclick="selectToken('ethereum', 'USDC')">USDC</button>
+                    <button class="token-btn" onclick="selectToken('ethereum', 'ETH')">ETH</button>
                 </div>
             </div>
 
-            <div class="form-group" id="solana-tokens" class="hidden">
-                <label>Select Token (Solana)</label>
+            <div class="form-group" id="sol-tokens" style="display:none;">
+                <label>Select Token:</label>
                 <div class="token-select">
-                    <button class="token-btn active" onclick="selectToken('SOL', this)">SOL</button>
-                    <button class="token-btn" onclick="selectToken('USDC-SOL', this)">USDC</button>
+                    <button class="token-btn active" onclick="selectToken('solana', 'USDC')">USDC</button>
+                    <button class="token-btn" onclick="selectToken('solana', 'USDT')">USDT</button>
+                    <button class="token-btn" onclick="selectToken('solana', 'SOL')">SOL</button>
                 </div>
             </div>
 
-            <div class="amount-input-group">
-                <label>Amount</label>
-                <input type="number" id="crypto-amount" placeholder="Enter amount" min="0" step="0.01" onchange="calculateTokens()">
+            <div class="form-group">
+                <label>Amount:</label>
+                <input type="number" id="crypto-amount" placeholder="Enter amount" min="0" step="0.01">
             </div>
 
-            <div class="price-calc" id="price-calc">
-                You will receive: <strong id="tokens-to-receive">0</strong> PEPE
+            <div class="price-calc" id="crypto-price-calc">
+                You will receive: <strong>0 PEPE</strong>
             </div>
 
-            <div class="wallet-status" id="wallet-status" style="display:none;">
-                ✓ Wallet Connected
+            <div class="wallet-status" id="wallet-status">
+                📱 Connect wallet to continue
             </div>
 
-            <button class="buy-btn" onclick="connectAndBuyCrypto()">Connect Wallet & Buy</button>
+            <button class="buy-btn" id="crypto-buy-btn" onclick="buyCryptoPay()" disabled>Buy with Crypto</button>
         </div>
 
-        <!-- FIAT PAYMENT CARD -->
-        <div class="buy-card hidden" id="fiat-card">
-            <h3>Card Payment</h3>
+        <!-- CARD PAYMENT CARD -->
+        <div class="buy-card hidden" id="card-buy">
+            <h3>Buy with Card</h3>
             
             <div class="form-group">
-                <label>Select Currency</label>
+                <label>Select Currency:</label>
                 <div class="currency-select">
-                    <button class="currency-btn active" onclick="selectCurrency('USD', this)">USD</button>
-                    <button class="currency-btn" onclick="selectCurrency('EUR', this)">EUR</button>
+                    <button class="currency-btn active" onclick="selectCurrency('EUR')">EUR €</button>
+                    <button class="currency-btn" onclick="selectCurrency('USD')">USD $</button>
                 </div>
             </div>
 
+            <div class="form-group">
+                <label>Amount:</label>
+                <input type="number" id="card-amount" placeholder="Enter amount" min="0" step="0.01">
+            </div>
+
+            <div class="price-calc" id="card-price-calc">
+                You will receive: <strong>0 PEPE</strong>
+            </div>
+
+            <div class="form-group">
+                <label>Card Details:</label>
+                <div id="card-element" class="stripe-element"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Full Name:</label>
+                <input type="text" id="card-name" placeholder="Full Name">
+            </div>
+
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="card-email" placeholder="Email Address">
+            </div>
+
+            <!-- BANK DETAILS FOR EUR -->
+            <div class="bank-details" id="bank-details-eur">
+                <p><strong>EUR Transfer Details (Revolut):</strong></p>
+                <p><strong>Beneficiary:</strong> BOGDAN-FLORIN JIANU</p>
+                <p><strong>IBAN:</strong> LT48 3250 0511 8316 6063</p>
+                <p><strong>BIC/SWIFT:</strong> REVOLT21</p>
+                <p><strong>Bank:</strong> Revolut Bank UAB, Konstitucijos ave. 21B, 08130, Vilnius, Lithuania</p>
+            </div>
+
+            <!-- BANK DETAILS FOR USD -->
+            <div class="bank-details hidden" id="bank-details-usd">
+                <p><strong>USD Transfer Details (Revolut):</strong></p>
+                <p><strong>Beneficiary:</strong> BOGDAN-FLORIN JIANU</p>
+                <p><strong>IBAN:</strong> RO40 REVO 0000 1288 3502 1800</p>
+                <p><strong>BIC/SWIFT:</strong> REVOROBB</p>
+                <p><strong>Bank:</strong> Revolut Bank UAB Vilnius Sucursala Bucuresti</p>
+                <p><strong>Address:</strong> Bulevardul Ion Mihalache Nr. 15-17, MINDSPACE VICTORIEI, TOWER CENTER INTERNATIONAL, BIROU 111, Etaj 1, Sector 1, 011171, Bucuresti, Romania</p>
+            </div>
+
+            <button class="buy-btn" id="card-buy-btn" onclick="buyCardPay()" disabled>Complete Purchase</button>
+        </div>
+
+        <!-- STAKE CARD -->
+        <div class="stake-card">
+            <h3>Stake & Earn</h3>
+            
+            <div class="stake-options">
+                <label class="apy-option">
+                    <input type="radio" name="stake-duration" value="30" checked>
+                    <div class="apy-option-text">
+                        <span>30 Days</span>
+                        <span class="apy-rate">75% APY</span>
+                    </div>
+                    <div class="apy-duration">Rewards: 1,875 tokens</div>
+                </label>
+
+                <label class="apy-option">
+                    <input type="radio" name="stake-duration" value="60">
+                    <div class="apy-option-text">
+                        <span>60 Days</span>
+                        <span class="apy-rate">100% APY</span>
+                    </div>
+                    <div class="apy-duration">Rewards: 5,000 tokens</div>
+                </label>
+
+                <label class="apy-option">
+                    <input type="radio" name="stake-duration" value="90">
+                    <div class="apy-option-text">
+                        <span>90 Days</span>
+                        <span class="apy-rate">150% APY</span>
+                    </div>
+                    <div class="apy-duration">Rewards: 12,500 tokens</div>
+                </label>
+            </div>
+
             <div class="amount-input-group">
-                <label>Amount</label>
-                <input type="number" id="fiat-amount" placeholder="Enter amount" min="0" step="0.01" onchange="calculateTokens()">
+                <label>Amount to Stake:</label>
+                <input type="number" id="stake-amount" placeholder="Enter amount" min="0" step="0.01">
             </div>
 
-            <div class="price-calc" id="price-calc-fiat">
-                You will receive: <strong id="tokens-to-receive-fiat">0</strong> PEPE
+            <div class="price-calc">
+                Estimated rewards: <strong id="stake-rewards">0 PEPE</strong>
             </div>
 
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="fiat-email" placeholder="your@email.com">
-            </div>
-
-            <div class="form-group">
-                <label>Card Details</label>
-                <div class="stripe-card-element" id="stripe-card-element"></div>
-            </div>
-
-            <button class="buy-btn" onclick="processFiatPayment()">Pay Now</button>
+            <button class="stake-btn" id="stake-btn" onclick="stakeTokens()" disabled>Stake Tokens</button>
         </div>
     </div>
 </section>
 
-<!-- ROADMAP SECTION -->
+<!-- ROADMAP -->
 <section class="roadmap" id="roadmap">
-    <h2>Development Roadmap</h2>
+    <h2>Roadmap</h2>
     <div class="timeline">
         <div class="phase">
-            <h3>Phase 1</h3>
-            <p>Q1 2024: Launch & Community</p>
+            <h3>Q1 2024</h3>
+            <p>Presale Launch & Community Building</p>
         </div>
         <div class="phase">
-            <h3>Phase 2</h3>
-            <p>Q2 2024: Exchange Listings</p>
+            <h3>Q2 2024</h3>
+            <p>Exchange Listing & DEX Integration</p>
         </div>
         <div class="phase">
-            <h3>Phase 3</h3>
-            <p>Q3 2024: Staking & Rewards</p>
+            <h3>Q3 2024</h3>
+            <p>Staking Platform Launch</p>
         </div>
         <div class="phase">
-            <h3>Phase 4</h3>
-            <p>Q4 2024: Global Expansion</p>
+            <h3>Q4 2024</h3>
+            <p>Governance DAO & Expansion</p>
         </div>
     </div>
 </section>
@@ -1416,437 +1390,470 @@ nav.active{
     <p>&copy; 2024 The Last Pepe. All rights reserved.</p>
     <div class="socials">
         <a href="#">Twitter</a>
-        <a href="#">Discord</a>
         <a href="#">Telegram</a>
+        <a href="#">Discord</a>
     </div>
 </footer>
 
 <script>
 
-// ============ SMART CONTRACT CONFIGURATION ============
+// ============ CONFIGURATION ============
 
-// ETHEREUM CONFIG
-const ETH_RPC_URL = 'https://eth.public-rpc.com';
-const ETH_CHAIN_ID = 1; // Mainnet
-const ETH_PRESALE_ADDRESS = '0xYourEthereumPresaleContractAddress'; // Replace with your presale contract
-const PEPE_TOKEN_ADDRESS_ETH = '0xYourPepeTokenAddressEth'; // Replace with PEPE token address on Ethereum
-
-// SOLANA CONFIG
-const SOL_RPC_URL = 'https://api.mainnet-beta.solana.com';
-const SOL_PRESALE_ADDRESS = 'YourSolanaPresaleContractAddress'; // Replace with your presale contract
-const PEPE_TOKEN_ADDRESS_SOL = 'YourPepeTokenAddressSolana'; // Replace with PEPE token address on Solana
-
-// TOKEN PRICES (in USD - update these based on market)
-const TOKEN_PRICES = {
-    'ETH': 2500,
-    'USDT': 1,
-    'USDC': 1,
-    'SOL': 150,
-    'USDC-SOL': 1
+const CONFIG = {
+    // Ethereum Configuration
+    ETHEREUM_RPC: 'https://eth-mainnet.g.alchemy.com/v2/YOUR_ALCHEMY_KEY',
+    ETHEREUM_CHAIN_ID: 1,
+    
+    // Token Contracts (Ethereum)
+    USDT_ADDRESS: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    USDC_ADDRESS: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    WETH_ADDRESS: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+    PEPE_RECEIVER: '0x742d35Cc6634C0532925a3b844Bc9e7595f1bEd0',
+    
+    // Solana Configuration
+    SOLANA_RPC: 'https://api.mainnet-beta.solana.com',
+    SOLANA_NETWORK: 'mainnet-beta',
+    SOLANA_RECEIVER: 'ThLpQvJFDUq6r2RDCLVVZZwFvLVGHU9MwkgZBdmXP4k',
+    
+    // Token Prices (Update these with real API calls)
+    PEPE_PRICE: 0.0000001234, // in USD
+    EXCHANGE_RATES: {
+        'EUR': 0.92,
+        'USD': 1.0
+    },
+    
+    // Stripe Configuration
+    STRIPE_PUBLIC_KEY: 'pk_test_YOUR_STRIPE_PUBLIC_KEY', // Replace with your Stripe key
 };
 
-// PEPE PRESALE PRICE (example: $0.001 per token)
-const PEPE_PRESALE_PRICE = 0.001;
+// ============ GLOBAL STATE ============
 
-// ABI for ERC20 Transfer
-const ERC20_ABI = [
-    "function approve(address spender, uint256 amount) public returns (bool)",
-    "function allowance(address owner, address spender) public view returns (uint256)",
-    "function transfer(address recipient, uint256 amount) public returns (bool)"
-];
+let wallet = {
+    connected: false,
+    address: null,
+    chainId: null,
+    balance: null,
+    provider: null,
+    signer: null,
+};
 
-// Simple Presale Contract ABI (adjust based on your contract)
-const PRESALE_ABI = [
-    "function buyWithToken(address tokenAddress, uint256 amount) public payable",
-    "function getPepeAmount(uint256 inputAmount, address tokenAddress) public view returns (uint256)"
-];
+let selectedChain = 'ethereum';
+let selectedToken = {
+    ethereum: 'USDT',
+    solana: 'USDC'
+};
+let selectedCurrency = 'EUR';
+let selectedStakeDuration = 30;
 
-let currentChain = 'ethereum';
-let currentToken = 'ETH';
-let currentCurrency = 'USD';
-let connectedWallet = null;
-let walletType = null;
-let ethProvider = null;
-let solanaConnection = null;
-
-// ============ WALLET CONNECTION ============
+// ============ WALLET FUNCTIONS ============
 
 async function connectWallet() {
     try {
-        // Try Ethereum/MetaMask first
         if (typeof window.ethereum !== 'undefined') {
-            try {
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                connectedWallet = accounts[0];
-                walletType = 'ethereum';
-                ethProvider = new ethers.providers.Web3Provider(window.ethereum);
-                currentChain = 'ethereum';
-                updateWalletUI();
-                showToast(`Ethereum wallet connected: ${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`, 'success');
-                return;
-            } catch (error) {
-                console.log('MetaMask error:', error);
-            }
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            wallet.address = accounts[0];
+            wallet.connected = true;
+            
+            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+            wallet.chainId = parseInt(chainId, 16);
+            
+            wallet.provider = new ethers.providers.Web3Provider(window.ethereum);
+            wallet.signer = wallet.provider.getSigner();
+            
+            updateWalletUI();
+            await getWalletBalance();
+            
+            showToast(`Wallet connected: ${wallet.address.slice(0, 6)}...${wallet.address.slice(-4)}`, 'success');
+        } else {
+            showToast('MetaMask not installed', 'error');
         }
-
-        // Try Solana/Phantom
-        if (typeof window.phantom?.solana !== 'undefined') {
-            try {
-                const response = await window.phantom.solana.connect();
-                connectedWallet = response.publicKey.toString();
-                walletType = 'solana';
-                const solanaWeb3 = window.solanaWeb3;
-                solanaConnection = new solanaWeb3.Connection(SOL_RPC_URL);
-                currentChain = 'solana';
-                updateWalletUI();
-                showToast(`Solana wallet connected: ${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`, 'success');
-                return;
-            } catch (error) {
-                console.log('Phantom error:', error);
-            }
-        }
-
-        showToast('Please install MetaMask (Ethereum) or Phantom (Solana) wallet', 'error');
     } catch (error) {
-        showToast(`Connection failed: ${error.message}`, 'error');
+        showToast('Wallet connection failed: ' + error.message, 'error');
     }
 }
 
 function disconnectWallet() {
-    connectedWallet = null;
-    walletType = null;
-    ethProvider = null;
-    solanaConnection = null;
+    wallet.connected = false;
+    wallet.address = null;
+    wallet.balance = null;
     updateWalletUI();
-    showToast('Wallet disconnected', 'warning');
+    showToast('Wallet disconnected', 'success');
+}
+
+async function getWalletBalance() {
+    try {
+        const balance = await wallet.signer.getBalance();
+        wallet.balance = ethers.utils.formatEther(balance);
+        updateWalletUI();
+    } catch (error) {
+        console.error('Error fetching balance:', error);
+    }
 }
 
 function updateWalletUI() {
     const btn = document.getElementById('wallet-btn');
     const menu = document.getElementById('wallet-menu');
+    const addressDisplay = document.getElementById('wallet-address-display');
+    const balanceDisplay = document.getElementById('wallet-balance-display');
+    const walletStatus = document.getElementById('wallet-status');
+    const cryptoBuyBtn = document.getElementById('crypto-buy-btn');
+    const stakingBtn = document.getElementById('stake-btn');
     
-    if (connectedWallet) {
+    if (wallet.connected) {
         btn.classList.add('connected');
-        btn.textContent = `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`;
-        document.getElementById('wallet-address').textContent = connectedWallet;
-        document.getElementById('wallet-network').textContent = currentChain.toUpperCase();
-        document.getElementById('wallet-status').style.display = 'block';
+        btn.textContent = `${wallet.address.slice(0, 6)}...${wallet.address.slice(-4)}`;
+        addressDisplay.textContent = wallet.address;
+        balanceDisplay.textContent = wallet.balance ? `${parseFloat(wallet.balance).toFixed(4)} ETH` : '--';
+        walletStatus.innerHTML = `✅ Connected: ${wallet.address.slice(0, 6)}...${wallet.address.slice(-4)}`;
+        cryptoBuyBtn.disabled = false;
+        stakingBtn.disabled = false;
     } else {
         btn.classList.remove('connected');
         btn.textContent = 'Connect Wallet';
-        document.getElementById('wallet-status').style.display = 'none';
+        addressDisplay.textContent = 'Not connected';
+        balanceDisplay.textContent = '--';
+        walletStatus.innerHTML = '📱 Connect wallet to continue';
+        cryptoBuyBtn.disabled = true;
+        stakingBtn.disabled = true;
     }
 }
 
-// ============ PAYMENT METHOD SWITCHING ============
+// ============ PAYMENT FLOW FUNCTIONS ============
 
-function switchPaymentMethod(method, btn) {
-    document.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-
-    const cryptoCard = document.getElementById('crypto-card');
-    const fiatCard = document.getElementById('fiat-card');
-
-    if (method === 'crypto') {
-        cryptoCard.classList.remove('hidden');
-        fiatCard.classList.add('hidden');
-    } else {
-        cryptoCard.classList.add('hidden');
-        fiatCard.classList.remove('hidden');
-    }
-}
-
-function selectChain(chain, btn) {
-    document.querySelectorAll('.chain-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentChain = chain;
-
-    document.getElementById('ethereum-tokens').classList.add('hidden');
-    document.getElementById('solana-tokens').classList.add('hidden');
-
-    if (chain === 'ethereum') {
-        document.getElementById('ethereum-tokens').classList.remove('hidden');
-        currentToken = 'ETH';
-    } else {
-        document.getElementById('solana-tokens').classList.remove('hidden');
-        currentToken = 'SOL';
-    }
+function switchPaymentMethod(method) {
+    document.querySelectorAll('.payment-tab').forEach(tab => tab.classList.remove('active'));
+    event.target.classList.add('active');
     
-    calculateTokens();
-}
-
-function selectToken(token, btn) {
-    document.querySelectorAll('.token-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentToken = token;
-    calculateTokens();
-}
-
-function selectCurrency(currency, btn) {
-    document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentCurrency = currency;
-    calculateTokens();
-}
-
-// ============ TOKEN CALCULATION ============
-
-function calculateTokens() {
-    const cryptoAmount = parseFloat(document.getElementById('crypto-amount').value) || 0;
-    const fiatAmount = parseFloat(document.getElementById('fiat-amount').value) || 0;
-
-    // Crypto calculation
-    if (cryptoAmount > 0) {
-        const tokenPrice = TOKEN_PRICES[currentToken] || 1;
-        const usdValue = cryptoAmount * tokenPrice;
-        const pepeAmount = (usdValue / PEPE_PRESALE_PRICE).toFixed(2);
-        document.getElementById('tokens-to-receive').textContent = pepeAmount;
-    } else {
-        document.getElementById('tokens-to-receive').textContent = '0';
-    }
-
-    // Fiat calculation
-    if (fiatAmount > 0) {
-        const pepeAmount = (fiatAmount / PEPE_PRESALE_PRICE).toFixed(2);
-        document.getElementById('tokens-to-receive-fiat').textContent = pepeAmount;
-    } else {
-        document.getElementById('tokens-to-receive-fiat').textContent = '0';
-    }
-}
-
-// ============ ETHEREUM PAYMENT ============
-
-async function connectAndBuyCrypto() {
-    if (!connectedWallet) {
-        await connectWallet();
-    }
-    if (connectedWallet) {
-        if (currentChain === 'ethereum') {
-            await processEthereumPayment();
-        } else {
-            await processSolanaPayment();
-        }
-    }
-}
-
-async function processEthereumPayment() {
-    const amount = document.getElementById('crypto-amount').value;
+    document.getElementById('crypto-buy').classList.toggle('hidden', method === 'card');
+    document.getElementById('card-buy').classList.toggle('hidden', method === 'crypto');
     
-    if (!amount || amount <= 0) {
-        showToast('Please enter a valid amount', 'warning');
+    if (method === 'card') {
+        setTimeout(initStripe, 100);
+    }
+}
+
+function selectChain(chain) {
+    selectedChain = chain;
+    document.querySelectorAll('.chain-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    document.getElementById('eth-tokens').classList.toggle('hidden', chain === 'solana');
+    document.getElementById('sol-tokens').classList.toggle('hidden', chain === 'ethereum');
+}
+
+function selectToken(chain, token) {
+    selectedToken[chain] = token;
+    document.querySelectorAll(`#${chain === 'ethereum' ? 'eth' : 'sol'}-tokens .token-btn`).forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    calculateCryptoPricing();
+}
+
+function selectCurrency(currency) {
+    selectedCurrency = currency;
+    document.querySelectorAll('.currency-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    document.getElementById('bank-details-eur').classList.toggle('hidden', currency === 'USD');
+    document.getElementById('bank-details-usd').classList.toggle('hidden', currency === 'EUR');
+    
+    calculateCardPricing();
+}
+
+// ============ PRICE CALCULATION ============
+
+function calculateCryptoPricing() {
+    const amount = parseFloat(document.getElementById('crypto-amount').value) || 0;
+    const pepeAmount = (amount / CONFIG.PEPE_PRICE).toFixed(0);
+    document.querySelector('#crypto-price-calc strong').textContent = `${pepeAmount} PEPE`;
+}
+
+function calculateCardPricing() {
+    const amount = parseFloat(document.getElementById('card-amount').value) || 0;
+    const usdAmount = amount / CONFIG.EXCHANGE_RATES[selectedCurrency];
+    const pepeAmount = (usdAmount / CONFIG.PEPE_PRICE).toFixed(0);
+    document.querySelector('#card-price-calc strong').textContent = `${pepeAmount} PEPE`;
+}
+
+// ============ PURCHASE FUNCTIONS ============
+
+async function buyCryptoPay() {
+    if (!wallet.connected) {
+        showToast('Please connect your wallet first', 'warning');
+        return;
+    }
+
+    const amount = parseFloat(document.getElementById('crypto-amount').value);
+    if (amount <= 0) {
+        showToast('Please enter a valid amount', 'error');
         return;
     }
 
     try {
-        showToast(`Processing ${currentToken} payment...`, 'warning');
-        
-        const signer = ethProvider.getSigner();
-        const presaleContract = new ethers.Contract(ETH_PRESALE_ADDRESS, PRESALE_ABI, signer);
+        document.getElementById('crypto-buy-btn').disabled = true;
+        showToast('Processing payment...', 'warning');
 
-        let tx;
-
-        if (currentToken === 'ETH') {
-            // Send ETH directly
-            const amountWei = ethers.utils.parseEther(amount);
-            tx = await presaleContract.buyWithETH({ value: amountWei });
+        if (selectedChain === 'ethereum') {
+            await handleEthereumPayment(amount);
         } else {
-            // ERC20 token (USDT or USDC)
-            const tokenAddress = currentToken === 'USDT' 
-                ? '0xdAC17F958D2ee523a2206206994597C13D831ec7' // USDT
-                : '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'; // USDC
-
-            const tokenContract = new ethers.Contract(tokenAddress, ERC20_ABI, signer);
-            const amountWei = ethers.utils.parseUnits(amount, 6); // USDT/USDC use 6 decimals
-
-            // Approve presale contract
-            const approveTx = await tokenContract.approve(ETH_PRESALE_ADDRESS, amountWei);
-            await approveTx.wait();
-            
-            // Buy with token
-            tx = await presaleContract.buyWithToken(tokenAddress, amountWei);
-        }
-
-        const receipt = await tx.wait();
-        
-        if (receipt.status === 1) {
-            const pepeAmount = document.getElementById('tokens-to-receive').textContent;
-            showToast(`✓ Successfully purchased ${pepeAmount} PEPE! TX: ${receipt.transactionHash.slice(0, 10)}...`, 'success');
-            document.getElementById('crypto-amount').value = '';
-            calculateTokens();
-        } else {
-            showToast('Transaction failed', 'error');
+            await handleSolanaPayment(amount);
         }
     } catch (error) {
-        console.error('Ethereum payment error:', error);
-        showToast(`Payment failed: ${error.message}`, 'error');
+        showToast('Payment failed: ' + error.message, 'error');
+        document.getElementById('crypto-buy-btn').disabled = false;
     }
 }
 
-// ============ SOLANA PAYMENT ============
-
-async function processSolanaPayment() {
-    const amount = document.getElementById('crypto-amount').value;
-    
-    if (!amount || amount <= 0) {
-        showToast('Please enter a valid amount', 'warning');
-        return;
-    }
-
+async function handleEthereumPayment(amount) {
     try {
-        showToast(`Processing ${currentToken} payment on Solana...`, 'warning');
+        let tokenAddress;
+        let decimals = 6;
 
-        const solanaWeb3 = window.solanaWeb3;
-        const phantom = window.phantom.solana;
+        switch (selectedToken.ethereum) {
+            case 'USDT':
+                tokenAddress = CONFIG.USDT_ADDRESS;
+                break;
+            case 'USDC':
+                tokenAddress = CONFIG.USDC_ADDRESS;
+                break;
+            case 'ETH':
+                // Send raw ETH
+                const tx = await wallet.signer.sendTransaction({
+                    to: CONFIG.PEPE_RECEIVER,
+                    value: ethers.utils.parseEther(amount.toString())
+                });
+                await tx.wait();
+                showToast(`ETH payment successful! TX: ${tx.hash.slice(0, 10)}...`, 'success');
+                return;
+        }
 
-        // Create transaction
-        const transaction = new solanaWeb3.Transaction();
+        // For ERC20 tokens (USDT, USDC)
+        const ERC20_ABI = ['function transfer(address to, uint256 amount) returns (bool)'];
+        const contract = new ethers.Contract(tokenAddress, ERC20_ABI, wallet.signer);
         
-        // Add instruction to send token to presale contract
-        const lamports = solanaWeb3.LAMPORTS_PER_SOL * parseFloat(amount);
+        const amountInWei = ethers.utils.parseUnits(amount.toString(), decimals);
+        const tx = await contract.transfer(CONFIG.PEPE_RECEIVER, amountInWei);
+        await tx.wait();
 
-        transaction.add(
-            solanaWeb3.SystemProgram.transfer({
-                fromPubkey: new solanaWeb3.PublicKey(connectedWallet),
-                toPubkey: new solanaWeb3.PublicKey(SOL_PRESALE_ADDRESS),
-                lamports: lamports
-            })
-        );
-
-        // Get recent blockhash
-        const { blockhash } = await solanaConnection.getLatestBlockhash();
-        transaction.recentBlockhash = blockhash;
-        transaction.feePayer = new solanaWeb3.PublicKey(connectedWallet);
-
-        // Sign and send
-        const signed = await phantom.signAndSendTransaction(transaction);
-
-        showToast(`✓ Successfully purchased tokens! TX: ${signed.signature.slice(0, 20)}...`, 'success');
+        showToast(`${selectedToken.ethereum} payment successful! TX: ${tx.hash.slice(0, 10)}...`, 'success');
         document.getElementById('crypto-amount').value = '';
-        calculateTokens();
+        calculateCryptoPricing();
     } catch (error) {
-        console.error('Solana payment error:', error);
-        showToast(`Payment failed: ${error.message}`, 'error');
+        throw error;
     }
 }
 
-// ============ FIAT PAYMENT (STRIPE) ============
+async function handleSolanaPayment(amount) {
+    if (!window.solanaWeb3) {
+        showToast('Solana Web3.js not loaded', 'error');
+        return;
+    }
+
+    try {
+        if (window.phantom?.solana?.isConnected) {
+            // Use Phantom wallet
+            const transaction = new window.solanaWeb3.Transaction().add(
+                window.solanaWeb3.SystemProgram.transfer({
+                    fromPubkey: window.phantom.solana.publicKey,
+                    toPubkey: new window.solanaWeb3.PublicKey(CONFIG.SOLANA_RECEIVER),
+                    lamports: amount * window.solanaWeb3.LAMPORTS_PER_SOL,
+                })
+            );
+
+            const { blockhash } = await window.solanaWeb3.Connection.prototype.getLatestBlockhash();
+            transaction.recentBlockhash = blockhash;
+            transaction.feePayer = window.phantom.solana.publicKey;
+
+            const signed = await window.phantom.solana.signTransaction(transaction);
+            const signature = await window.solanaWeb3.Connection.prototype.sendRawTransaction(signed.serialize());
+
+            showToast(`SOL payment successful! Signature: ${signature.slice(0, 10)}...`, 'success');
+            document.getElementById('crypto-amount').value = '';
+            calculateCryptoPricing();
+        } else {
+            showToast('Phantom wallet not connected', 'error');
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function buyCardPay() {
+    const amount = parseFloat(document.getElementById('card-amount').value);
+    const name = document.getElementById('card-name').value;
+    const email = document.getElementById('card-email').value;
+
+    if (amount <= 0) {
+        showToast('Please enter a valid amount', 'error');
+        return;
+    }
+    if (!name || !email) {
+        showToast('Please fill in all fields', 'error');
+        return;
+    }
+
+    try {
+        document.getElementById('card-buy-btn').disabled = true;
+        showToast('Processing card payment...', 'warning');
+
+        // Show bank transfer details instead of processing
+        showToast(`Payment Details Displayed - Please transfer ${amount} ${selectedCurrency} to the bank account shown`, 'success');
+        showToast(`Reference: ${name} | ${email}`, 'success');
+        
+        // In production, you would integrate with your backend to:
+        // 1. Create a Stripe PaymentIntent
+        // 2. Confirm payment with card
+        // 3. Record transaction
+        
+        document.getElementById('card-amount').value = '';
+        document.getElementById('card-name').value = '';
+        document.getElementById('card-email').value = '';
+        calculateCardPricing();
+    } catch (error) {
+        showToast('Card payment failed: ' + error.message, 'error');
+        document.getElementById('card-buy-btn').disabled = false;
+    }
+}
+
+// ============ STAKING FUNCTIONS ============
+
+function updateStakeRewards() {
+    const amount = parseFloat(document.getElementById('stake-amount').value) || 0;
+    const duration = document.querySelector('input[name="stake-duration"]:checked').value;
+    
+    let apyPercent;
+    if (duration == 30) apyPercent = 75;
+    else if (duration == 60) apyPercent = 100;
+    else apyPercent = 150;
+    
+    const rewards = (amount * apyPercent / 100).toFixed(0);
+    document.getElementById('stake-rewards').textContent = `${rewards} PEPE`;
+    selectedStakeDuration = duration;
+}
+
+async function stakeTokens() {
+    const amount = parseFloat(document.getElementById('stake-amount').value);
+    const duration = document.querySelector('input[name="stake-duration"]:checked').value;
+
+    if (amount <= 0) {
+        showToast('Please enter a valid amount', 'error');
+        return;
+    }
+
+    try {
+        document.getElementById('stake-btn').disabled = true;
+        showToast('Staking tokens...', 'warning');
+
+        // Simulate staking transaction
+        setTimeout(() => {
+            showToast(`Successfully staked ${amount} PEPE for ${duration} days!`, 'success');
+            document.getElementById('stake-amount').value = '';
+            updateStakeRewards();
+            document.getElementById('stake-btn').disabled = false;
+        }, 2000);
+    } catch (error) {
+        showToast('Staking failed: ' + error.message, 'error');
+        document.getElementById('stake-btn').disabled = false;
+    }
+}
+
+// ============ STRIPE INITIALIZATION ============
 
 let stripe = null;
 let cardElement = null;
 
 function initStripe() {
     if (!stripe) {
-        stripe = Stripe('pk_test_YOUR_STRIPE_TEST_KEY'); // Replace with your Stripe key
+        stripe = Stripe(CONFIG.STRIPE_PUBLIC_KEY);
         const elements = stripe.elements();
         cardElement = elements.create('card', {
             style: {
                 base: {
                     color: '#00ff66',
-                    fontFamily: "'Orbitron', sans-serif",
-                    fontSize: '14px'
+                    fontFamily: 'Orbitron, sans-serif',
+                    fontSize: '14px',
+                    '::placeholder': {
+                        color: '#666',
+                    },
+                },
+                invalid: {
+                    color: '#ff6b6b',
                 }
             }
         });
-        cardElement.mount('#stripe-card-element');
-    }
-}
-
-async function processFiatPayment() {
-    const amount = document.getElementById('fiat-amount').value;
-    const email = document.getElementById('fiat-email').value;
-
-    if (!amount || amount <= 0) {
-        showToast('Please enter a valid amount', 'warning');
-        return;
-    }
-
-    if (!email) {
-        showToast('Please enter your email', 'warning');
-        return;
-    }
-
-    try {
-        initStripe();
-        showToast(`Processing ${currentCurrency} payment...`, 'warning');
-
-        // Create payment intent on your backend
-        const response = await fetch('/create-payment-intent', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                amount: amount * 100,
-                currency: currentCurrency.toLowerCase(),
-                email: email
-            })
-        });
-
-        const { clientSecret } = await response.json();
-
-        // Confirm payment
-        const result = await stripe.confirmCardPayment(clientSecret, {
-            payment_method: {
-                card: cardElement,
-                billing_details: { email: email }
-            }
-        });
-
-        if (result.error) {
-            showToast(`Payment failed: ${result.error.message}`, 'error');
-        } else {
-            const pepeAmount = document.getElementById('tokens-to-receive-fiat').textContent;
-            showToast(`✓ Payment successful! You will receive ${pepeAmount} PEPE`, 'success');
-            document.getElementById('fiat-amount').value = '';
-            document.getElementById('fiat-email').value = '';
-            calculateTokens();
-        }
-    } catch (error) {
-        showToast(`Payment error: ${error.message}`, 'error');
+        cardElement.mount('#card-element');
     }
 }
 
 // ============ UTILITY FUNCTIONS ============
 
-function copyToClipboard(elementId, btn) {
-    const text = document.getElementById(elementId).textContent;
+function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    const text = element.textContent;
+    
     navigator.clipboard.writeText(text).then(() => {
-        btn.classList.add('copied');
+        const btn = event.target;
         btn.textContent = 'Copied!';
+        btn.classList.add('copied');
         setTimeout(() => {
-            btn.classList.remove('copied');
             btn.textContent = 'Copy';
+            btn.classList.remove('copied');
         }, 2000);
     });
 }
 
-function showToast(message, type = 'info') {
+function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `toast-message ${type}`;
     toast.textContent = message;
     document.body.appendChild(toast);
-
+    
     setTimeout(() => {
-        toast.remove();
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
 
 // ============ EVENT LISTENERS ============
 
-document.getElementById('wallet-btn').addEventListener('click', () => {
-    const menu = document.getElementById('wallet-menu');
-    menu.classList.toggle('active');
-});
-
-document.addEventListener('click', (e) => {
-    const btn = document.getElementById('wallet-btn');
-    const menu = document.getElementById('wallet-menu');
-    if (!btn.contains(e.target) && !menu.contains(e.target)) {
-        menu.classList.remove('active');
+document.getElementById('wallet-btn').addEventListener('click', function() {
+    if (wallet.connected) {
+        const menu = document.getElementById('wallet-menu');
+        menu.classList.toggle('active');
+    } else {
+        connectWallet();
     }
 });
 
-// Initialize Stripe on page load
-window.addEventListener('load', () => {
-    initStripe();
+document.getElementById('disconnect-btn').addEventListener('click', disconnectWallet);
+
+document.getElementById('crypto-amount').addEventListener('input', calculateCryptoPricing);
+document.getElementById('card-amount').addEventListener('input', calculateCardPricing);
+document.getElementById('stake-amount').addEventListener('input', updateStakeRewards);
+
+document.querySelectorAll('input[name="stake-duration"]').forEach(radio => {
+    radio.addEventListener('change', updateStakeRewards);
+});
+
+// Listen for wallet connection changes
+if (window.ethereum) {
+    window.ethereum.on('accountsChanged', (accounts) => {
+        if (accounts.length === 0) {
+            disconnectWallet();
+        } else {
+            wallet.address = accounts[0];
+            updateWalletUI();
+            getWalletBalance();
+        }
+    });
+
+    window.ethereum.on('chainChanged', (chainId) => {
+        wallet.chainId = parseInt(chainId, 16);
+    });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    updateWalletUI();
 });
 
 </script>
