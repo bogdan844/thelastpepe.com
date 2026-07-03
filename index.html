@@ -12,6 +12,9 @@
 <!-- Solana Web3.js -->
 <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@latest/lib/index.iife.min.js"></script>
 
+<!-- SPL Token -->
+<script src="https://cdn.jsdelivr.net/npm/@solana/spl-token@latest/lib/index.iife.js"></script>
+
 <!-- Stripe for Card Payments -->
 <script src="https://js.stripe.com/v3/"></script>
 
@@ -1083,7 +1086,7 @@ nav{
     <div class="wallet-menu" id="wallet-menu">
         <div class="wallet-menu-item">
             <strong>Network:</strong>
-            <span>Solana</span>
+            <span>Solana ✓</span>
         </div>
         <div class="wallet-menu-item">
             <strong>Connected Wallet:</strong>
@@ -1352,20 +1355,27 @@ const CONFIG = {
     SOLANA_NETWORK: 'mainnet-beta',
     SOLANA_RECEIVER: 'ThLpQvJFDUq6r2RDCLVVZZwFvLVGHU9MwkgZBdmXP4k',
     
+    // PEPE Token Configuration
+    PEPE_MINT: 'EBvGAhxEAFjGYTKFxh3xkw2nAQdhSiKAJuXFi9aiPEPE',
+    PEPE_DECIMALS: 6,
+    
     // SPL Token Mints (Solana)
     USDC_MINT: 'EPjFWaLb3hyMAxLduGDAEs6X4zNzUUf5B5sPtY2DRVaP',
     USDT_MINT: 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenEX9',
     SOL_MINT: '11111111111111111111111111111111', // Native SOL
+    USDC_DECIMALS: 6,
+    USDT_DECIMALS: 6,
     
-    // Token Prices (Update these with real API calls)
+    // Token Prices (Update these with real API calls from Raydium/Jupiter)
     PEPE_PRICE: 0.0000001234, // in USD
+    USDC_PRICE: 1.0,
+    USDT_PRICE: 1.0,
+    SOL_PRICE: 150, // Update with real price
+    
     EXCHANGE_RATES: {
         'EUR': 0.92,
         'USD': 1.0
     },
-    
-    // Stripe Configuration
-    STRIPE_PUBLIC_KEY: 'pk_test_YOUR_STRIPE_PUBLIC_KEY', // Replace with your Stripe key
 };
 
 // ============ GLOBAL STATE ============
@@ -1492,7 +1502,17 @@ function selectCurrency(currency) {
 
 function calculateCryptoPricing() {
     const amount = parseFloat(document.getElementById('crypto-amount').value) || 0;
-    const pepeAmount = (amount / CONFIG.PEPE_PRICE).toFixed(0);
+    let usdAmount = 0;
+    
+    if (selectedToken === 'SOL') {
+        usdAmount = amount * CONFIG.SOL_PRICE;
+    } else if (selectedToken === 'USDC') {
+        usdAmount = amount * CONFIG.USDC_PRICE;
+    } else if (selectedToken === 'USDT') {
+        usdAmount = amount * CONFIG.USDT_PRICE;
+    }
+    
+    const pepeAmount = (usdAmount / CONFIG.PEPE_PRICE).toFixed(0);
     document.querySelector('#crypto-price-calc strong').textContent = `${pepeAmount} PEPE`;
 }
 
@@ -1524,9 +1544,9 @@ async function buySolanaTokens() {
         const connection = new window.solanaWeb3.Connection(CONFIG.SOLANA_RPC, 'confirmed');
         const transaction = new window.solanaWeb3.Transaction();
         
-        let lamports;
         if (selectedToken === 'SOL') {
-            lamports = amount * window.solanaWeb3.LAMPORTS_PER_SOL;
+            // Send native SOL
+            const lamports = amount * window.solanaWeb3.LAMPORTS_PER_SOL;
             transaction.add(
                 window.solanaWeb3.SystemProgram.transfer({
                     fromPubkey: new window.solanaWeb3.PublicKey(wallet.address),
@@ -1535,10 +1555,8 @@ async function buySolanaTokens() {
                 })
             );
         } else {
-            // For SPL tokens (USDC, USDT)
-            showToast('SPL token transfers require token program setup. Please contact support.', 'warning');
-            document.getElementById('crypto-buy-btn').disabled = false;
-            return;
+            // SPL Token transfer (USDC, USDT)
+            await handleSPLTokenTransfer(transaction, amount, connection);
         }
 
         const { blockhash } = await connection.getLatestBlockhash();
@@ -1549,7 +1567,10 @@ async function buySolanaTokens() {
         const signature = await connection.sendRawTransaction(signed.serialize());
         await connection.confirmTransaction(signature, 'confirmed');
 
+        const pepeAmount = calculatePepeTokens();
         showToast(`✅ Payment successful! Signature: ${signature.slice(0, 20)}...`, 'success');
+        showToast(`You will receive ${pepeAmount} PEPE tokens`, 'success');
+        
         document.getElementById('crypto-amount').value = '';
         calculateCryptoPricing();
         await getWalletBalance();
@@ -1558,6 +1579,84 @@ async function buySolanaTokens() {
     } finally {
         document.getElementById('crypto-buy-btn').disabled = false;
     }
+}
+
+async function handleSPLTokenTransfer(transaction, amount, connection) {
+    try {
+        const userPublicKey = new window.solanaWeb3.PublicKey(wallet.address);
+        const receiverPublicKey = new window.solanaWeb3.PublicKey(CONFIG.SOLANA_RECEIVER);
+        
+        let tokenMint;
+        let decimals;
+        
+        if (selectedToken === 'USDC') {
+            tokenMint = new window.solanaWeb3.PublicKey(CONFIG.USDC_MINT);
+            decimals = CONFIG.USDC_DECIMALS;
+        } else if (selectedToken === 'USDT') {
+            tokenMint = new window.solanaWeb3.PublicKey(CONFIG.USDT_MINT);
+            decimals = CONFIG.USDT_DECIMALS;
+        }
+        
+        // Get or create associated token accounts
+        const userTokenAccount = await getOrCreateAssociatedTokenAccount(
+            connection,
+            userPublicKey,
+            tokenMint,
+            userPublicKey
+        );
+        
+        const receiverTokenAccount = await getOrCreateAssociatedTokenAccount(
+            connection,
+            receiverPublicKey,
+            tokenMint,
+            receiverPublicKey
+        );
+        
+        // Create transfer instruction
+        const transferInstruction = window.splToken.createTransferInstruction(
+            userTokenAccount,
+            receiverTokenAccount,
+            userPublicKey,
+            BigInt(amount * Math.pow(10, decimals))
+        );
+        
+        transaction.add(transferInstruction);
+    } catch (error) {
+        throw new Error(`SPL Token transfer error: ${error.message}`);
+    }
+}
+
+async function getOrCreateAssociatedTokenAccount(connection, owner, mint, authority) {
+    // Use Phantom's built-in functionality or implement ATA lookup
+    try {
+        const ataAddress = window.splToken.getAssociatedTokenAddressSync(mint, authority);
+        const accountInfo = await connection.getAccountInfo(ataAddress);
+        
+        if (!accountInfo) {
+            showToast('Please create a token account for this token in Phantom', 'warning');
+            return ataAddress;
+        }
+        
+        return ataAddress;
+    } catch (error) {
+        showToast('Error getting token account: ' + error.message, 'error');
+        throw error;
+    }
+}
+
+function calculatePepeTokens() {
+    const amount = parseFloat(document.getElementById('crypto-amount').value) || 0;
+    let usdAmount = 0;
+    
+    if (selectedToken === 'SOL') {
+        usdAmount = amount * CONFIG.SOL_PRICE;
+    } else if (selectedToken === 'USDC') {
+        usdAmount = amount * CONFIG.USDC_PRICE;
+    } else if (selectedToken === 'USDT') {
+        usdAmount = amount * CONFIG.USDT_PRICE;
+    }
+    
+    return parseInt(usdAmount / CONFIG.PEPE_PRICE);
 }
 
 async function buyCardPayment() {
@@ -1578,13 +1677,11 @@ async function buyCardPayment() {
         document.getElementById('card-buy-btn').disabled = true;
         showToast('Processing card payment...', 'warning');
 
-        // Display bank transfer details
-        const pepeAmount = ((amount / CONFIG.EXCHANGE_RATES[selectedCurrency]) / CONFIG.PEPE_PRICE).toFixed(0);
+        const pepeAmount = parseInt((amount / CONFIG.EXCHANGE_RATES[selectedCurrency]) / CONFIG.PEPE_PRICE);
         
-        showToast(`📤 Bank transfer details displayed - Please transfer ${amount} ${selectedCurrency} to the account shown`, 'success');
+        showToast(`📤 Bank transfer details displayed - Please transfer ${amount} ${selectedCurrency}`, 'success');
         showToast(`You will receive ${pepeAmount} PEPE tokens | Reference: ${name}`, 'success');
         
-        // Reset form
         document.getElementById('card-amount').value = '';
         document.getElementById('card-name').value = '';
         document.getElementById('card-email').value = '';
