@@ -7,26 +7,36 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --green: #00ff66;
+      --green-soft: #7cff8e;
+      --bg: #07130a;
+      --text-dim: #d3d3d3;
+      --radius: 16px;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
-    body { background: #07130a; color: #fff; overflow-x: hidden; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: #fff; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
 
     .bg {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at top, #0d5f21 0%, #07130a 55%);
+      background: radial-gradient(circle at top, #0d5f21 0%, var(--bg) 55%);
       z-index: -2;
     }
 
     .glow {
       position: fixed;
-      width: 560px;
-      height: 560px;
+      width: min(62vw, 560px);
+      aspect-ratio: 1;
       background: #00ff6a;
       filter: blur(180px);
       opacity: 0.14;
       top: -120px;
       right: -120px;
       z-index: -1;
+      pointer-events: none;
     }
 
     header {
@@ -37,24 +47,29 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 22px;
+      gap: 12px;
+      padding: 14px 16px;
       background: rgba(0, 0, 0, 0.45);
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       z-index: 1000;
       border-bottom: 1px solid rgba(0, 255, 102, 0.25);
     }
 
     .logo {
-      font-size: 24px;
+      font-size: clamp(16px, 4.5vw, 24px);
       font-weight: 900;
-      color: #7cff8e;
-      text-shadow: 0 0 14px #00ff66;
+      color: var(--green-soft);
+      text-shadow: 0 0 14px var(--green);
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     nav {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
+      min-width: 0;
     }
 
     nav a {
@@ -64,22 +79,24 @@
       opacity: 0.9;
     }
 
-    nav a:hover { color: #00ff66; }
+    nav a:hover { color: var(--green); }
 
     .wallet-wrap { position: relative; }
 
     #wallet-btn {
       border: none;
       border-radius: 999px;
+      min-height: 44px;
       padding: 10px 16px;
       font-weight: 700;
-      background: #00ff66;
+      background: var(--green);
       color: #000;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       position: relative;
       z-index: 10;
       pointer-events: auto;
+      white-space: nowrap;
     }
 
     #wallet-btn:hover {
@@ -87,19 +104,20 @@
       box-shadow: 0 0 14px rgba(0, 255, 102, 0.7);
     }
 
-    #wallet-btn.connected { background: #7cff8e; }
+    #wallet-btn.connected { background: var(--green-soft); }
 
     .wallet-menu {
       position: absolute;
       right: 0;
       top: calc(100% + 10px);
-      width: 320px;
+      width: min(92vw, 340px);
       background: rgba(0, 0, 0, 0.95);
-      border: 2px solid #00ff66;
+      border: 2px solid var(--green);
       border-radius: 14px;
       padding: 12px;
       display: none;
       z-index: 1002;
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45);
     }
 
     .wallet-menu.active { display: block; }
@@ -120,6 +138,7 @@
       width: 100%;
       border: none;
       border-radius: 8px;
+      min-height: 44px;
       padding: 10px;
       background: #ff6666;
       color: #fff;
@@ -127,32 +146,33 @@
       cursor: pointer;
     }
 
-    main { padding-top: 90px; }
-    section { padding: 70px 20px; text-align: center; }
+    main { padding-top: 84px; }
+    section { padding: clamp(44px, 7vw, 70px) 16px; text-align: center; }
 
     h1 {
-      font-size: 50px;
+      font-size: clamp(32px, 10vw, 50px);
       margin-bottom: 14px;
-      line-height: 1;
+      line-height: 1.05;
     }
 
     h1 span {
-      color: #7cff8e;
-      text-shadow: 0 0 28px #00ff66;
+      color: var(--green-soft);
+      text-shadow: 0 0 28px var(--green);
     }
 
     h2 {
-      font-size: 38px;
-      color: #7cff8e;
+      font-size: clamp(26px, 7.5vw, 38px);
+      color: var(--green-soft);
       margin-bottom: 16px;
     }
 
     .hero p {
-      font-size: 18px;
-      color: #d3d3d3;
+      font-size: clamp(15px, 4.2vw, 18px);
+      color: var(--text-dim);
       max-width: 850px;
       margin: 0 auto 26px;
       line-height: 1.7;
+      padding-inline: 2px;
     }
 
     .buttons {
@@ -166,21 +186,24 @@
       text-decoration: none;
       border: none;
       border-radius: 999px;
+      min-height: 44px;
       padding: 12px 22px;
       font-weight: 700;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
     }
 
     .btn.buy {
-      background: #00ff66;
+      background: var(--green);
       color: #000;
       box-shadow: 0 0 16px rgba(0, 255, 102, 0.6);
     }
 
     .btn.alt {
       background: transparent;
-      border: 2px solid #00ff66;
+      border: 2px solid var(--green);
       color: #fff;
     }
 
@@ -188,9 +211,9 @@
       max-width: 940px;
       margin: 0 auto;
       background: rgba(255, 255, 255, 0.04);
-      border: 2px solid #00ff66;
-      border-radius: 16px;
-      padding: 20px;
+      border: 2px solid var(--green);
+      border-radius: var(--radius);
+      padding: clamp(14px, 3.8vw, 20px);
     }
 
     .wallet-address {
@@ -203,24 +226,26 @@
       flex-wrap: wrap;
       color: #d1ffd5;
       line-height: 1.7;
+      text-align: center;
     }
 
     .wallet-address strong { word-break: break-all; }
 
     .copy-btn {
-      border: 1px solid #00ff66;
+      border: 1px solid var(--green);
       background: rgba(255, 255, 255, 0.07);
       color: #fff;
       border-radius: 999px;
+      min-height: 40px;
       padding: 8px 14px;
       font-weight: 700;
       cursor: pointer;
     }
 
     .copy-btn.copied {
-      background: #7cff8e;
+      background: var(--green-soft);
       color: #000;
-      border-color: #7cff8e;
+      border-color: var(--green-soft);
     }
 
     .inline-status {
@@ -228,41 +253,57 @@
       font-size: 13px;
       color: #c9ffd1;
       background: rgba(0, 255, 100, 0.1);
-      border: 1px solid #00ff66;
+      border: 1px solid var(--green);
       border-radius: 10px;
       padding: 9px 12px;
+      word-break: break-word;
     }
 
     .toast {
       position: fixed;
-      right: 18px;
-      bottom: 18px;
+      right: 16px;
+      bottom: max(16px, env(safe-area-inset-bottom));
       z-index: 3000;
-      background: #00ff66;
+      background: var(--green);
       color: #000;
       padding: 10px 14px;
       border-radius: 10px;
       font-weight: 700;
-      max-width: 420px;
+      max-width: min(420px, calc(100vw - 32px));
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
     }
 
     .toast.error { background: #ff6666; color: #fff; }
     .toast.warning { background: #ffb020; color: #000; }
 
     footer {
-      padding: 30px 20px;
+      padding: 24px 16px;
       text-align: center;
       color: #777;
       background: #000;
       margin-top: 20px;
+      font-size: clamp(12px, 3.6vw, 14px);
     }
 
     @media (max-width: 900px) {
       nav a { display: none; }
-      h1 { font-size: 40px; }
-      h2 { font-size: 30px; }
-      .logo { font-size: 20px; }
-      header { padding: 14px; }
+      header { padding: 12px; }
+      main { padding-top: 76px; }
+      .wallet-menu { right: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .logo { max-width: 48vw; overflow: hidden; text-overflow: ellipsis; }
+      #wallet-btn { padding: 10px 12px; font-size: 12px; }
+      .btn { width: min(100%, 320px); }
+      .wallet-menu {
+        position: fixed;
+        top: 72px;
+        right: 12px;
+        left: 12px;
+        width: auto;
+      }
+      .glow { opacity: 0.1; filter: blur(120px); }
     }
   </style>
 </head>
@@ -342,6 +383,7 @@
       const copyWalletBtn = document.getElementById('copy-wallet-btn');
       const presaleWallet = document.getElementById('presale-wallet');
       const whitepaperBtn = document.getElementById('whitepaper-btn');
+      const walletWrap = document.querySelector('.wallet-wrap');
 
       if (!walletBtnOld) {
         console.error('[wallet] #wallet-btn not found');
@@ -368,6 +410,12 @@
         setTimeout(() => toast.remove(), 2600);
       }
 
+      function setMenuOpen(open) {
+        if (!walletMenu) return;
+        walletMenu.classList.toggle('active', !!open);
+        walletMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+      }
+
       function updateUI() {
         if (state.connected) {
           walletBtn.textContent = shortAddress(state.address);
@@ -381,7 +429,7 @@
           walletBtn.dataset.connected = '0';
           if (walletAddressItem) walletAddressItem.innerHTML = '<strong>Address:</strong> Not connected';
           if (walletStatus) walletStatus.textContent = 'Wallet: Not connected';
-          if (walletMenu) walletMenu.classList.remove('active');
+          setMenuOpen(false);
         }
       }
 
@@ -389,7 +437,7 @@
         const provider = getProvider();
         if (!provider) {
           showToast('MetaMask not detected. Install/enable MetaMask, then refresh.', 'error');
-          window.open('https://metamask.io/download/', '_blank');
+          window.open('https://metamask.io/download/', '_blank', 'noopener,noreferrer');
           return;
         }
 
@@ -459,7 +507,7 @@
         e.stopImmediatePropagation();
 
         if (state.connected) {
-          if (walletMenu) walletMenu.classList.toggle('active');
+          setMenuOpen(!walletMenu?.classList.contains('active'));
         } else {
           await connectWallet();
         }
@@ -474,14 +522,36 @@
       }
 
       document.addEventListener('click', (e) => {
-        const wrap = document.querySelector('.wallet-wrap');
-        if (wrap && !wrap.contains(e.target) && walletMenu) walletMenu.classList.remove('active');
+        if (walletWrap && !walletWrap.contains(e.target)) setMenuOpen(false);
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setMenuOpen(false);
       });
 
       if (copyWalletBtn && presaleWallet) {
         copyWalletBtn.addEventListener('click', async () => {
+          const value = (presaleWallet.textContent || '').trim();
+          if (!value) {
+            showToast('No wallet address found.', 'error');
+            return;
+          }
+
           try {
-            await navigator.clipboard.writeText(presaleWallet.textContent.trim());
+            if (navigator.clipboard && window.isSecureContext) {
+              await navigator.clipboard.writeText(value);
+            } else {
+              const temp = document.createElement('textarea');
+              temp.value = value;
+              temp.setAttribute('readonly', '');
+              temp.style.position = 'absolute';
+              temp.style.left = '-9999px';
+              document.body.appendChild(temp);
+              temp.select();
+              document.execCommand('copy');
+              temp.remove();
+            }
+
             copyWalletBtn.classList.add('copied');
             copyWalletBtn.textContent = 'Copied!';
             showToast('Address copied.');
