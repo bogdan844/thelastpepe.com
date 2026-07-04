@@ -497,11 +497,22 @@
       walletBtnOld.parentNode.replaceChild(walletBtn, walletBtnOld);
 
       const state = { connected: false, address: '' };
+      let providerEventsBound = false;
+      let isConnecting = false;
 
       const shortAddress = (a) => (a ? `${a.slice(0, 6)}...${a.slice(-4)}` : 'Connect MetaMask');
 
       function getProvider() {
-        return window.ethereum || null;
+        const eth = window.ethereum;
+        if (!eth) return null;
+
+        // Handle multi-wallet injection; prefer MetaMask explicitly
+        if (Array.isArray(eth.providers) && eth.providers.length) {
+          const mm = eth.providers.find((p) => p && p.isMetaMask);
+          return mm || eth.providers[0] || null;
+        }
+
+        return eth;
       }
 
       function showToast(message, type = 'success') {
@@ -526,12 +537,14 @@
           walletBtn.textContent = shortAddress(state.address);
           walletBtn.classList.add('connected');
           walletBtn.dataset.connected = '1';
+          walletBtn.disabled = false;
           if (walletAddressItem) walletAddressItem.innerHTML = `<strong>Address:</strong> ${state.address}`;
           if (walletStatus) walletStatus.textContent = `Wallet: Connected (${shortAddress(state.address)})`;
         } else {
           walletBtn.textContent = 'Connect MetaMask';
           walletBtn.classList.remove('connected');
           walletBtn.dataset.connected = '0';
+          walletBtn.disabled = false;
           if (walletAddressItem) walletAddressItem.innerHTML = '<strong>Address:</strong> Not connected';
           if (walletStatus) walletStatus.textContent = 'Wallet: Not connected';
           setMenuOpen(false);
@@ -539,8 +552,16 @@
       }
 
       async function connectWallet() {
+        if (isConnecting) return;
+        isConnecting = true;
+        walletBtn.disabled = true;
+        walletBtn.textContent = 'Connecting...';
+
         const provider = getProvider();
         if (!provider) {
+          isConnecting = false;
+          walletBtn.disabled = false;
+          walletBtn.textContent = 'Connect MetaMask';
           showToast('MetaMask not detected. Install/enable MetaMask, then refresh.', 'error');
           window.open('https://metamask.io/download/', '_blank', 'noopener,noreferrer');
           return;
@@ -556,8 +577,18 @@
           updateUI();
           showToast('MetaMask connected successfully.');
         } catch (err) {
-          showToast(`Connection failed: ${err?.message || err}`, 'error');
+          if (err?.code === 4001) {
+            showToast('Connection request was rejected in MetaMask.', 'warning');
+          } else if (err?.code === -32002) {
+            showToast('MetaMask request already pending. Open MetaMask popup and approve.', 'warning');
+          } else {
+            showToast(`Connection failed: ${err?.message || err}`, 'error');
+          }
           console.error('[wallet] connect error:', err);
+          updateUI();
+        } finally {
+          isConnecting = false;
+          walletBtn.disabled = false;
         }
       }
 
@@ -571,8 +602,14 @@
           if (account) {
             state.connected = true;
             state.address = account;
+          } else {
+            state.connected = false;
+            state.address = '';
           }
-        } catch (_) {}
+        } catch (_) {
+          state.connected = false;
+          state.address = '';
+        }
         updateUI();
       }
 
@@ -586,7 +623,7 @@
 
       function bindProviderEvents() {
         const provider = getProvider();
-        if (!provider || typeof provider.on !== 'function') return;
+        if (!provider || typeof provider.on !== 'function' || providerEventsBound) return;
 
         provider.on('accountsChanged', (accounts) => {
           const account = accounts?.[0];
@@ -603,6 +640,8 @@
         provider.on('chainChanged', () => {
           restoreSession();
         });
+
+        providerEventsBound = true;
       }
 
       // Single hardened click handler
