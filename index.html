@@ -200,425 +200,81 @@
   </footer>
 
   <script>
-    (function () {
-      const state = {
-        walletConnected: false,
-        walletAddress: '',
-        paymentMethod: 'crypto',
-        token: 'SOL',
-        currency: 'USD',
-        selectedApy: 18,
-        selectedDuration: '30 days',
-        pricePerTokenUsd: 0.002
-      };
+   function getProvider() {
+  if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
+  if (window.solana?.isPhantom) return window.solana;
+  return null;
+}
 
-      const walletBtn = document.getElementById('wallet-btn');
-      const walletMenu = document.getElementById('wallet-menu');
-      const walletAddressItem = document.getElementById('wallet-address-item');
-      const disconnectBtn = document.getElementById('disconnect-btn');
-      const walletStatus = document.getElementById('wallet-status');
+async function connectWallet() {
+  const provider = getProvider();
+  if (!provider) {
+    showToast('Phantom wallet not found. Please install/enable Phantom.', 'error');
+    window.open('https://phantom.app/', '_blank');
+    return;
+  }
 
-      const copyWalletBtn = document.getElementById('copy-wallet-btn');
-      const presaleWallet = document.getElementById('presale-wallet');
+  try {
+    const res = await provider.connect({ onlyIfTrusted: false });
+    const publicKey = res?.publicKey?.toString?.() || provider.publicKey?.toString?.();
+    if (!publicKey) throw new Error('No public key received from Phantom');
 
-      const paymentTabs = document.querySelectorAll('.payment-tab');
-      const buyCard = document.getElementById('buy-card');
-      const stakeCard = document.getElementById('stake-card');
+    state.walletConnected = true;
+    state.walletAddress = publicKey;
+    updateWalletUi();
+    showToast('Wallet connected successfully', 'success');
+  } catch (err) {
+    showToast(`Wallet connection failed: ${err?.message || err}`, 'error');
+  }
+}
 
-      const paymentMethodBtns = document.querySelectorAll('.payment-method-btn');
-      const tokenBtns = document.querySelectorAll('.token-btn');
-      const currencyBtns = document.querySelectorAll('.currency-btn');
-      const apyOptions = document.querySelectorAll('.apy-option');
+async function disconnectWallet() {
+  const provider = getProvider();
+  try {
+    if (provider?.isConnected) await provider.disconnect();
+  } catch (_) {}
 
-      const buyAmount = document.getElementById('buy-amount');
-      const priceCalc = document.getElementById('price-calc');
-      const bankDetails = document.getElementById('bank-details');
-      const buyBtn = document.getElementById('buy-btn');
+  state.walletConnected = false;
+  state.walletAddress = '';
+  updateWalletUi();
+  showToast('Wallet disconnected', 'warning');
+}
 
-      const stakeAmount = document.getElementById('stake-amount');
-      const stakeSummary = document.getElementById('stake-summary');
-      const stakeBtn = document.getElementById('stake-btn');
+function attachProviderEvents() {
+  const provider = getProvider();
+  if (!provider) return;
 
-      const whitepaperBtn = document.getElementById('whitepaper-btn');
+  provider.on('connect', (publicKey) => {
+    state.walletConnected = true;
+    state.walletAddress = publicKey?.toString?.() || provider.publicKey?.toString?.() || '';
+    updateWalletUi();
+  });
 
-      function shortAddress(address) {
-        if (!address || address.length < 10) return address || 'Not connected';
-        return `${address.slice(0, 4)}...${address.slice(-4)}`;
-      }
+  provider.on('disconnect', () => {
+    state.walletConnected = false;
+    state.walletAddress = '';
+    updateWalletUi();
+  });
 
-      function showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.className = `toast-message ${type}`;
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2800);
-      }
-
-      function updateWalletUi() {
-        if (state.walletConnected) {
-          walletBtn.textContent = shortAddress(state.walletAddress);
-          walletBtn.classList.add('connected');
-          walletAddressItem.innerHTML = `<strong>Address:</strong> ${state.walletAddress}`;
-          walletStatus.textContent = `Wallet: Connected (${shortAddress(state.walletAddress)})`;
-        } else {
-          walletBtn.textContent = 'Connect Wallet';
-          walletBtn.classList.remove('connected');
-          walletAddressItem.innerHTML = '<strong>Address:</strong> Not connected';
-          walletStatus.textContent = 'Wallet: Not connected';
-          walletMenu.classList.remove('active');
-        }
-      }
-
-      function connectWalletMock() {
-        const random = Math.random().toString(36).slice(2, 10);
-        state.walletAddress = `So1${random}Y7Q4mP9sL2x`; 
-        state.walletConnected = true;
-        updateWalletUi();
-        showToast('Wallet connected successfully', 'success');
-      }
-
-      function disconnectWallet() {
-        state.walletConnected = false;
-        state.walletAddress = '';
-        updateWalletUi();
-        showToast('Wallet disconnected', 'warning');
-      }
-
-      function setActiveButton(group, clicked, className = 'active') {
-        group.forEach(btn => btn.classList.remove(className));
-        clicked.classList.add(className);
-      }
-
-      function updatePriceCalc() {
-        const amount = Number(buyAmount.value || 0);
-        const usdValue = state.currency === 'EUR' ? amount * 1.08 : amount;
-        const pepe = usdValue / state.pricePerTokenUsd;
-        priceCalc.textContent = `You will receive: ${pepe.toLocaleString(undefined, { maximumFractionDigits: 2 })} PEPE`;
-      }
-
-      function updateStakeSummary() {
-        const amount = Number(stakeAmount.value || 0);
-        const reward = amount * (state.selectedApy / 100);
-        stakeSummary.textContent = `Estimated yearly reward: ${reward.toLocaleString(undefined, { maximumFractionDigits: 2 })} PEPE (${state.selectedApy}% APY, ${state.selectedDuration})`;
-      }
-
-      walletBtn.addEventListener('click', () => {
-        if (!state.walletConnected) {
-          connectWalletMock();
-          return;
-        }
-        walletMenu.classList.toggle('active');
-      });
-
-      disconnectBtn.addEventListener('click', disconnectWallet);
-
-      document.addEventListener('click', (e) => {
-        const wrap = document.querySelector('.wallet-wrap');
-        if (!wrap.contains(e.target)) walletMenu.classList.remove('active');
-      });
-
-      copyWalletBtn.addEventListener('click', async () => {
-        const text = presaleWallet.textContent.trim();
-        try {
-          await navigator.clipboard.writeText(text);
-          copyWalletBtn.classList.add('copied');
-          copyWalletBtn.textContent = 'Copied!';
-          showToast('Presale address copied to clipboard');
-          setTimeout(() => {
-            copyWalletBtn.classList.remove('copied');
-            copyWalletBtn.textContent = 'Copy Address';
-          }, 1700);
-        } catch {
-          showToast('Clipboard access denied. Copy manually.', 'error');
-        }
-      });
-
-      paymentTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          setActiveButton(paymentTabs, tab);
-          const target = tab.dataset.target;
-          if (target === 'buy-card') {
-            buyCard.classList.remove('hidden');
-            stakeCard.classList.add('hidden');
-          } else {
-            stakeCard.classList.remove('hidden');
-            buyCard.classList.add('hidden');
-          }
-        });
-      });
-
-      paymentMethodBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          setActiveButton(paymentMethodBtns, btn);
-          state.paymentMethod = btn.dataset.method;
-          bankDetails.classList.toggle('hidden', state.paymentMethod !== 'bank');
-          showToast(`Payment method set to ${state.paymentMethod.toUpperCase()}`);
-        });
-      });
-
-      tokenBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          setActiveButton(tokenBtns, btn);
-          state.token = btn.dataset.token;
-          showToast(`Token selected: ${state.token}`);
-        });
-      });
-
-      currencyBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          setActiveButton(currencyBtns, btn);
-          state.currency = btn.dataset.currency;
-          updatePriceCalc();
-          showToast(`Currency set to ${state.currency}`);
-        });
-      });
-
-      buyAmount.addEventListener('input', updatePriceCalc);
-
-      buyBtn.addEventListener('click', () => {
-        const amount = Number(buyAmount.value || 0);
-        if (!state.walletConnected) {
-          showToast('Please connect your wallet first', 'warning');
-          return;
-        }
-        if (amount <= 0) {
-          showToast('Enter a valid buy amount', 'error');
-          return;
-        }
-        showToast(`Order submitted: ${amount} ${state.currency} via ${state.paymentMethod.toUpperCase()} using ${state.token}`);
-      });
-
-      apyOptions.forEach(opt => {
-        opt.addEventListener('click', () => {
-          apyOptions.forEach(o => o.classList.remove('selected'));
-          opt.classList.add('selected');
-          state.selectedApy = Number(opt.dataset.apy);
-          state.selectedDuration = opt.dataset.duration;
-          updateStakeSummary();
-        });
-
-        opt.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            opt.click();
-          }
-        });
-      });
-
-      stakeAmount.addEventListener('input', updateStakeSummary);
-
-      stakeBtn.addEventListener('click', () => {
-        const amount = Number(stakeAmount.value || 0);
-        if (!state.walletConnected) {
-          showToast('Please connect your wallet to stake', 'warning');
-          return;
-        }
-        if (amount <= 0) {
-          showToast('Enter a valid stake amount', 'error');
-          return;
-        }
-        showToast(`Stake submitted: ${amount} PEPE at ${state.selectedApy}% APY (${state.selectedDuration})`);
-      });
-
-      whitepaperBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        showToast('Whitepaper link not set yet. Add your PDF URL in #whitepaper-btn handler.', 'warning');
-      });
-
-      updateWalletUi();
-      updatePriceCalc();
-      updateStakeSummary();
-    })();
-  </script>
- <script>
-(() => {
-  const WALLET_BTN_ID = "wallet-btn"; // if your button has different id, change here
-  const STATUS_ID = "wallet-status-inline";
-
-  function log(...a){ console.log("[phantom-fix]", ...a); }
-
-  function ensureStatusEl(btn){
-    let el = document.getElementById(STATUS_ID);
-    if (!el) {
-      el = document.createElement("div");
-      el.id = STATUS_ID;
-      el.style.cssText = "margin-top:8px;font-size:12px;line-height:1.4;word-break:break-word;color:#ffd166;";
-      (btn?.parentElement || document.body).appendChild(el);
+  provider.on('accountChanged', (publicKey) => {
+    if (publicKey) {
+      state.walletConnected = true;
+      state.walletAddress = publicKey.toString();
+    } else {
+      state.walletConnected = false;
+      state.walletAddress = '';
     }
-    return el;
-  }
-
-  function setStatus(msg, isError = false){
-    const btn = document.getElementById(WALLET_BTN_ID);
-    const el = ensureStatusEl(btn);
-    el.style.color = isError ? "#ff6b6b" : "#ffd166";
-    el.textContent = msg;
-    log(msg);
-  }
-
-  function getPhantomProvider(){
-    if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
-    if (window.solana?.isPhantom) return window.solana;
-    return null;
-  }
-
-  async function waitForProvider(ms = 2500){
-    const start = Date.now();
-    while (Date.now() - start < ms) {
-      const p = getPhantomProvider();
-      if (p) return p;
-      await new Promise(r => setTimeout(r, 100));
-    }
-    return null;
-  }
-
-  function shortKey(k){ return k ? `${k.slice(0,4)}...${k.slice(-4)}` : ""; }
-
-  async function onConnectClick(ev){
-    ev.preventDefault();
-    ev.stopPropagation();
-
-    const btn = ev.currentTarget;
-    btn.disabled = true;
-
-    try {
-      setStatus("Detecting Phantom...");
-      const provider = await waitForProvider(3000);
-
-      if (!provider) {
-        setStatus("Phantom not detected. Enable extension for this site, then refresh.", true);
-        window.open("https://phantom.app/", "_blank");
-        return;
-      }
-
-      // Important: direct user-gesture call
-      setStatus("Opening Phantom popup...");
-      const resp = await provider.connect({ onlyIfTrusted: false });
-
-      const pubkey = resp?.publicKey?.toString?.() || provider.publicKey?.toString?.();
-      if (!pubkey) throw new Error("No public key returned by Phantom.");
-
-      btn.textContent = shortKey(pubkey);
-      btn.setAttribute("data-wallet-connected", "true");
-      setStatus("Connected: " + pubkey);
-    } catch (err) {
-      const msg = err?.message || String(err);
-      setStatus("Connect failed: " + msg, true);
-    } finally {
-      btn.disabled = false;
-    }
-  }
-
-  function arm(){
-    const btn = document.getElementById(WALLET_BTN_ID);
-    if (!btn) {
-      setStatus(`Button #${WALLET_BTN_ID} not found.`, true);
-      return;
-    }
-
-    // Remove old handlers by cloning node (nuclear but reliable)
-    const fresh = btn.cloneNode(true);
-    btn.parentNode.replaceChild(fresh, btn);
-
-    fresh.addEventListener("click", onConnectClick, { passive: false });
-    setStatus("Connect handler ready.");
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", arm, { once: true });
-  } else {
-    arm();
-  }
-})();
+    updateWalletUi();
+  });
+}
 </script>
-  <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.getElementById('wallet-btn');
-  if (!btn) return console.error('wallet-btn not found');
-
-  btn.onclick = async () => {
-    console.log('CLICK OK');
-    const provider = window.phantom?.solana || window.solana;
-    console.log('PROVIDER', provider);
-
-    if (!provider || !provider.isPhantom) {
-      alert('Phantom not detected');
-      return;
-    }
-
-    try {
-      const res = await provider.connect({ onlyIfTrusted: false });
-      console.log('CONNECTED', res.publicKey.toString());
-      btn.textContent = res.publicKey.toString().slice(0,4) + '...' + res.publicKey.toString().slice(-4);
-    } catch (e) {
-      console.error('CONNECT ERR', e);
-      alert('Connect error: ' + (e.message || e));
-    }
-  };
+  walletBtn.addEventListener('click', async () => {
+  if (!state.walletConnected) {
+    await connectWallet();
+    return;
+  }
+  walletMenu.classList.toggle('active');
 });
-</script>
-  <script>
-(() => {
-  function provider() {
-    return (window.phantom && window.phantom.solana && window.phantom.solana.isPhantom)
-      ? window.phantom.solana
-      : (window.solana && window.solana.isPhantom ? window.solana : null);
-  }
-
-  function short(k){ return k.slice(0,4) + "..." + k.slice(-4); }
-
-  function arm() {
-    const btn = document.getElementById("wallet-btn");
-    if (!btn) return console.error("[wallet] #wallet-btn not found");
-
-    // Force clickable above overlays
-    Object.assign(btn.style, {
-      position: "relative",
-      zIndex: "2147483647",
-      pointerEvents: "auto",
-      cursor: "pointer"
-    });
-
-    // Debug outline (remove later)
-    btn.style.outline = "2px solid #00e5ff";
-
-    const handler = async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      console.log("[wallet] click captured");
-
-      const p = provider();
-      console.log("[wallet] provider:", p);
-
-      if (!p) {
-        alert("Phantom not detected in this tab. Unlock/enable Phantom, then refresh.");
-        return;
-      }
-
-      try {
-        const r = await p.connect({ onlyIfTrusted: false });
-        const key = r?.publicKey?.toString?.() || p.publicKey?.toString?.();
-        if (key) btn.textContent = short(key);
-        console.log("[wallet] connected:", key);
-      } catch (err) {
-        console.error("[wallet] connect error:", err);
-        alert("Connect failed: " + (err?.message || err));
-      }
-    };
-
-    // Capture phase so it still fires even if bubbling is blocked elsewhere
-    btn.addEventListener("click", handler, { capture: true });
-    btn.addEventListener("pointerdown", handler, { capture: true });
-    console.log("[wallet] armed");
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", arm, { once: true });
-  } else {
-    arm();
-  }
-})();
-</script>
+  attachProviderEvents();
 </body>
 </html>
