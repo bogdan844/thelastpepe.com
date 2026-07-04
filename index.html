@@ -330,6 +330,93 @@
       restoreTrustedSession();
       updateWalletUi();
     })();
-  </script>
+ <script>
+(() => {
+  const btn = document.getElementById('wallet-btn');
+  const status = document.getElementById('wallet-status');
+  const addrItem = document.getElementById('wallet-address-item');
+  const menu = document.getElementById('wallet-menu');
+  const disconnectBtn = document.getElementById('disconnect-btn');
+
+  if (!btn) {
+    console.error('[wallet] #wallet-btn not found');
+    return;
+  }
+
+  function provider() {
+    if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
+    if (window.solana?.isPhantom) return window.solana;
+    return null;
+  }
+
+  function short(k) { return k ? `${k.slice(0,4)}...${k.slice(-4)}` : 'Connect Wallet'; }
+
+  function setConnected(pubkey) {
+    btn.textContent = short(pubkey);
+    btn.classList.add('connected');
+    if (status) status.textContent = `Wallet: Connected (${short(pubkey)})`;
+    if (addrItem) addrItem.innerHTML = `<strong>Address:</strong> ${pubkey}`;
+  }
+
+  function setDisconnected() {
+    btn.textContent = 'Connect Wallet';
+    btn.classList.remove('connected');
+    if (status) status.textContent = 'Wallet: Not connected';
+    if (addrItem) addrItem.innerHTML = '<strong>Address:</strong> Not connected';
+    if (menu) menu.classList.remove('active');
+  }
+
+  async function connectNow(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const p = provider();
+    if (!p) {
+      alert('Phantom not found. Install/enable Phantom, then refresh.');
+      window.open('https://phantom.app/', '_blank');
+      return;
+    }
+
+    try {
+      const r = await p.connect({ onlyIfTrusted: false }); // popup approval
+      const key = r?.publicKey?.toString?.() || p.publicKey?.toString?.();
+      if (!key) throw new Error('No public key returned');
+      setConnected(key);
+    } catch (err) {
+      console.error('[wallet] connect failed', err);
+      alert('Connect failed: ' + (err?.message || err));
+    }
+  }
+
+  async function disconnectNow(e) {
+    e.preventDefault();
+    const p = provider();
+    try { if (p?.isConnected) await p.disconnect(); } catch {}
+    setDisconnected();
+  }
+
+  // hard-bind
+  btn.onclick = connectNow;
+  btn.style.pointerEvents = 'auto';
+  btn.style.position = 'relative';
+  btn.style.zIndex = '99999';
+
+  if (disconnectBtn) disconnectBtn.onclick = disconnectNow;
+
+  // toggle menu only when already connected
+  btn.addEventListener('contextmenu', (e) => e.preventDefault());
+
+  // provider events
+  const p = provider();
+  if (p?.on) {
+    p.on('connect', (pk) => setConnected(pk?.toString?.() || p.publicKey?.toString?.() || ''));
+    p.on('disconnect', setDisconnected);
+    p.on('accountChanged', (pk) => pk ? setConnected(pk.toString()) : setDisconnected());
+  }
+
+  setDisconnected();
+  console.log('[wallet] hotfix armed');
+})();
+</script>
 </body>
 </html>
