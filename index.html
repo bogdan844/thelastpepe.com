@@ -2,10 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <title>The Last Pepe | Official Memecoin</title>
+  <meta name="description" content="The Last Pepe official memecoin portal. Connect MetaMask, join the presale, and follow tokenomics and roadmap updates." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="theme-color" content="#07130a" />
+  <meta name="format-detection" content="telephone=no" />
+  <link rel="canonical" href="https://thelastpepe.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="The Last Pepe" />
+  <meta property="og:title" content="The Last Pepe | Official Memecoin" />
+  <meta property="og:description" content="Official memecoin launch portal with MetaMask integration, presale details, tokenomics, and roadmap." />
+  <meta property="og:url" content="https://thelastpepe.com/" />
+  <meta property="og:image" content="https://thelastpepe.com/og-image.jpg" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Last Pepe | Official Memecoin" />
+  <meta name="twitter:description" content="Official memecoin launch portal with MetaMask integration and presale details." />
+  <meta name="twitter:image" content="https://thelastpepe.com/og-image.jpg" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+
   <style>
     :root {
       --green: #00ff66;
@@ -13,11 +34,64 @@
       --bg: #07130a;
       --text-dim: #d3d3d3;
       --radius: 16px;
+      --focus: #b8ffd0;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: #fff; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: #fff;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a,
+    button {
+      touch-action: manipulation;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+      border-radius: 10px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .skip-link:focus {
+      left: 12px;
+      top: 12px;
+      width: auto;
+      height: auto;
+      padding: 10px 14px;
+      background: #fff;
+      color: #000;
+      border-radius: 10px;
+      font-weight: 700;
+      z-index: 2000;
+    }
 
     .bg {
       position: fixed;
@@ -37,6 +111,7 @@
       right: -120px;
       z-index: -1;
       pointer-events: none;
+      will-change: transform;
     }
 
     header {
@@ -305,33 +380,60 @@
       }
       .glow { opacity: 0.1; filter: blur(120px); }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { animation: none !important; transition: none !important; }
+      .glow { filter: blur(80px); }
+    }
   </style>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "The Last Pepe",
+      "url": "https://thelastpepe.com/",
+      "description": "Official memecoin launch portal with MetaMask integration, presale details, tokenomics, and roadmap.",
+      "inLanguage": "en"
+    }
+  </script>
 </head>
 <body>
-  <div class="bg"></div>
-  <div class="glow"></div>
+  <a href="#main-content" class="skip-link">Skip to content</a>
 
-  <header>
-    <div class="logo">🐸 The Last Pepe</div>
-    <nav>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="glow" aria-hidden="true"></div>
+
+  <header role="banner">
+    <div class="logo" aria-label="The Last Pepe">🐸 The Last Pepe</div>
+    <nav aria-label="Primary navigation">
       <a href="#presale">Presale</a>
       <a href="#buy">Buy</a>
       <a href="#tokenomics">Tokenomics</a>
       <a href="#roadmap">Roadmap</a>
 
       <div class="wallet-wrap">
-        <button id="wallet-btn" type="button">Connect MetaMask</button>
-        <div id="wallet-menu" class="wallet-menu" aria-hidden="true">
+        <button
+          id="wallet-btn"
+          type="button"
+          aria-haspopup="menu"
+          aria-expanded="false"
+          aria-controls="wallet-menu"
+        >
+          Connect MetaMask
+        </button>
+        <div id="wallet-menu" class="wallet-menu" role="menu" aria-hidden="true">
           <div id="wallet-address-item" class="wallet-menu-item"><strong>Address:</strong> Not connected</div>
-          <button id="disconnect-btn" class="disconnect-btn" type="button">Disconnect</button>
+          <button id="disconnect-btn" class="disconnect-btn" type="button" role="menuitem">Disconnect</button>
         </div>
       </div>
     </nav>
   </header>
 
-  <main>
-    <section class="hero" id="hero">
-      <h1>The Last <span>Pepe</span></h1>
+  <main id="main-content">
+    <section class="hero" id="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title">The Last <span>Pepe</span></h1>
       <p>Official memecoin launch portal. Wallet integration is MetaMask-only and uses a single hardened click handler.</p>
       <div class="buttons">
         <a href="#buy" class="btn buy">Buy Now</a>
@@ -339,20 +441,20 @@
       </div>
     </section>
 
-    <section id="presale">
-      <h2>Presale</h2>
+    <section id="presale" aria-labelledby="presale-title">
+      <h2 id="presale-title">Presale</h2>
       <div class="card">
         <p class="wallet-address">
           Treasury (ERC-20):
           <strong id="presale-wallet">0xYourTreasuryWalletAddress</strong>
           <button id="copy-wallet-btn" class="copy-btn" type="button">Copy Address</button>
         </p>
-        <div id="wallet-status" class="inline-status">Wallet: Not connected</div>
+        <div id="wallet-status" class="inline-status" aria-live="polite">Wallet: Not connected</div>
       </div>
     </section>
 
-    <section id="buy">
-      <h2>Buy</h2>
+    <section id="buy" aria-labelledby="buy-title">
+      <h2 id="buy-title">Buy</h2>
       <div class="card">
         <p style="line-height:1.8;color:#d8d8d8;">
           Click <strong>Connect MetaMask</strong>, approve account access popup, then continue.
@@ -360,13 +462,13 @@
       </div>
     </section>
 
-    <section id="tokenomics">
-      <h2>Tokenomics</h2>
+    <section id="tokenomics" aria-labelledby="tokenomics-title">
+      <h2 id="tokenomics-title">Tokenomics</h2>
       <div class="card"><p>Total Supply: 1,000,000,000 PEPE</p></div>
     </section>
 
-    <section id="roadmap">
-      <h2>Roadmap</h2>
+    <section id="roadmap" aria-labelledby="roadmap-title">
+      <h2 id="roadmap-title">Roadmap</h2>
       <div class="card"><p>Phase 1: Launch • Phase 2: Listings • Phase 3: Staking Expansion</p></div>
     </section>
   </main>
@@ -406,6 +508,8 @@
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
         toast.textContent = message;
+        toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
+        toast.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2600);
       }
@@ -414,6 +518,7 @@
         if (!walletMenu) return;
         walletMenu.classList.toggle('active', !!open);
         walletMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+        walletBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
       }
 
       function updateUI() {
