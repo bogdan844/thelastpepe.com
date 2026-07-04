@@ -595,44 +595,46 @@ window.addEventListener('load', () => {
   console.log('[wallet-fix] armed');
 });
 </script>
-</body>
-</html>
-<script>
+  <script>
 window.addEventListener('load', () => {
-  const oldBtn = document.getElementById('wallet-btn');
-  if (!oldBtn) return;
-
+  const btnOld = document.getElementById('wallet-btn');
   const menu = document.getElementById('wallet-menu');
   const status = document.getElementById('wallet-status');
   const addr = document.getElementById('wallet-address-item');
 
-  const btn = oldBtn.cloneNode(true);
-  oldBtn.parentNode.replaceChild(btn, oldBtn);
+  if (!btnOld) return console.error('wallet-btn missing');
 
-  let connected = false;
-  let account = '';
+  const btn = btnOld.cloneNode(true); // removes all old listeners
+  btnOld.parentNode.replaceChild(btn, btnOld);
 
-  function short(a){ return a ? `${a.slice(0,6)}...${a.slice(-4)}` : 'Connect MetaMask'; }
-  function ui(){
-    btn.textContent = connected ? short(account) : 'Connect MetaMask';
-    btn.classList.toggle('connected', connected);
-    if (status) status.textContent = connected ? `Wallet: Connected (${short(account)})` : 'Wallet: Not connected';
-    if (addr) addr.innerHTML = connected ? `<strong>Address:</strong> ${account}` : '<strong>Address:</strong> Not connected';
-    if (!connected && menu) menu.classList.remove('active');
-  }
+  const short = a => `${a.slice(0,6)}...${a.slice(-4)}`;
 
   btn.addEventListener('click', async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!window.ethereum) return alert('MetaMask not found');
-    if (connected) { menu && menu.classList.toggle('active'); return; }
+
+    if (btn.dataset.connected === '1') {
+      if (menu) menu.classList.toggle('active');
+      return;
+    }
+
+    if (!window.ethereum) {
+      alert('MetaMask not found');
+      window.open('https://metamask.io/download/', '_blank');
+      return;
+    }
 
     try {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      account = accounts?.[0] || '';
-      connected = !!account;
-      ui();
+      const accts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const a = accts?.[0];
+      if (!a) throw new Error('No account');
+      btn.dataset.connected = '1';
+      btn.textContent = short(a);
+      btn.classList.add('connected');
+      if (status) status.textContent = `Wallet: Connected (${short(a)})`;
+      if (addr) addr.innerHTML = `<strong>Address:</strong> ${a}`;
     } catch (err) {
+      console.error(err);
       alert('Connect failed: ' + (err?.message || err));
     }
   });
@@ -642,15 +644,8 @@ window.addEventListener('load', () => {
     if (wrap && !wrap.contains(e.target) && menu) menu.classList.remove('active');
   });
 
-  if (window.ethereum?.on) {
-    window.ethereum.on('accountsChanged', (accounts) => {
-      account = accounts?.[0] || '';
-      connected = !!account;
-      ui();
-    });
-  }
-
-  ui();
-  console.log('[wallet-final] bound');
+  console.log('wallet hard-bind ready');
 });
 </script>
+</body>
+</html>
