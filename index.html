@@ -502,6 +502,16 @@
 
       const shortAddress = (a) => (a ? `${a.slice(0, 6)}...${a.slice(-4)}` : 'Connect MetaMask');
 
+      function isMobileDevice() {
+        return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+      }
+
+      function openMetaMaskDeeplink() {
+        const cleanUrl = window.location.href.replace(/^https?:\/\//, '');
+        const deeplink = `https://metamask.app.link/dapp/${cleanUrl}`;
+        window.open(deeplink, '_blank', 'noopener,noreferrer');
+      }
+
       function getProvider() {
         const eth = window.ethereum;
         if (!eth) return null;
@@ -509,10 +519,10 @@
         // Handle multi-wallet injection; prefer MetaMask explicitly
         if (Array.isArray(eth.providers) && eth.providers.length) {
           const mm = eth.providers.find((p) => p && p.isMetaMask);
-          return mm || eth.providers[0] || null;
+          return mm || null;
         }
 
-        return eth;
+        return eth.isMetaMask ? eth : null;
       }
 
       function showToast(message, type = 'success') {
@@ -522,7 +532,7 @@
         toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
         toast.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2600);
+        setTimeout(() => toast.remove(), 2800);
       }
 
       function setMenuOpen(open) {
@@ -558,16 +568,26 @@
         walletBtn.textContent = 'Connecting...';
 
         const provider = getProvider();
+
         if (!provider) {
           isConnecting = false;
           walletBtn.disabled = false;
           walletBtn.textContent = 'Connect MetaMask';
-          showToast('MetaMask not detected. Install/enable MetaMask, then refresh.', 'error');
-          window.open('https://metamask.io/download/', '_blank', 'noopener,noreferrer');
+
+          if (isMobileDevice()) {
+            showToast('Opening MetaMask app… If it does not open, install MetaMask first.', 'warning');
+            openMetaMaskDeeplink();
+          } else {
+            showToast('MetaMask not detected. Install/enable the extension, unlock it, then refresh.', 'error');
+            window.open('https://metamask.io/download/', '_blank', 'noopener,noreferrer');
+          }
           return;
         }
 
         try {
+          // Wake provider in some environments
+          await provider.request({ method: 'eth_chainId' });
+
           const accounts = await provider.request({ method: 'eth_requestAccounts' });
           const account = accounts?.[0];
           if (!account) throw new Error('No account returned from MetaMask');
@@ -576,7 +596,15 @@
           state.address = account;
           updateUI();
           showToast('MetaMask connected successfully.');
+
+          // Optional network warning (Ethereum mainnet = 0x1)
+          const chainId = await provider.request({ method: 'eth_chainId' });
+          if (chainId !== '0x1') {
+            showToast('Warning: You are not on Ethereum Mainnet.', 'warning');
+          }
         } catch (err) {
+          console.error('[wallet] connect error full:', err);
+
           if (err?.code === 4001) {
             showToast('Connection request was rejected in MetaMask.', 'warning');
           } else if (err?.code === -32002) {
@@ -584,7 +612,9 @@
           } else {
             showToast(`Connection failed: ${err?.message || err}`, 'error');
           }
-          console.error('[wallet] connect error:', err);
+
+          state.connected = false;
+          state.address = '';
           updateUI();
         } finally {
           isConnecting = false;
