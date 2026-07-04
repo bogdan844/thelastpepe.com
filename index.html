@@ -2,74 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>The Last Pepe | Official Memecoin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif}
-    body{background:#07130a;color:white;overflow-x:hidden}
-    .bg{position:fixed;width:100%;height:100%;background:radial-gradient(circle at top,#0d5f21 0%,#07130a 50%);z-index:-2}
-    .glow{position:fixed;width:600px;height:600px;background:#00ff6a;filter:blur(200px);opacity:.15;top:-100px;right:-100px;z-index:-1}
-    header{position:fixed;width:100%;top:0;left:0;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.3);backdrop-filter:blur(10px);z-index:1000}
-    .logo{display:flex;align-items:center;gap:10px;font-size:28px;font-weight:900;color:#78ff7a;text-shadow:0 0 15px #00ff66}
-    nav{display:flex;align-items:center;gap:18px}
-    nav a{text-decoration:none;color:white;transition:.3s;font-size:14px}
-    nav a:hover{color:#00ff66}
-    button,.btn{cursor:pointer}
-    #wallet-btn{padding:10px 20px;background:#00ff66;color:black;border:none;border-radius:50px;font-weight:700;transition:.3s;font-size:14px}
-    #wallet-btn:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,255,102,.8)}
-    #wallet-btn.connected{background:#78ff7a}
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+    body { background: #07130a; color: #fff; overflow-x: hidden; }
+    .bg { position: fixed; inset: 0; background: radial-gradient(circle at top, #0d5f21 0%, #07130a 55%); z-index: -2; }
+    .glow { position: fixed; width: 560px; height: 560px; background: #00ff6a; filter: blur(180px); opacity: .14; top: -120px; right: -120px; z-index: -1; }
 
-    .wallet-wrap{position:relative}
-    .wallet-menu{position:absolute;top:100%;right:0;margin-top:10px;background:rgba(0,0,0,.95);border:2px solid #00ff66;border-radius:15px;padding:15px;min-width:300px;display:none;z-index:1001;box-shadow:0 0 30px rgba(0,255,102,.3)}
-    .wallet-menu.active{display:block}
-    .wallet-menu-item{padding:10px 15px;color:#78ff7a;font-size:13px;word-break:break-all;background:rgba(0,255,100,.1);border-radius:8px;margin-bottom:10px;border:1px solid rgba(0,255,100,.3)}
-    .disconnect-btn{width:100%;padding:10px;background:#ff6b6b;color:white;border:none;border-radius:8px;font-weight:700;font-size:13px}
+    header {
+      position: fixed; top: 0; left: 0; width: 100%;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 22px; background: rgba(0,0,0,.45); backdrop-filter: blur(10px);
+      z-index: 1000; border-bottom: 1px solid rgba(0,255,102,.25);
+    }
+    .logo { font-size: 24px; font-weight: 900; color: #7cff8e; text-shadow: 0 0 14px #00ff66; }
+    nav { display: flex; align-items: center; gap: 14px; }
+    nav a { color: #fff; text-decoration: none; font-size: 13px; opacity: .9; }
+    nav a:hover { color: #00ff66; }
 
-    .hero{min-height:100vh;display:flex;justify-content:space-between;align-items:flex-start;padding:140px 60px 80px;gap:40px;flex-wrap:wrap}
-    .hero-text{max-width:650px}
-    .hero-text h1{font-size:72px;line-height:1;margin-bottom:20px}
-    .hero-text h1 span{color:#78ff7a;text-shadow:0 0 30px #00ff66}
-    .hero-text p{font-size:20px;color:#d6d6d6;line-height:1.7;margin-bottom:35px}
-    .buttons{display:flex;gap:20px;flex-wrap:wrap}
-    .btn{padding:16px 34px;border-radius:50px;text-decoration:none;font-weight:700;transition:.3s;border:none}
-    .buy{background:#00ff66;color:black;box-shadow:0 0 20px #00ff66}
-    .whitepaper{border:2px solid #00ff66;color:white;background:transparent}
+    .wallet-wrap { position: relative; }
+    #wallet-btn {
+      border: none; border-radius: 999px; padding: 10px 16px;
+      font-weight: 700; background: #00ff66; color: #000; cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    #wallet-btn:hover { transform: translateY(-1px); box-shadow: 0 0 14px rgba(0,255,102,.7); }
+    #wallet-btn.connected { background: #7cff8e; }
 
-    section{padding:100px 40px;text-align:center}
-    h2{font-size:52px;margin-bottom:30px;color:#78ff7a}
+    .wallet-menu {
+      position: absolute; right: 0; top: calc(100% + 10px);
+      width: 310px; background: rgba(0,0,0,.95); border: 2px solid #00ff66;
+      border-radius: 14px; padding: 12px; display: none;
+    }
+    .wallet-menu.active { display: block; }
+    .wallet-menu-item {
+      font-size: 12px; line-height: 1.5; color: #c9ffd1; padding: 9px 10px;
+      background: rgba(0,255,100,.1); border: 1px solid rgba(0,255,100,.28);
+      border-radius: 8px; margin-bottom: 10px; word-break: break-all;
+    }
+    .disconnect-btn {
+      width: 100%; border: none; border-radius: 8px; padding: 10px;
+      background: #ff6666; color: #fff; font-weight: 700; cursor: pointer;
+    }
 
-    .wallet-address{font-size:16px;color:#c6ffc5;line-height:1.7;margin:0 auto 20px;max-width:1000px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
-    .wallet-address strong{word-break:break-all}
-    .copy-btn{background:rgba(255,255,255,.08);color:#fff;border:1px solid #00ff66;border-radius:999px;padding:10px 18px;font-weight:700}
-    .copy-btn.copied{background:#78ff7a;color:#000;border-color:#78ff7a}
+    main { padding-top: 90px; }
+    section { padding: 70px 20px; text-align: center; }
+    h1 { font-size: 50px; margin-bottom: 14px; line-height: 1; }
+    h1 span { color: #7cff8e; text-shadow: 0 0 28px #00ff66; }
+    h2 { font-size: 38px; color: #7cff8e; margin-bottom: 16px; }
 
-    .payment-tabs,.payment-method-select,.token-select,.currency-select{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:15px}
-    .payment-tab,.payment-method-btn,.token-btn,.currency-btn{padding:10px 18px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:10px;font-weight:700}
-    .payment-tab.active,.payment-method-btn.active,.token-btn.active,.currency-btn.active{background:#00ff66;color:black}
+    .hero p { font-size: 18px; color: #d3d3d3; max-width: 850px; margin: 0 auto 26px; line-height: 1.7; }
+    .buttons { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      text-decoration: none; border: none; border-radius: 999px; padding: 12px 22px;
+      font-weight: 700; display: inline-block;
+    }
+    .btn.buy { background: #00ff66; color: #000; box-shadow: 0 0 16px rgba(0,255,102,.6); }
+    .btn.alt { background: transparent; border: 2px solid #00ff66; color: #fff; }
 
-    .buy-stake-container{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;max-width:1100px;margin:auto}
-    .buy-card,.stake-card{flex:1;min-width:320px;padding:25px;border-radius:20px;background:rgba(255,255,255,.05);border:2px solid #00ff66}
-    .form-group,.amount-input-group{text-align:left;margin-bottom:15px}
-    .form-group label,.amount-input-group label{display:block;color:#00ff66;font-size:13px;font-weight:700;margin-bottom:6px}
-    .form-group input,.amount-input-group input{width:100%;padding:12px;border-radius:10px;border:1px solid #00ff66;background:rgba(0,255,100,.1);color:white}
-    .wallet-status,.price-calc,.bank-details,.price-ticker{padding:10px 12px;border-radius:10px;margin-bottom:12px;font-size:13px}
-    .wallet-status,.price-calc,.price-ticker{background:rgba(0,255,100,.1);border:1px solid #00ff66;color:#c6ffc5}
-    .bank-details{background:rgba(0,255,100,.08);border:1px solid #00ff66;color:#c6ffc5;text-align:left}
-    .hidden{display:none!important}
-    .buy-btn,.stake-btn{width:100%;padding:14px;background:#00ff66;color:black;border:none;border-radius:10px;font-weight:700;font-size:16px}
+    .card {
+      max-width: 920px; margin: 0 auto; background: rgba(255,255,255,.04);
+      border: 2px solid #00ff66; border-radius: 16px; padding: 20px;
+    }
 
-    .apy-option{padding:12px;border:2px solid rgba(0,255,100,.3);border-radius:12px;background:rgba(0,255,100,.05);cursor:pointer;text-align:left;margin-bottom:10px}
-    .apy-option.selected{border-color:#00ff66;box-shadow:0 0 15px rgba(0,255,100,.3)}
+    .wallet-address {
+      margin: 0 auto; max-width: 900px; display: flex; justify-content: center; align-items: center;
+      gap: 10px; flex-wrap: wrap; color: #d1ffd5;
+    }
+    .wallet-address strong { word-break: break-all; }
+    .copy-btn {
+      border: 1px solid #00ff66; background: rgba(255,255,255,.07); color: #fff;
+      border-radius: 999px; padding: 8px 14px; font-weight: 700; cursor: pointer;
+    }
+    .copy-btn.copied { background: #7cff8e; color: #000; border-color: #7cff8e; }
 
-    .toast-message{position:fixed;bottom:20px;right:20px;background:#00ff66;color:black;padding:12px 18px;border-radius:10px;font-weight:700;z-index:2000;max-width:420px}
-    .toast-message.error{background:#ff6b6b;color:#fff}
-    .toast-message.warning{background:#ffa500;color:#000}
+    .inline-status {
+      margin-top: 10px; font-size: 13px; color: #c9ffd1;
+      background: rgba(0,255,100,.1); border: 1px solid #00ff66; border-radius: 10px; padding: 9px 12px;
+    }
 
-    footer{padding:35px;text-align:center;background:black;color:#777}
+    .toast {
+      position: fixed; right: 18px; bottom: 18px; z-index: 3000;
+      background: #00ff66; color: #000; padding: 10px 14px; border-radius: 10px; font-weight: 700;
+      max-width: 420px;
+    }
+    .toast.error { background: #ff6666; color: #fff; }
+    .toast.warning { background: #ffb020; color: #000; }
 
-    @media(max-width:900px){header{padding:14px 18px}.hero{padding:120px 20px 40px}.hero-text h1{font-size:46px}nav a{display:none}}
+    footer { padding: 30px 20px; text-align: center; color: #777; background: #000; }
+
+    @media (max-width: 900px) {
+      nav a { display: none; }
+      h1 { font-size: 40px; }
+      h2 { font-size: 30px; }
+    }
   </style>
 </head>
 <body>
@@ -80,9 +109,10 @@
     <div class="logo">🐸 The Last Pepe</div>
     <nav>
       <a href="#presale">Presale</a>
-      <a href="#buy-stake">Buy & Stake</a>
+      <a href="#buy">Buy</a>
       <a href="#tokenomics">Tokenomics</a>
       <a href="#roadmap">Roadmap</a>
+
       <div class="wallet-wrap">
         <button id="wallet-btn" type="button">Connect Wallet</button>
         <div id="wallet-menu" class="wallet-menu" aria-hidden="true">
@@ -94,187 +124,212 @@
   </header>
 
   <main>
-    <section class="hero" id="hero">
-      <div class="hero-text">
-        <h1>The Last <span>Pepe</span></h1>
-        <p>Official memecoin launch portal. All interactive buttons are now fully functional.</p>
-        <div class="buttons">
-          <a href="#buy-stake" class="btn buy" id="buy-now-btn">Buy Now</a>
-          <a href="#" class="btn whitepaper" id="whitepaper-btn">Whitepaper</a>
-        </div>
+    <section class="hero">
+      <h1>The Last <span>Pepe</span></h1>
+      <p>Official memecoin launch portal. Phantom wallet connection is now integrated with real approval flow.</p>
+      <div class="buttons">
+        <a href="#buy" class="btn buy">Buy Now</a>
+        <a href="#" class="btn alt" id="whitepaper-btn">Whitepaper</a>
       </div>
     </section>
 
-    <section class="presale" id="presale">
+    <section id="presale">
       <h2>Presale</h2>
-      <p class="wallet-address">Send SOL to: <strong id="presale-wallet">8Xxkqf2uwTqYb5R4s7QyP9vM8g2nY4kJ7H1Lx2mQ6ZpA</strong> <button class="copy-btn" id="copy-wallet-btn" type="button">Copy Address</button></p>
-    </section>
-
-    <section class="buy-stake" id="buy-stake">
-      <h2>Buy & Stake</h2>
-
-      <div class="payment-tabs" role="tablist">
-        <button class="payment-tab active" data-target="buy-card" type="button">Buy</button>
-        <button class="payment-tab" data-target="stake-card" type="button">Stake</button>
-      </div>
-
-      <div class="buy-stake-container">
-        <div class="buy-card" id="buy-card">
-          <h3>Buy $PEPE</h3>
-
-          <div class="payment-method-select" aria-label="Payment method">
-            <button class="payment-method-btn active" data-method="crypto" type="button">Crypto</button>
-            <button class="payment-method-btn" data-method="card" type="button">Card</button>
-            <button class="payment-method-btn" data-method="bank" type="button">Bank</button>
-          </div>
-
-          <div class="token-select" aria-label="Token selection">
-            <button class="token-btn active" data-token="SOL" type="button">SOL</button>
-            <button class="token-btn" data-token="USDC" type="button">USDC</button>
-            <button class="token-btn" data-token="USDT" type="button">USDT</button>
-          </div>
-
-          <div class="currency-select" aria-label="Currency">
-            <button class="currency-btn active" data-currency="USD" type="button">USD</button>
-            <button class="currency-btn" data-currency="EUR" type="button">EUR</button>
-          </div>
-
-          <div id="wallet-status" class="wallet-status">Wallet: Not connected</div>
-
-          <div class="form-group">
-            <label for="buy-amount">Amount</label>
-            <input id="buy-amount" type="number" min="0" step="0.01" placeholder="Enter amount" />
-          </div>
-
-          <div id="price-calc" class="price-calc">You will receive: 0 PEPE</div>
-
-          <div id="bank-details" class="bank-details hidden">
-            <strong>Bank Transfer Details</strong>
-            <p>Beneficiary: The Last Pepe Labs</p>
-            <p>IBAN: DE89 3704 0044 0532 0130 00</p>
-            <p>SWIFT/BIC: COBADEFFXXX</p>
-            <p>Reference: Your wallet address</p>
-          </div>
-
-          <button id="buy-btn" class="buy-btn" type="button">Buy Now</button>
-        </div>
-
-        <div class="stake-card hidden" id="stake-card">
-          <h3>Stake $PEPE</h3>
-
-          <div class="apy-option selected" data-apy="18" data-duration="30 days" tabindex="0">
-            <div><strong>18% APY</strong> — 30 days lock</div>
-          </div>
-          <div class="apy-option" data-apy="32" data-duration="90 days" tabindex="0">
-            <div><strong>32% APY</strong> — 90 days lock</div>
-          </div>
-          <div class="apy-option" data-apy="55" data-duration="180 days" tabindex="0">
-            <div><strong>55% APY</strong> — 180 days lock</div>
-          </div>
-
-          <div class="amount-input-group">
-            <label for="stake-amount">Amount to stake</label>
-            <input id="stake-amount" type="number" min="0" step="1" placeholder="Enter PEPE amount" />
-          </div>
-
-          <div id="stake-summary" class="price-calc">Estimated yearly reward: 0 PEPE</div>
-
-          <button id="stake-btn" class="stake-btn" type="button">Stake Now</button>
-        </div>
+      <div class="card">
+        <p class="wallet-address">
+          Send SOL to:
+          <strong id="presale-wallet">8Xxkqf2uwTqYb5R4s7QyP9vM8g2nY4kJ7H1Lx2mQ6ZpA</strong>
+          <button id="copy-wallet-btn" class="copy-btn" type="button">Copy Address</button>
+        </p>
+        <div id="wallet-status" class="inline-status">Wallet: Not connected</div>
       </div>
     </section>
 
-    <section id="tokenomics" class="tokenomics">
+    <section id="buy">
+      <h2>Buy</h2>
+      <div class="card">
+        <p>Connect Phantom, approve in extension popup, then proceed with your buy flow.</p>
+      </div>
+    </section>
+
+    <section id="tokenomics">
       <h2>Tokenomics</h2>
-      <p>Total Supply: 1,000,000,000 PEPE</p>
+      <div class="card"><p>Total Supply: 1,000,000,000 PEPE</p></div>
     </section>
 
-    <section id="roadmap" class="roadmap">
+    <section id="roadmap">
       <h2>Roadmap</h2>
-      <p>Phase 1: Launch • Phase 2: Listings • Phase 3: Staking Expansion</p>
+      <div class="card"><p>Phase 1: Launch • Phase 2: Listings • Phase 3: Staking Expansion</p></div>
     </section>
   </main>
 
-  <footer>
-    <p>© 2026 The Last Pepe. All rights reserved.</p>
-  </footer>
+  <footer>© 2026 The Last Pepe. All rights reserved.</footer>
 
   <script>
-   function getProvider() {
-  if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
-  if (window.solana?.isPhantom) return window.solana;
-  return null;
-}
+    (() => {
+      const walletBtn = document.getElementById('wallet-btn');
+      const walletMenu = document.getElementById('wallet-menu');
+      const walletAddressItem = document.getElementById('wallet-address-item');
+      const disconnectBtn = document.getElementById('disconnect-btn');
+      const walletStatus = document.getElementById('wallet-status');
+      const copyWalletBtn = document.getElementById('copy-wallet-btn');
+      const presaleWallet = document.getElementById('presale-wallet');
+      const whitepaperBtn = document.getElementById('whitepaper-btn');
 
-async function connectWallet() {
-  const provider = getProvider();
-  if (!provider) {
-    showToast('Phantom wallet not found. Please install/enable Phantom.', 'error');
-    window.open('https://phantom.app/', '_blank');
-    return;
-  }
+      let walletConnected = false;
+      let walletAddress = '';
 
-  try {
-    const res = await provider.connect({ onlyIfTrusted: false });
-    const publicKey = res?.publicKey?.toString?.() || provider.publicKey?.toString?.();
-    if (!publicKey) throw new Error('No public key received from Phantom');
+      function getProvider() {
+        if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
+        if (window.solana?.isPhantom) return window.solana;
+        return null;
+      }
 
-    state.walletConnected = true;
-    state.walletAddress = publicKey;
-    updateWalletUi();
-    showToast('Wallet connected successfully', 'success');
-  } catch (err) {
-    showToast(`Wallet connection failed: ${err?.message || err}`, 'error');
-  }
-}
+      function shortAddress(address) {
+        if (!address || address.length < 10) return address || 'Not connected';
+        return `${address.slice(0, 4)}...${address.slice(-4)}`;
+      }
 
-async function disconnectWallet() {
-  const provider = getProvider();
-  try {
-    if (provider?.isConnected) await provider.disconnect();
-  } catch (_) {}
+      function showToast(message, type = 'success') {
+        const t = document.createElement('div');
+        t.className = `toast ${type}`;
+        t.textContent = message;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2600);
+      }
 
-  state.walletConnected = false;
-  state.walletAddress = '';
-  updateWalletUi();
-  showToast('Wallet disconnected', 'warning');
-}
+      function updateWalletUi() {
+        if (walletConnected) {
+          walletBtn.textContent = shortAddress(walletAddress);
+          walletBtn.classList.add('connected');
+          walletAddressItem.innerHTML = `<strong>Address:</strong> ${walletAddress}`;
+          walletStatus.textContent = `Wallet: Connected (${shortAddress(walletAddress)})`;
+        } else {
+          walletBtn.textContent = 'Connect Wallet';
+          walletBtn.classList.remove('connected');
+          walletAddressItem.innerHTML = '<strong>Address:</strong> Not connected';
+          walletStatus.textContent = 'Wallet: Not connected';
+          walletMenu.classList.remove('active');
+        }
+      }
 
-function attachProviderEvents() {
-  const provider = getProvider();
-  if (!provider) return;
+      async function connectWallet() {
+        const provider = getProvider();
+        if (!provider) {
+          showToast('Phantom not detected. Install/enable Phantom and refresh.', 'error');
+          window.open('https://phantom.app/', '_blank');
+          return;
+        }
 
-  provider.on('connect', (publicKey) => {
-    state.walletConnected = true;
-    state.walletAddress = publicKey?.toString?.() || provider.publicKey?.toString?.() || '';
-    updateWalletUi();
-  });
+        try {
+          const res = await provider.connect({ onlyIfTrusted: false }); // popup approval
+          const key = res?.publicKey?.toString?.() || provider.publicKey?.toString?.();
+          if (!key) throw new Error('No public key returned by Phantom');
+          walletConnected = true;
+          walletAddress = key;
+          updateWalletUi();
+          showToast('Wallet connected successfully');
+        } catch (err) {
+          showToast(`Connection failed: ${err?.message || err}`, 'error');
+        }
+      }
 
-  provider.on('disconnect', () => {
-    state.walletConnected = false;
-    state.walletAddress = '';
-    updateWalletUi();
-  });
+      async function disconnectWallet() {
+        const provider = getProvider();
+        try {
+          if (provider?.isConnected) await provider.disconnect();
+        } catch (_) {}
+        walletConnected = false;
+        walletAddress = '';
+        updateWalletUi();
+        showToast('Wallet disconnected', 'warning');
+      }
 
-  provider.on('accountChanged', (publicKey) => {
-    if (publicKey) {
-      state.walletConnected = true;
-      state.walletAddress = publicKey.toString();
-    } else {
-      state.walletConnected = false;
-      state.walletAddress = '';
-    }
-    updateWalletUi();
-  });
-}
-</script>
-  walletBtn.addEventListener('click', async () => {
-  if (!state.walletConnected) {
-    await connectWallet();
-    return;
-  }
-  walletMenu.classList.toggle('active');
-});
-  attachProviderEvents();
+      function bindProviderEvents() {
+        const provider = getProvider();
+        if (!provider?.on) return;
+
+        provider.on('connect', (pubKey) => {
+          walletConnected = true;
+          walletAddress = pubKey?.toString?.() || provider.publicKey?.toString?.() || '';
+          updateWalletUi();
+        });
+
+        provider.on('disconnect', () => {
+          walletConnected = false;
+          walletAddress = '';
+          updateWalletUi();
+        });
+
+        provider.on('accountChanged', (pubKey) => {
+          if (pubKey) {
+            walletConnected = true;
+            walletAddress = pubKey.toString();
+          } else {
+            walletConnected = false;
+            walletAddress = '';
+          }
+          updateWalletUi();
+        });
+      }
+
+      async function restoreTrustedSession() {
+        const provider = getProvider();
+        if (!provider) return;
+        try {
+          const res = await provider.connect({ onlyIfTrusted: true });
+          const key = res?.publicKey?.toString?.() || provider.publicKey?.toString?.();
+          if (key) {
+            walletConnected = true;
+            walletAddress = key;
+          }
+        } catch (_) {}
+        updateWalletUi();
+      }
+
+      walletBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (!walletConnected) {
+          await connectWallet();
+          return;
+        }
+        walletMenu.classList.toggle('active');
+      });
+
+      disconnectBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await disconnectWallet();
+      });
+
+      document.addEventListener('click', (e) => {
+        const wrap = document.querySelector('.wallet-wrap');
+        if (wrap && !wrap.contains(e.target)) walletMenu.classList.remove('active');
+      });
+
+      copyWalletBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(presaleWallet.textContent.trim());
+          copyWalletBtn.classList.add('copied');
+          copyWalletBtn.textContent = 'Copied!';
+          showToast('Presale address copied');
+          setTimeout(() => {
+            copyWalletBtn.classList.remove('copied');
+            copyWalletBtn.textContent = 'Copy Address';
+          }, 1400);
+        } catch {
+          showToast('Clipboard denied. Copy manually.', 'error');
+        }
+      });
+
+      whitepaperBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        showToast('Whitepaper URL not set yet.', 'warning');
+      });
+
+      bindProviderEvents();
+      restoreTrustedSession();
+      updateWalletUi();
+    })();
+  </script>
 </body>
 </html>
