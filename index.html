@@ -597,3 +597,60 @@ window.addEventListener('load', () => {
 </script>
 </body>
 </html>
+<script>
+window.addEventListener('load', () => {
+  const oldBtn = document.getElementById('wallet-btn');
+  if (!oldBtn) return;
+
+  const menu = document.getElementById('wallet-menu');
+  const status = document.getElementById('wallet-status');
+  const addr = document.getElementById('wallet-address-item');
+
+  const btn = oldBtn.cloneNode(true);
+  oldBtn.parentNode.replaceChild(btn, oldBtn);
+
+  let connected = false;
+  let account = '';
+
+  function short(a){ return a ? `${a.slice(0,6)}...${a.slice(-4)}` : 'Connect MetaMask'; }
+  function ui(){
+    btn.textContent = connected ? short(account) : 'Connect MetaMask';
+    btn.classList.toggle('connected', connected);
+    if (status) status.textContent = connected ? `Wallet: Connected (${short(account)})` : 'Wallet: Not connected';
+    if (addr) addr.innerHTML = connected ? `<strong>Address:</strong> ${account}` : '<strong>Address:</strong> Not connected';
+    if (!connected && menu) menu.classList.remove('active');
+  }
+
+  btn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!window.ethereum) return alert('MetaMask not found');
+    if (connected) { menu && menu.classList.toggle('active'); return; }
+
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      account = accounts?.[0] || '';
+      connected = !!account;
+      ui();
+    } catch (err) {
+      alert('Connect failed: ' + (err?.message || err));
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    const wrap = document.querySelector('.wallet-wrap');
+    if (wrap && !wrap.contains(e.target) && menu) menu.classList.remove('active');
+  });
+
+  if (window.ethereum?.on) {
+    window.ethereum.on('accountsChanged', (accounts) => {
+      account = accounts?.[0] || '';
+      connected = !!account;
+      ui();
+    });
+  }
+
+  ui();
+  console.log('[wallet-final] bound');
+});
+</script>
