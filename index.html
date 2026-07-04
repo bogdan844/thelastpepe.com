@@ -11,44 +11,59 @@
     body { background: #07130a; color: #fff; overflow-x: hidden; }
 
     .bg {
-      position: fixed; inset: 0;
+      position: fixed;
+      inset: 0;
       background: radial-gradient(circle at top, #0d5f21 0%, #07130a 55%);
       z-index: -2;
     }
 
     .glow {
       position: fixed;
-      width: 560px; height: 560px;
+      width: 560px;
+      height: 560px;
       background: #00ff6a;
       filter: blur(180px);
-      opacity: .14;
-      top: -120px; right: -120px;
+      opacity: 0.14;
+      top: -120px;
+      right: -120px;
       z-index: -1;
     }
 
     header {
-      position: fixed; top: 0; left: 0; width: 100%;
-      display: flex; justify-content: space-between; align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       padding: 16px 22px;
-      background: rgba(0, 0, 0, .45);
+      background: rgba(0, 0, 0, 0.45);
       backdrop-filter: blur(10px);
       z-index: 1000;
-      border-bottom: 1px solid rgba(0, 255, 102, .25);
+      border-bottom: 1px solid rgba(0, 255, 102, 0.25);
     }
 
     .logo {
-      font-size: 24px; font-weight: 900;
+      font-size: 24px;
+      font-weight: 900;
       color: #7cff8e;
       text-shadow: 0 0 14px #00ff66;
     }
 
-    nav { display: flex; align-items: center; gap: 14px; }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
     nav a {
       color: #fff;
       text-decoration: none;
       font-size: 13px;
-      opacity: .9;
+      opacity: 0.9;
     }
+
     nav a:hover { color: #00ff66; }
 
     .wallet-wrap { position: relative; }
@@ -61,13 +76,17 @@
       background: #00ff66;
       color: #000;
       cursor: pointer;
-      transition: transform .2s ease, box-shadow .2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       position: relative;
       z-index: 10;
       pointer-events: auto;
     }
 
-    #wallet-btn:hover { transform: translateY(-1px); box-shadow: 0 0 14px rgba(0, 255, 102, .7); }
+    #wallet-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 14px rgba(0, 255, 102, 0.7);
+    }
+
     #wallet-btn.connected { background: #7cff8e; }
 
     .wallet-menu {
@@ -75,7 +94,7 @@
       right: 0;
       top: calc(100% + 10px);
       width: 320px;
-      background: rgba(0, 0, 0, .95);
+      background: rgba(0, 0, 0, 0.95);
       border: 2px solid #00ff66;
       border-radius: 14px;
       padding: 12px;
@@ -90,8 +109,8 @@
       line-height: 1.5;
       color: #c9ffd1;
       padding: 9px 10px;
-      background: rgba(0, 255, 100, .1);
-      border: 1px solid rgba(0, 255, 100, .28);
+      background: rgba(0, 255, 100, 0.1);
+      border: 1px solid rgba(0, 255, 100, 0.28);
       border-radius: 8px;
       margin-bottom: 10px;
       word-break: break-all;
@@ -111,10 +130,22 @@
     main { padding-top: 90px; }
     section { padding: 70px 20px; text-align: center; }
 
-    h1 { font-size: 50px; margin-bottom: 14px; line-height: 1; }
-    h1 span { color: #7cff8e; text-shadow: 0 0 28px #00ff66; }
+    h1 {
+      font-size: 50px;
+      margin-bottom: 14px;
+      line-height: 1;
+    }
 
-    h2 { font-size: 38px; color: #7cff8e; margin-bottom: 16px; }
+    h1 span {
+      color: #7cff8e;
+      text-shadow: 0 0 28px #00ff66;
+    }
+
+    h2 {
+      font-size: 38px;
+      color: #7cff8e;
+      margin-bottom: 16px;
+    }
 
     .hero p {
       font-size: 18px;
@@ -144,7 +175,7 @@
     .btn.buy {
       background: #00ff66;
       color: #000;
-      box-shadow: 0 0 16px rgba(0, 255, 102, .6);
+      box-shadow: 0 0 16px rgba(0, 255, 102, 0.6);
     }
 
     .btn.alt {
@@ -156,7 +187,7 @@
     .card {
       max-width: 940px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, .04);
+      background: rgba(255, 255, 255, 0.04);
       border: 2px solid #00ff66;
       border-radius: 16px;
       padding: 20px;
@@ -178,7 +209,7 @@
 
     .copy-btn {
       border: 1px solid #00ff66;
-      background: rgba(255, 255, 255, .07);
+      background: rgba(255, 255, 255, 0.07);
       color: #fff;
       border-radius: 999px;
       padding: 8px 14px;
@@ -196,7 +227,7 @@
       margin-top: 10px;
       font-size: 13px;
       color: #c9ffd1;
-      background: rgba(0, 255, 100, .1);
+      background: rgba(0, 255, 100, 0.1);
       border: 1px solid #00ff66;
       border-radius: 10px;
       padding: 9px 12px;
@@ -260,7 +291,7 @@
   <main>
     <section class="hero" id="hero">
       <h1>The Last <span>Pepe</span></h1>
-      <p>Official memecoin launch portal. Wallet integration is now MetaMask-only.</p>
+      <p>Official memecoin launch portal. Wallet integration is MetaMask-only and uses a single hardened click handler.</p>
       <div class="buttons">
         <a href="#buy" class="btn buy">Buy Now</a>
         <button id="whitepaper-btn" class="btn alt" type="button">Whitepaper</button>
@@ -302,8 +333,8 @@
   <footer>© 2026 The Last Pepe. All rights reserved.</footer>
 
   <script>
-    (() => {
-      const walletBtn = document.getElementById('wallet-btn');
+    window.addEventListener('load', () => {
+      const walletBtnOld = document.getElementById('wallet-btn');
       const walletMenu = document.getElementById('wallet-menu');
       const walletAddressItem = document.getElementById('wallet-address-item');
       const disconnectBtn = document.getElementById('disconnect-btn');
@@ -312,22 +343,21 @@
       const presaleWallet = document.getElementById('presale-wallet');
       const whitepaperBtn = document.getElementById('whitepaper-btn');
 
-      const state = {
-        connected: false,
-        address: ''
-      };
+      if (!walletBtnOld) {
+        console.error('[wallet] #wallet-btn not found');
+        return;
+      }
+
+      // Clone node to wipe any pre-existing/duplicate handlers from old scripts/cached snippets
+      const walletBtn = walletBtnOld.cloneNode(true);
+      walletBtnOld.parentNode.replaceChild(walletBtn, walletBtnOld);
+
+      const state = { connected: false, address: '' };
+
+      const shortAddress = (a) => (a ? `${a.slice(0, 6)}...${a.slice(-4)}` : 'Connect MetaMask');
 
       function getProvider() {
         return window.ethereum || null;
-      }
-
-      function isMetaMaskProvider(provider) {
-        return !!provider && provider.isMetaMask === true;
-      }
-
-      function shortAddress(address) {
-        if (!address) return 'Not connected';
-        return `${address.slice(0, 6)}...${address.slice(-4)}`;
       }
 
       function showToast(message, type = 'success') {
@@ -342,33 +372,31 @@
         if (state.connected) {
           walletBtn.textContent = shortAddress(state.address);
           walletBtn.classList.add('connected');
-          walletAddressItem.innerHTML = `<strong>Address:</strong> ${state.address}`;
-          walletStatus.textContent = `Wallet: Connected (${shortAddress(state.address)})`;
+          walletBtn.dataset.connected = '1';
+          if (walletAddressItem) walletAddressItem.innerHTML = `<strong>Address:</strong> ${state.address}`;
+          if (walletStatus) walletStatus.textContent = `Wallet: Connected (${shortAddress(state.address)})`;
         } else {
           walletBtn.textContent = 'Connect MetaMask';
           walletBtn.classList.remove('connected');
-          walletAddressItem.innerHTML = '<strong>Address:</strong> Not connected';
-          walletStatus.textContent = 'Wallet: Not connected';
-          walletMenu.classList.remove('active');
+          walletBtn.dataset.connected = '0';
+          if (walletAddressItem) walletAddressItem.innerHTML = '<strong>Address:</strong> Not connected';
+          if (walletStatus) walletStatus.textContent = 'Wallet: Not connected';
+          if (walletMenu) walletMenu.classList.remove('active');
         }
       }
 
       async function connectWallet() {
         const provider = getProvider();
         if (!provider) {
-          showToast('MetaMask not found. Install MetaMask and refresh.', 'error');
+          showToast('MetaMask not detected. Install/enable MetaMask, then refresh.', 'error');
           window.open('https://metamask.io/download/', '_blank');
           return;
-        }
-
-        if (!isMetaMaskProvider(provider)) {
-          showToast('Injected wallet is not MetaMask. Please enable MetaMask.', 'warning');
         }
 
         try {
           const accounts = await provider.request({ method: 'eth_requestAccounts' });
           const account = accounts?.[0];
-          if (!account) throw new Error('No account returned.');
+          if (!account) throw new Error('No account returned from MetaMask');
 
           state.connected = true;
           state.address = account;
@@ -376,15 +404,8 @@
           showToast('MetaMask connected successfully.');
         } catch (err) {
           showToast(`Connection failed: ${err?.message || err}`, 'error');
+          console.error('[wallet] connect error:', err);
         }
-      }
-
-      async function disconnectWallet() {
-        // MetaMask does not support forced disconnect by dapp; clear local session only.
-        state.connected = false;
-        state.address = '';
-        updateUI();
-        showToast('Disconnected locally.', 'warning');
       }
 
       async function restoreSession() {
@@ -400,6 +421,14 @@
           }
         } catch (_) {}
         updateUI();
+      }
+
+      async function disconnectLocal() {
+        // MetaMask does not allow programmatic disconnect by dapp
+        state.connected = false;
+        state.address = '';
+        updateUI();
+        showToast('Disconnected locally.', 'warning');
       }
 
       function bindProviderEvents() {
@@ -418,234 +447,66 @@
           updateUI();
         });
 
-        provider.on('disconnect', () => {
-          state.connected = false;
-          state.address = '';
-          updateUI();
-        });
-
         provider.on('chainChanged', () => {
-          // Keep UI synced after network switches
           restoreSession();
         });
       }
 
+      // Single hardened click handler
       walletBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         e.stopPropagation();
+        e.stopImmediatePropagation();
 
         if (state.connected) {
-          walletMenu.classList.toggle('active');
+          if (walletMenu) walletMenu.classList.toggle('active');
         } else {
           await connectWallet();
         }
-      });
+      }, { capture: true });
 
-      disconnectBtn.addEventListener('click', async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        await disconnectWallet();
-      });
+      if (disconnectBtn) {
+        disconnectBtn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          await disconnectLocal();
+        });
+      }
 
       document.addEventListener('click', (e) => {
         const wrap = document.querySelector('.wallet-wrap');
-        if (wrap && !wrap.contains(e.target)) walletMenu.classList.remove('active');
+        if (wrap && !wrap.contains(e.target) && walletMenu) walletMenu.classList.remove('active');
       });
 
-      copyWalletBtn.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(presaleWallet.textContent.trim());
-          copyWalletBtn.classList.add('copied');
-          copyWalletBtn.textContent = 'Copied!';
-          showToast('Address copied.');
-          setTimeout(() => {
-            copyWalletBtn.classList.remove('copied');
-            copyWalletBtn.textContent = 'Copy Address';
-          }, 1400);
-        } catch {
-          showToast('Clipboard denied. Copy manually.', 'error');
-        }
-      });
+      if (copyWalletBtn && presaleWallet) {
+        copyWalletBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(presaleWallet.textContent.trim());
+            copyWalletBtn.classList.add('copied');
+            copyWalletBtn.textContent = 'Copied!';
+            showToast('Address copied.');
+            setTimeout(() => {
+              copyWalletBtn.classList.remove('copied');
+              copyWalletBtn.textContent = 'Copy Address';
+            }, 1400);
+          } catch {
+            showToast('Clipboard denied. Copy manually.', 'error');
+          }
+        });
+      }
 
-      whitepaperBtn.addEventListener('click', () => {
-        showToast('Whitepaper URL not set yet.', 'warning');
-      });
+      if (whitepaperBtn) {
+        whitepaperBtn.addEventListener('click', () => {
+          showToast('Whitepaper URL not set yet.', 'warning');
+        });
+      }
 
       bindProviderEvents();
       restoreSession();
       updateUI();
-      console.log('[wallet] MetaMask-only handler initialized');
-    })();
+
+      console.log('[wallet] MetaMask final handler ready');
+    });
   </script>
-  <script>
-window.addEventListener('load', () => {
-  const btn = document.getElementById('wallet-btn');
-  const menu = document.getElementById('wallet-menu');
-  const status = document.getElementById('wallet-status');
-  const addrItem = document.getElementById('wallet-address-item');
-  const disconnectBtn = document.getElementById('disconnect-btn');
-
-  if (!btn) return console.error('[wallet-fix] #wallet-btn not found');
-
-  const state = { connected: false, address: '' };
-
-  const short = (a) => a ? `${a.slice(0,6)}...${a.slice(-4)}` : 'Connect MetaMask';
-
-  const ui = () => {
-    if (state.connected) {
-      btn.textContent = short(state.address);
-      btn.classList.add('connected');
-      if (status) status.textContent = `Wallet: Connected (${short(state.address)})`;
-      if (addrItem) addrItem.innerHTML = `<strong>Address:</strong> ${state.address}`;
-    } else {
-      btn.textContent = 'Connect MetaMask';
-      btn.classList.remove('connected');
-      if (status) status.textContent = 'Wallet: Not connected';
-      if (addrItem) addrItem.innerHTML = '<strong>Address:</strong> Not connected';
-      if (menu) menu.classList.remove('active');
-    }
-  };
-
-  const provider = () => window.ethereum || null;
-
-  async function connect() {
-    const p = provider();
-    if (!p) {
-      alert('MetaMask not detected. Please install/enable MetaMask and refresh.');
-      window.open('https://metamask.io/download/', '_blank');
-      return;
-    }
-    try {
-      const accounts = await p.request({ method: 'eth_requestAccounts' });
-      const a = accounts && accounts[0];
-      if (!a) throw new Error('No account returned');
-      state.connected = true;
-      state.address = a;
-      ui();
-    } catch (e) {
-      alert('Connect failed: ' + (e?.message || e));
-      console.error('[wallet-fix] connect error:', e);
-    }
-  }
-
-  async function restore() {
-    const p = provider();
-    if (!p) return;
-    try {
-      const accounts = await p.request({ method: 'eth_accounts' });
-      const a = accounts && accounts[0];
-      if (a) {
-        state.connected = true;
-        state.address = a;
-      }
-      ui();
-    } catch (_) {}
-  }
-
-  async function disconnectLocal() {
-    state.connected = false;
-    state.address = '';
-    ui();
-  }
-
-  // CRITICAL: wipe previous handlers
-  const fresh = btn.cloneNode(true);
-  btn.parentNode.replaceChild(fresh, btn);
-
-  fresh.addEventListener('click', async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (state.connected) {
-      if (menu) menu.classList.toggle('active');
-    } else {
-      await connect();
-    }
-  });
-
-  if (disconnectBtn) {
-    disconnectBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      await disconnectLocal();
-    });
-  }
-
-  document.addEventListener('click', (e) => {
-    const wrap = document.querySelector('.wallet-wrap');
-    if (wrap && !wrap.contains(e.target) && menu) menu.classList.remove('active');
-  });
-
-  const p = provider();
-  if (p && p.on) {
-    p.on('accountsChanged', (accounts) => {
-      const a = accounts && accounts[0];
-      if (a) {
-        state.connected = true;
-        state.address = a;
-      } else {
-        state.connected = false;
-        state.address = '';
-      }
-      ui();
-    });
-  }
-
-  restore();
-  ui();
-  console.log('[wallet-fix] armed');
-});
-</script>
-  <script>
-window.addEventListener('load', () => {
-  const btnOld = document.getElementById('wallet-btn');
-  const menu = document.getElementById('wallet-menu');
-  const status = document.getElementById('wallet-status');
-  const addr = document.getElementById('wallet-address-item');
-
-  if (!btnOld) return console.error('wallet-btn missing');
-
-  const btn = btnOld.cloneNode(true); // removes all old listeners
-  btnOld.parentNode.replaceChild(btn, btnOld);
-
-  const short = a => `${a.slice(0,6)}...${a.slice(-4)}`;
-
-  btn.addEventListener('click', async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (btn.dataset.connected === '1') {
-      if (menu) menu.classList.toggle('active');
-      return;
-    }
-
-    if (!window.ethereum) {
-      alert('MetaMask not found');
-      window.open('https://metamask.io/download/', '_blank');
-      return;
-    }
-
-    try {
-      const accts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      const a = accts?.[0];
-      if (!a) throw new Error('No account');
-      btn.dataset.connected = '1';
-      btn.textContent = short(a);
-      btn.classList.add('connected');
-      if (status) status.textContent = `Wallet: Connected (${short(a)})`;
-      if (addr) addr.innerHTML = `<strong>Address:</strong> ${a}`;
-    } catch (err) {
-      console.error(err);
-      alert('Connect failed: ' + (err?.message || err));
-    }
-  });
-
-  document.addEventListener('click', (e) => {
-    const wrap = document.querySelector('.wallet-wrap');
-    if (wrap && !wrap.contains(e.target) && menu) menu.classList.remove('active');
-  });
-
-  console.log('wallet hard-bind ready');
-});
-</script>
 </body>
 </html>
