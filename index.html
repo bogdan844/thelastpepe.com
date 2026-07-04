@@ -502,76 +502,86 @@
 
       const shortAddress = (a) => (a ? `${a.slice(0, 6)}...${a.slice(-4)}` : 'Connect MetaMask');
 
-      function isMobileDevice() {
-        return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
-      }
+     <script>
+function isMobileDevice() {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+}
 
-      function openMetaMaskDeeplink() {
-        const cleanUrl = window.location.href.replace(/^https?:\/\//, '');
-        const deeplink = `https://metamask.app.link/dapp/${cleanUrl}`;
-        window.open(deeplink, '_blank', 'noopener,noreferrer');
-      }
+function openMetaMaskDeeplink() {
+  const cleanUrl = window.location.href.replace(/^https?:\/\//, '');
+  const deeplink = `https://metamask.app.link/dapp/${cleanUrl}`;
+  window.open(deeplink, '_blank', 'noopener,noreferrer');
+}
 
-      function getProvider() {
-        const eth = window.ethereum;
-        if (!eth) return null;
+function getProvider() {
+  const eth = window.ethereum;
+  if (!eth) return null;
 
-        // Handle multi-wallet injection; prefer MetaMask explicitly
-        if (Array.isArray(eth.providers) && eth.providers.length) {
-          const mm = eth.providers.find((p) => p && p.isMetaMask);
-          return mm || null;
-        }
+  // MetaMask-only (safer when multiple wallets inject)
+  if (Array.isArray(eth.providers) && eth.providers.length) {
+    const mm = eth.providers.find((p) => p && p.isMetaMask);
+    return mm || null;
+  }
 
-        return eth.isMetaMask ? eth : null;
-      }
+  return eth.isMetaMask ? eth : null;
+}
 
-      function showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.textContent = message;
-        toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
-        toast.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2800);
-      }
+async function connectWallet() {
+  if (isConnecting) return;
+  isConnecting = true;
+  walletBtn.disabled = true;
+  walletBtn.textContent = 'Connecting...';
 
-      function setMenuOpen(open) {
-        if (!walletMenu) return;
-        walletMenu.classList.toggle('active', !!open);
-        walletMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
-        walletBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      }
+  const provider = getProvider();
 
-      function updateUI() {
-        if (state.connected) {
-          walletBtn.textContent = shortAddress(state.address);
-          walletBtn.classList.add('connected');
-          walletBtn.dataset.connected = '1';
-          walletBtn.disabled = false;
-          if (walletAddressItem) walletAddressItem.innerHTML = `<strong>Address:</strong> ${state.address}`;
-          if (walletStatus) walletStatus.textContent = `Wallet: Connected (${shortAddress(state.address)})`;
-        } else {
-          walletBtn.textContent = 'Connect MetaMask';
-          walletBtn.classList.remove('connected');
-          walletBtn.dataset.connected = '0';
-          walletBtn.disabled = false;
-          if (walletAddressItem) walletAddressItem.innerHTML = '<strong>Address:</strong> Not connected';
-          if (walletStatus) walletStatus.textContent = 'Wallet: Not connected';
-          setMenuOpen(false);
-        }
-      }
+  if (!provider) {
+    isConnecting = false;
+    walletBtn.disabled = false;
+    walletBtn.textContent = 'Connect MetaMask';
 
-      async function connectWallet() {
-        if (isConnecting) return;
-        isConnecting = true;
-        walletBtn.disabled = true;
-        walletBtn.textContent = 'Connecting...';
+    if (isMobileDevice()) {
+      showToast('Opening MetaMask app… If it does not open, install MetaMask first.', 'warning');
+      openMetaMaskDeeplink();
+    } else {
+      showToast('MetaMask not detected. Install/enable extension, unlock it, then refresh.', 'error');
+      window.open('https://metamask.io/download/', '_blank', 'noopener,noreferrer');
+    }
+    return;
+  }
 
-        const provider = getProvider();
+  try {
+    await provider.request({ method: 'eth_chainId' }); // wake provider
+    const accounts = await provider.request({ method: 'eth_requestAccounts' });
+    const account = accounts?.[0];
+    if (!account) throw new Error('No account returned from MetaMask');
 
-        if (!provider) {
-          isConnecting = false;
-          walletBtn.disabled = false;
+    state.connected = true;
+    state.address = account;
+    updateUI();
+    showToast('MetaMask connected successfully.');
+
+    const chainId = await provider.request({ method: 'eth_chainId' });
+    if (chainId !== '0x1') {
+      showToast('Warning: You are not on Ethereum Mainnet.', 'warning');
+    }
+  } catch (err) {
+    console.error('[wallet] connect error full:', err);
+    if (err?.code === 4001) {
+      showToast('Connection request was rejected in MetaMask.', 'warning');
+    } else if (err?.code === -32002) {
+      showToast('MetaMask request already pending. Open MetaMask popup and approve.', 'warning');
+    } else {
+      showToast(`Connection failed: ${err?.message || err}`, 'error');
+    }
+    state.connected = false;
+    state.address = '';
+    updateUI();
+  } finally {
+    isConnecting = false;
+    walletBtn.disabled = false;
+  }
+}
+</script>
           walletBtn.textContent = 'Connect MetaMask';
 
           if (isMobileDevice()) {
