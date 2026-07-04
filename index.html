@@ -477,5 +477,123 @@
       console.log('[wallet] MetaMask-only handler initialized');
     })();
   </script>
+  <script>
+window.addEventListener('load', () => {
+  const btn = document.getElementById('wallet-btn');
+  const menu = document.getElementById('wallet-menu');
+  const status = document.getElementById('wallet-status');
+  const addrItem = document.getElementById('wallet-address-item');
+  const disconnectBtn = document.getElementById('disconnect-btn');
+
+  if (!btn) return console.error('[wallet-fix] #wallet-btn not found');
+
+  const state = { connected: false, address: '' };
+
+  const short = (a) => a ? `${a.slice(0,6)}...${a.slice(-4)}` : 'Connect MetaMask';
+
+  const ui = () => {
+    if (state.connected) {
+      btn.textContent = short(state.address);
+      btn.classList.add('connected');
+      if (status) status.textContent = `Wallet: Connected (${short(state.address)})`;
+      if (addrItem) addrItem.innerHTML = `<strong>Address:</strong> ${state.address}`;
+    } else {
+      btn.textContent = 'Connect MetaMask';
+      btn.classList.remove('connected');
+      if (status) status.textContent = 'Wallet: Not connected';
+      if (addrItem) addrItem.innerHTML = '<strong>Address:</strong> Not connected';
+      if (menu) menu.classList.remove('active');
+    }
+  };
+
+  const provider = () => window.ethereum || null;
+
+  async function connect() {
+    const p = provider();
+    if (!p) {
+      alert('MetaMask not detected. Please install/enable MetaMask and refresh.');
+      window.open('https://metamask.io/download/', '_blank');
+      return;
+    }
+    try {
+      const accounts = await p.request({ method: 'eth_requestAccounts' });
+      const a = accounts && accounts[0];
+      if (!a) throw new Error('No account returned');
+      state.connected = true;
+      state.address = a;
+      ui();
+    } catch (e) {
+      alert('Connect failed: ' + (e?.message || e));
+      console.error('[wallet-fix] connect error:', e);
+    }
+  }
+
+  async function restore() {
+    const p = provider();
+    if (!p) return;
+    try {
+      const accounts = await p.request({ method: 'eth_accounts' });
+      const a = accounts && accounts[0];
+      if (a) {
+        state.connected = true;
+        state.address = a;
+      }
+      ui();
+    } catch (_) {}
+  }
+
+  async function disconnectLocal() {
+    state.connected = false;
+    state.address = '';
+    ui();
+  }
+
+  // CRITICAL: wipe previous handlers
+  const fresh = btn.cloneNode(true);
+  btn.parentNode.replaceChild(fresh, btn);
+
+  fresh.addEventListener('click', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (state.connected) {
+      if (menu) menu.classList.toggle('active');
+    } else {
+      await connect();
+    }
+  });
+
+  if (disconnectBtn) {
+    disconnectBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      await disconnectLocal();
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    const wrap = document.querySelector('.wallet-wrap');
+    if (wrap && !wrap.contains(e.target) && menu) menu.classList.remove('active');
+  });
+
+  const p = provider();
+  if (p && p.on) {
+    p.on('accountsChanged', (accounts) => {
+      const a = accounts && accounts[0];
+      if (a) {
+        state.connected = true;
+        state.address = a;
+      } else {
+        state.connected = false;
+        state.address = '';
+      }
+      ui();
+    });
+  }
+
+  restore();
+  ui();
+  console.log('[wallet-fix] armed');
+});
+</script>
 </body>
 </html>
