@@ -231,7 +231,7 @@
       h1 { font-size: 40px; }
       h2 { font-size: 30px; }
       .logo { font-size: 20px; }
-      header { padding: 14px 14px; }
+      header { padding: 14px; }
     }
   </style>
 </head>
@@ -248,7 +248,7 @@
       <a href="#roadmap">Roadmap</a>
 
       <div class="wallet-wrap">
-        <button id="wallet-btn" type="button">Connect Wallet</button>
+        <button id="wallet-btn" type="button">Connect MetaMask</button>
         <div id="wallet-menu" class="wallet-menu" aria-hidden="true">
           <div id="wallet-address-item" class="wallet-menu-item"><strong>Address:</strong> Not connected</div>
           <button id="disconnect-btn" class="disconnect-btn" type="button">Disconnect</button>
@@ -260,7 +260,7 @@
   <main>
     <section class="hero" id="hero">
       <h1>The Last <span>Pepe</span></h1>
-      <p>Official memecoin launch portal. Phantom wallet connection is integrated with real approval flow.</p>
+      <p>Official memecoin launch portal. Wallet integration is now MetaMask-only.</p>
       <div class="buttons">
         <a href="#buy" class="btn buy">Buy Now</a>
         <button id="whitepaper-btn" class="btn alt" type="button">Whitepaper</button>
@@ -271,8 +271,8 @@
       <h2>Presale</h2>
       <div class="card">
         <p class="wallet-address">
-          Send SOL to:
-          <strong id="presale-wallet">8Xxkqf2uwTqYb5R4s7QyP9vM8g2nY4kJ7H1Lx2mQ6ZpA</strong>
+          Treasury (ERC-20):
+          <strong id="presale-wallet">0xYourTreasuryWalletAddress</strong>
           <button id="copy-wallet-btn" class="copy-btn" type="button">Copy Address</button>
         </p>
         <div id="wallet-status" class="inline-status">Wallet: Not connected</div>
@@ -283,7 +283,7 @@
       <h2>Buy</h2>
       <div class="card">
         <p style="line-height:1.8;color:#d8d8d8;">
-          Click <strong>Connect Wallet</strong>, approve Phantom popup, and your address will appear in the header.
+          Click <strong>Connect MetaMask</strong>, approve account access popup, then continue.
         </p>
       </div>
     </section>
@@ -313,37 +313,39 @@
       const whitepaperBtn = document.getElementById('whitepaper-btn');
 
       const state = {
-        walletConnected: false,
-        walletAddress: ''
+        connected: false,
+        address: ''
       };
 
       function getProvider() {
-        if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
-        if (window.solana?.isPhantom) return window.solana;
-        return null;
+        return window.ethereum || null;
+      }
+
+      function isMetaMaskProvider(provider) {
+        return !!provider && provider.isMetaMask === true;
       }
 
       function shortAddress(address) {
-        if (!address || address.length < 10) return address || 'Connect Wallet';
-        return `${address.slice(0, 4)}...${address.slice(-4)}`;
+        if (!address) return 'Not connected';
+        return `${address.slice(0, 6)}...${address.slice(-4)}`;
       }
 
       function showToast(message, type = 'success') {
-        const t = document.createElement('div');
-        t.className = `toast ${type}`;
-        t.textContent = message;
-        document.body.appendChild(t);
-        setTimeout(() => t.remove(), 2600);
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2600);
       }
 
-      function updateWalletUi() {
-        if (state.walletConnected) {
-          walletBtn.textContent = shortAddress(state.walletAddress);
+      function updateUI() {
+        if (state.connected) {
+          walletBtn.textContent = shortAddress(state.address);
           walletBtn.classList.add('connected');
-          walletAddressItem.innerHTML = `<strong>Address:</strong> ${state.walletAddress}`;
-          walletStatus.textContent = `Wallet: Connected (${shortAddress(state.walletAddress)})`;
+          walletAddressItem.innerHTML = `<strong>Address:</strong> ${state.address}`;
+          walletStatus.textContent = `Wallet: Connected (${shortAddress(state.address)})`;
         } else {
-          walletBtn.textContent = 'Connect Wallet';
+          walletBtn.textContent = 'Connect MetaMask';
           walletBtn.classList.remove('connected');
           walletAddressItem.innerHTML = '<strong>Address:</strong> Not connected';
           walletStatus.textContent = 'Wallet: Not connected';
@@ -354,87 +356,85 @@
       async function connectWallet() {
         const provider = getProvider();
         if (!provider) {
-          showToast('Phantom not detected. Install/enable Phantom, then refresh.', 'error');
-          window.open('https://phantom.app/', '_blank');
+          showToast('MetaMask not found. Install MetaMask and refresh.', 'error');
+          window.open('https://metamask.io/download/', '_blank');
           return;
         }
 
+        if (!isMetaMaskProvider(provider)) {
+          showToast('Injected wallet is not MetaMask. Please enable MetaMask.', 'warning');
+        }
+
         try {
-          const res = await provider.connect({ onlyIfTrusted: false }); // approval popup
-          const key = res?.publicKey?.toString?.() || provider.publicKey?.toString?.();
+          const accounts = await provider.request({ method: 'eth_requestAccounts' });
+          const account = accounts?.[0];
+          if (!account) throw new Error('No account returned.');
 
-          if (!key) throw new Error('No public key returned by Phantom.');
-
-          state.walletConnected = true;
-          state.walletAddress = key;
-          updateWalletUi();
-          showToast('Wallet connected successfully.');
+          state.connected = true;
+          state.address = account;
+          updateUI();
+          showToast('MetaMask connected successfully.');
         } catch (err) {
           showToast(`Connection failed: ${err?.message || err}`, 'error');
         }
       }
 
       async function disconnectWallet() {
-        const provider = getProvider();
-        try {
-          if (provider?.isConnected) await provider.disconnect();
-        } catch (_) {}
-
-        state.walletConnected = false;
-        state.walletAddress = '';
-        updateWalletUi();
-        showToast('Wallet disconnected.', 'warning');
+        // MetaMask does not support forced disconnect by dapp; clear local session only.
+        state.connected = false;
+        state.address = '';
+        updateUI();
+        showToast('Disconnected locally.', 'warning');
       }
 
-      function bindProviderEvents() {
-        const provider = getProvider();
-        if (!provider?.on) return;
-
-        provider.on('connect', (pubKey) => {
-          state.walletConnected = true;
-          state.walletAddress = pubKey?.toString?.() || provider.publicKey?.toString?.() || '';
-          updateWalletUi();
-        });
-
-        provider.on('disconnect', () => {
-          state.walletConnected = false;
-          state.walletAddress = '';
-          updateWalletUi();
-        });
-
-        provider.on('accountChanged', (pubKey) => {
-          if (pubKey) {
-            state.walletConnected = true;
-            state.walletAddress = pubKey.toString();
-          } else {
-            state.walletConnected = false;
-            state.walletAddress = '';
-          }
-          updateWalletUi();
-        });
-      }
-
-      async function restoreTrustedSession() {
+      async function restoreSession() {
         const provider = getProvider();
         if (!provider) return;
 
         try {
-          const res = await provider.connect({ onlyIfTrusted: true }); // silent restore
-          const key = res?.publicKey?.toString?.() || provider.publicKey?.toString?.();
-          if (key) {
-            state.walletConnected = true;
-            state.walletAddress = key;
+          const accounts = await provider.request({ method: 'eth_accounts' });
+          const account = accounts?.[0];
+          if (account) {
+            state.connected = true;
+            state.address = account;
           }
         } catch (_) {}
-        updateWalletUi();
+        updateUI();
       }
 
-      // CRITICAL: connect when disconnected, menu toggle when connected
+      function bindProviderEvents() {
+        const provider = getProvider();
+        if (!provider || typeof provider.on !== 'function') return;
+
+        provider.on('accountsChanged', (accounts) => {
+          const account = accounts?.[0];
+          if (account) {
+            state.connected = true;
+            state.address = account;
+          } else {
+            state.connected = false;
+            state.address = '';
+          }
+          updateUI();
+        });
+
+        provider.on('disconnect', () => {
+          state.connected = false;
+          state.address = '';
+          updateUI();
+        });
+
+        provider.on('chainChanged', () => {
+          // Keep UI synced after network switches
+          restoreSession();
+        });
+      }
+
       walletBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (state.walletConnected) {
+        if (state.connected) {
           walletMenu.classList.toggle('active');
         } else {
           await connectWallet();
@@ -457,7 +457,7 @@
           await navigator.clipboard.writeText(presaleWallet.textContent.trim());
           copyWalletBtn.classList.add('copied');
           copyWalletBtn.textContent = 'Copied!';
-          showToast('Presale address copied.');
+          showToast('Address copied.');
           setTimeout(() => {
             copyWalletBtn.classList.remove('copied');
             copyWalletBtn.textContent = 'Copy Address';
@@ -471,11 +471,10 @@
         showToast('Whitepaper URL not set yet.', 'warning');
       });
 
-      // Initialize
       bindProviderEvents();
-      restoreTrustedSession();
-      updateWalletUi();
-      console.log('[wallet] single Phantom handler initialized');
+      restoreSession();
+      updateUI();
+      console.log('[wallet] MetaMask-only handler initialized');
     })();
   </script>
 </body>
