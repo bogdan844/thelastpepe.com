@@ -2,102 +2,236 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <title>The Last Pepe | Official Memecoin</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
     body { background: #07130a; color: #fff; overflow-x: hidden; }
-    .bg { position: fixed; inset: 0; background: radial-gradient(circle at top, #0d5f21 0%, #07130a 55%); z-index: -2; }
-    .glow { position: fixed; width: 560px; height: 560px; background: #00ff6a; filter: blur(180px); opacity: .14; top: -120px; right: -120px; z-index: -1; }
+
+    .bg {
+      position: fixed; inset: 0;
+      background: radial-gradient(circle at top, #0d5f21 0%, #07130a 55%);
+      z-index: -2;
+    }
+
+    .glow {
+      position: fixed;
+      width: 560px; height: 560px;
+      background: #00ff6a;
+      filter: blur(180px);
+      opacity: .14;
+      top: -120px; right: -120px;
+      z-index: -1;
+    }
 
     header {
       position: fixed; top: 0; left: 0; width: 100%;
       display: flex; justify-content: space-between; align-items: center;
-      padding: 16px 22px; background: rgba(0,0,0,.45); backdrop-filter: blur(10px);
-      z-index: 1000; border-bottom: 1px solid rgba(0,255,102,.25);
+      padding: 16px 22px;
+      background: rgba(0, 0, 0, .45);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(0, 255, 102, .25);
     }
-    .logo { font-size: 24px; font-weight: 900; color: #7cff8e; text-shadow: 0 0 14px #00ff66; }
+
+    .logo {
+      font-size: 24px; font-weight: 900;
+      color: #7cff8e;
+      text-shadow: 0 0 14px #00ff66;
+    }
+
     nav { display: flex; align-items: center; gap: 14px; }
-    nav a { color: #fff; text-decoration: none; font-size: 13px; opacity: .9; }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      opacity: .9;
+    }
     nav a:hover { color: #00ff66; }
 
     .wallet-wrap { position: relative; }
+
     #wallet-btn {
-      border: none; border-radius: 999px; padding: 10px 16px;
-      font-weight: 700; background: #00ff66; color: #000; cursor: pointer;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: 700;
+      background: #00ff66;
+      color: #000;
+      cursor: pointer;
       transition: transform .2s ease, box-shadow .2s ease;
+      position: relative;
+      z-index: 10;
+      pointer-events: auto;
     }
-    #wallet-btn:hover { transform: translateY(-1px); box-shadow: 0 0 14px rgba(0,255,102,.7); }
+
+    #wallet-btn:hover { transform: translateY(-1px); box-shadow: 0 0 14px rgba(0, 255, 102, .7); }
     #wallet-btn.connected { background: #7cff8e; }
 
     .wallet-menu {
-      position: absolute; right: 0; top: calc(100% + 10px);
-      width: 310px; background: rgba(0,0,0,.95); border: 2px solid #00ff66;
-      border-radius: 14px; padding: 12px; display: none;
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      width: 320px;
+      background: rgba(0, 0, 0, .95);
+      border: 2px solid #00ff66;
+      border-radius: 14px;
+      padding: 12px;
+      display: none;
+      z-index: 1002;
     }
+
     .wallet-menu.active { display: block; }
+
     .wallet-menu-item {
-      font-size: 12px; line-height: 1.5; color: #c9ffd1; padding: 9px 10px;
-      background: rgba(0,255,100,.1); border: 1px solid rgba(0,255,100,.28);
-      border-radius: 8px; margin-bottom: 10px; word-break: break-all;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #c9ffd1;
+      padding: 9px 10px;
+      background: rgba(0, 255, 100, .1);
+      border: 1px solid rgba(0, 255, 100, .28);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      word-break: break-all;
     }
+
     .disconnect-btn {
-      width: 100%; border: none; border-radius: 8px; padding: 10px;
-      background: #ff6666; color: #fff; font-weight: 700; cursor: pointer;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      background: #ff6666;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
     }
 
     main { padding-top: 90px; }
     section { padding: 70px 20px; text-align: center; }
+
     h1 { font-size: 50px; margin-bottom: 14px; line-height: 1; }
     h1 span { color: #7cff8e; text-shadow: 0 0 28px #00ff66; }
+
     h2 { font-size: 38px; color: #7cff8e; margin-bottom: 16px; }
 
-    .hero p { font-size: 18px; color: #d3d3d3; max-width: 850px; margin: 0 auto 26px; line-height: 1.7; }
-    .buttons { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-    .btn {
-      text-decoration: none; border: none; border-radius: 999px; padding: 12px 22px;
-      font-weight: 700; display: inline-block;
+    .hero p {
+      font-size: 18px;
+      color: #d3d3d3;
+      max-width: 850px;
+      margin: 0 auto 26px;
+      line-height: 1.7;
     }
-    .btn.buy { background: #00ff66; color: #000; box-shadow: 0 0 16px rgba(0,255,102,.6); }
-    .btn.alt { background: transparent; border: 2px solid #00ff66; color: #fff; }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      text-decoration: none;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 22px;
+      font-weight: 700;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .btn.buy {
+      background: #00ff66;
+      color: #000;
+      box-shadow: 0 0 16px rgba(0, 255, 102, .6);
+    }
+
+    .btn.alt {
+      background: transparent;
+      border: 2px solid #00ff66;
+      color: #fff;
+    }
 
     .card {
-      max-width: 920px; margin: 0 auto; background: rgba(255,255,255,.04);
-      border: 2px solid #00ff66; border-radius: 16px; padding: 20px;
+      max-width: 940px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, .04);
+      border: 2px solid #00ff66;
+      border-radius: 16px;
+      padding: 20px;
     }
 
     .wallet-address {
-      margin: 0 auto; max-width: 900px; display: flex; justify-content: center; align-items: center;
-      gap: 10px; flex-wrap: wrap; color: #d1ffd5;
+      margin: 0 auto;
+      max-width: 900px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: #d1ffd5;
+      line-height: 1.7;
     }
+
     .wallet-address strong { word-break: break-all; }
+
     .copy-btn {
-      border: 1px solid #00ff66; background: rgba(255,255,255,.07); color: #fff;
-      border-radius: 999px; padding: 8px 14px; font-weight: 700; cursor: pointer;
+      border: 1px solid #00ff66;
+      background: rgba(255, 255, 255, .07);
+      color: #fff;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
     }
-    .copy-btn.copied { background: #7cff8e; color: #000; border-color: #7cff8e; }
+
+    .copy-btn.copied {
+      background: #7cff8e;
+      color: #000;
+      border-color: #7cff8e;
+    }
 
     .inline-status {
-      margin-top: 10px; font-size: 13px; color: #c9ffd1;
-      background: rgba(0,255,100,.1); border: 1px solid #00ff66; border-radius: 10px; padding: 9px 12px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #c9ffd1;
+      background: rgba(0, 255, 100, .1);
+      border: 1px solid #00ff66;
+      border-radius: 10px;
+      padding: 9px 12px;
     }
 
     .toast {
-      position: fixed; right: 18px; bottom: 18px; z-index: 3000;
-      background: #00ff66; color: #000; padding: 10px 14px; border-radius: 10px; font-weight: 700;
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 3000;
+      background: #00ff66;
+      color: #000;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 700;
       max-width: 420px;
     }
+
     .toast.error { background: #ff6666; color: #fff; }
     .toast.warning { background: #ffb020; color: #000; }
 
-    footer { padding: 30px 20px; text-align: center; color: #777; background: #000; }
+    footer {
+      padding: 30px 20px;
+      text-align: center;
+      color: #777;
+      background: #000;
+      margin-top: 20px;
+    }
 
     @media (max-width: 900px) {
       nav a { display: none; }
       h1 { font-size: 40px; }
       h2 { font-size: 30px; }
+      .logo { font-size: 20px; }
+      header { padding: 14px 14px; }
     }
   </style>
 </head>
@@ -124,12 +258,12 @@
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero" id="hero">
       <h1>The Last <span>Pepe</span></h1>
-      <p>Official memecoin launch portal. Phantom wallet connection is now integrated with real approval flow.</p>
+      <p>Official memecoin launch portal. Phantom wallet connection is integrated with real approval flow.</p>
       <div class="buttons">
         <a href="#buy" class="btn buy">Buy Now</a>
-        <a href="#" class="btn alt" id="whitepaper-btn">Whitepaper</a>
+        <button id="whitepaper-btn" class="btn alt" type="button">Whitepaper</button>
       </div>
     </section>
 
@@ -148,7 +282,9 @@
     <section id="buy">
       <h2>Buy</h2>
       <div class="card">
-        <p>Connect Phantom, approve in extension popup, then proceed with your buy flow.</p>
+        <p style="line-height:1.8;color:#d8d8d8;">
+          Click <strong>Connect Wallet</strong>, approve Phantom popup, and your address will appear in the header.
+        </p>
       </div>
     </section>
 
@@ -176,8 +312,10 @@
       const presaleWallet = document.getElementById('presale-wallet');
       const whitepaperBtn = document.getElementById('whitepaper-btn');
 
-      let walletConnected = false;
-      let walletAddress = '';
+      const state = {
+        walletConnected: false,
+        walletAddress: ''
+      };
 
       function getProvider() {
         if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
@@ -186,7 +324,7 @@
       }
 
       function shortAddress(address) {
-        if (!address || address.length < 10) return address || 'Not connected';
+        if (!address || address.length < 10) return address || 'Connect Wallet';
         return `${address.slice(0, 4)}...${address.slice(-4)}`;
       }
 
@@ -199,11 +337,11 @@
       }
 
       function updateWalletUi() {
-        if (walletConnected) {
-          walletBtn.textContent = shortAddress(walletAddress);
+        if (state.walletConnected) {
+          walletBtn.textContent = shortAddress(state.walletAddress);
           walletBtn.classList.add('connected');
-          walletAddressItem.innerHTML = `<strong>Address:</strong> ${walletAddress}`;
-          walletStatus.textContent = `Wallet: Connected (${shortAddress(walletAddress)})`;
+          walletAddressItem.innerHTML = `<strong>Address:</strong> ${state.walletAddress}`;
+          walletStatus.textContent = `Wallet: Connected (${shortAddress(state.walletAddress)})`;
         } else {
           walletBtn.textContent = 'Connect Wallet';
           walletBtn.classList.remove('connected');
@@ -216,19 +354,21 @@
       async function connectWallet() {
         const provider = getProvider();
         if (!provider) {
-          showToast('Phantom not detected. Install/enable Phantom and refresh.', 'error');
+          showToast('Phantom not detected. Install/enable Phantom, then refresh.', 'error');
           window.open('https://phantom.app/', '_blank');
           return;
         }
 
         try {
-          const res = await provider.connect({ onlyIfTrusted: false }); // popup approval
+          const res = await provider.connect({ onlyIfTrusted: false }); // approval popup
           const key = res?.publicKey?.toString?.() || provider.publicKey?.toString?.();
-          if (!key) throw new Error('No public key returned by Phantom');
-          walletConnected = true;
-          walletAddress = key;
+
+          if (!key) throw new Error('No public key returned by Phantom.');
+
+          state.walletConnected = true;
+          state.walletAddress = key;
           updateWalletUi();
-          showToast('Wallet connected successfully');
+          showToast('Wallet connected successfully.');
         } catch (err) {
           showToast(`Connection failed: ${err?.message || err}`, 'error');
         }
@@ -239,10 +379,11 @@
         try {
           if (provider?.isConnected) await provider.disconnect();
         } catch (_) {}
-        walletConnected = false;
-        walletAddress = '';
+
+        state.walletConnected = false;
+        state.walletAddress = '';
         updateWalletUi();
-        showToast('Wallet disconnected', 'warning');
+        showToast('Wallet disconnected.', 'warning');
       }
 
       function bindProviderEvents() {
@@ -250,24 +391,24 @@
         if (!provider?.on) return;
 
         provider.on('connect', (pubKey) => {
-          walletConnected = true;
-          walletAddress = pubKey?.toString?.() || provider.publicKey?.toString?.() || '';
+          state.walletConnected = true;
+          state.walletAddress = pubKey?.toString?.() || provider.publicKey?.toString?.() || '';
           updateWalletUi();
         });
 
         provider.on('disconnect', () => {
-          walletConnected = false;
-          walletAddress = '';
+          state.walletConnected = false;
+          state.walletAddress = '';
           updateWalletUi();
         });
 
         provider.on('accountChanged', (pubKey) => {
           if (pubKey) {
-            walletConnected = true;
-            walletAddress = pubKey.toString();
+            state.walletConnected = true;
+            state.walletAddress = pubKey.toString();
           } else {
-            walletConnected = false;
-            walletAddress = '';
+            state.walletConnected = false;
+            state.walletAddress = '';
           }
           updateWalletUi();
         });
@@ -276,28 +417,33 @@
       async function restoreTrustedSession() {
         const provider = getProvider();
         if (!provider) return;
+
         try {
-          const res = await provider.connect({ onlyIfTrusted: true });
+          const res = await provider.connect({ onlyIfTrusted: true }); // silent restore
           const key = res?.publicKey?.toString?.() || provider.publicKey?.toString?.();
           if (key) {
-            walletConnected = true;
-            walletAddress = key;
+            state.walletConnected = true;
+            state.walletAddress = key;
           }
         } catch (_) {}
         updateWalletUi();
       }
 
+      // CRITICAL: connect when disconnected, menu toggle when connected
       walletBtn.addEventListener('click', async (e) => {
         e.preventDefault();
-        if (!walletConnected) {
+        e.stopPropagation();
+
+        if (state.walletConnected) {
+          walletMenu.classList.toggle('active');
+        } else {
           await connectWallet();
-          return;
         }
-        walletMenu.classList.toggle('active');
       });
 
       disconnectBtn.addEventListener('click', async (e) => {
         e.preventDefault();
+        e.stopPropagation();
         await disconnectWallet();
       });
 
@@ -311,7 +457,7 @@
           await navigator.clipboard.writeText(presaleWallet.textContent.trim());
           copyWalletBtn.classList.add('copied');
           copyWalletBtn.textContent = 'Copied!';
-          showToast('Presale address copied');
+          showToast('Presale address copied.');
           setTimeout(() => {
             copyWalletBtn.classList.remove('copied');
             copyWalletBtn.textContent = 'Copy Address';
@@ -321,102 +467,16 @@
         }
       });
 
-      whitepaperBtn.addEventListener('click', (e) => {
-        e.preventDefault();
+      whitepaperBtn.addEventListener('click', () => {
         showToast('Whitepaper URL not set yet.', 'warning');
       });
 
+      // Initialize
       bindProviderEvents();
       restoreTrustedSession();
       updateWalletUi();
+      console.log('[wallet] single Phantom handler initialized');
     })();
- <script>
-(() => {
-  const btn = document.getElementById('wallet-btn');
-  const status = document.getElementById('wallet-status');
-  const addrItem = document.getElementById('wallet-address-item');
-  const menu = document.getElementById('wallet-menu');
-  const disconnectBtn = document.getElementById('disconnect-btn');
-
-  if (!btn) {
-    console.error('[wallet] #wallet-btn not found');
-    return;
-  }
-
-  function provider() {
-    if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
-    if (window.solana?.isPhantom) return window.solana;
-    return null;
-  }
-
-  function short(k) { return k ? `${k.slice(0,4)}...${k.slice(-4)}` : 'Connect Wallet'; }
-
-  function setConnected(pubkey) {
-    btn.textContent = short(pubkey);
-    btn.classList.add('connected');
-    if (status) status.textContent = `Wallet: Connected (${short(pubkey)})`;
-    if (addrItem) addrItem.innerHTML = `<strong>Address:</strong> ${pubkey}`;
-  }
-
-  function setDisconnected() {
-    btn.textContent = 'Connect Wallet';
-    btn.classList.remove('connected');
-    if (status) status.textContent = 'Wallet: Not connected';
-    if (addrItem) addrItem.innerHTML = '<strong>Address:</strong> Not connected';
-    if (menu) menu.classList.remove('active');
-  }
-
-  async function connectNow(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const p = provider();
-    if (!p) {
-      alert('Phantom not found. Install/enable Phantom, then refresh.');
-      window.open('https://phantom.app/', '_blank');
-      return;
-    }
-
-    try {
-      const r = await p.connect({ onlyIfTrusted: false }); // popup approval
-      const key = r?.publicKey?.toString?.() || p.publicKey?.toString?.();
-      if (!key) throw new Error('No public key returned');
-      setConnected(key);
-    } catch (err) {
-      console.error('[wallet] connect failed', err);
-      alert('Connect failed: ' + (err?.message || err));
-    }
-  }
-
-  async function disconnectNow(e) {
-    e.preventDefault();
-    const p = provider();
-    try { if (p?.isConnected) await p.disconnect(); } catch {}
-    setDisconnected();
-  }
-
-  // hard-bind
-  btn.onclick = connectNow;
-  btn.style.pointerEvents = 'auto';
-  btn.style.position = 'relative';
-  btn.style.zIndex = '99999';
-
-  if (disconnectBtn) disconnectBtn.onclick = disconnectNow;
-
-  // toggle menu only when already connected
-  btn.addEventListener('contextmenu', (e) => e.preventDefault());
-
-  // provider events
-  const p = provider();
-  if (p?.on) {
-    p.on('connect', (pk) => setConnected(pk?.toString?.() || p.publicKey?.toString?.() || ''));
-    p.on('disconnect', setDisconnected);
-    p.on('accountChanged', (pk) => pk ? setConnected(pk.toString()) : setDisconnected());
-  }
-
-  setDisconnected();
-  console.log('[wallet] hotfix armed');
-})();
-</script>
+  </script>
 </body>
 </html>
