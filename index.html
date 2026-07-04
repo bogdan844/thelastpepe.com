@@ -437,7 +437,7 @@
       <p>Official memecoin launch portal. Wallet integration is MetaMask-only and uses a single hardened click handler.</p>
       <div class="buttons">
         <a href="#buy" class="btn buy">Buy Now</a>
-        <button id="whitepaper-btn" class="btn alt" type="button">Whitepaper</button>
+        <a id="whitepaper-btn" class="btn alt" href="#" target="_blank" rel="noopener noreferrer">Whitepaper</a>
       </div>
     </section>
 
@@ -671,8 +671,12 @@
       }
 
       if (whitepaperBtn) {
-        whitepaperBtn.addEventListener('click', () => {
-          showToast('Whitepaper URL not set yet.', 'warning');
+        whitepaperBtn.addEventListener('click', (e) => {
+          const href = (whitepaperBtn.getAttribute('href') || '').trim();
+          if (!href || href === '#') {
+            e.preventDefault();
+            showToast('Whitepaper URL not set yet.', 'warning');
+          }
         });
       }
 
