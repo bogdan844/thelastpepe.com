@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <title>The Last Pepe | Official Memecoin</title>
-  <meta name="description" content="The Last Pepe official memecoin portal. Join the presale, and follow tokenomics and roadmap updates." />
+  <meta name="description" content="The Last Pepe official memecoin portal. Join the presale and follow tokenomics and roadmap updates." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta name="theme-color" content="#07130a" />
   <meta name="format-detection" content="telephone=no" />
@@ -226,7 +226,7 @@
       padding: clamp(14px, 3.8vw, 20px);
     }
 
-    .wallet-address {
+    .presale-address {
       margin: 0 auto;
       max-width: 900px;
       display: flex;
@@ -239,7 +239,7 @@
       text-align: center;
     }
 
-    .wallet-address strong { word-break: break-all; }
+    .presale-address strong { word-break: break-all; }
 
     .copy-btn {
       border: 1px solid var(--green);
@@ -333,7 +333,7 @@
   <main id="main-content">
     <section class="hero" id="hero" aria-labelledby="hero-title">
       <h1 id="hero-title">The Last <span>Pepe</span></h1>
-      <p>Official memecoin launch portal.</p>
+      <p>Official memecoin launch portal with presale details, tokenomics, and roadmap updates.</p>
       <div class="buttons">
         <a href="#buy" class="btn buy">Buy Now</a>
         <a id="whitepaper-btn" class="btn alt" href="#" target="_blank" rel="noopener noreferrer">Whitepaper</a>
@@ -343,9 +343,9 @@
     <section id="presale" aria-labelledby="presale-title">
       <h2 id="presale-title">Presale</h2>
       <div class="card">
-        <p class="wallet-address">
-          Treasury (ERC-20):
-          <strong id="presale-wallet">0xYourTreasuryWalletAddress</strong>
+        <p class="presale-address">
+          Official deposit address:
+          <strong id="presale-wallet">0xYourDepositAddress</strong>
           <button id="copy-wallet-btn" class="copy-btn" type="button">Copy Address</button>
         </p>
       </div>
@@ -355,7 +355,7 @@
       <h2 id="buy-title">Buy</h2>
       <div class="card">
         <p style="line-height:1.8;color:#d8d8d8;">
-          Send funds to the treasury address above, then follow official announcements.
+          Copy the official deposit address above and complete your purchase using supported tokens only.
         </p>
       </div>
     </section>
@@ -392,7 +392,7 @@
         copyWalletBtn.addEventListener('click', async () => {
           const value = (presaleWallet.textContent || '').trim();
           if (!value) {
-            showToast('No wallet address found.', 'error');
+            showToast('No address found.', 'error');
             return;
           }
 
