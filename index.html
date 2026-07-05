@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <title>The Last Pepe | Official Memecoin</title>
-  <meta name="description" content="The Last Pepe official memecoin portal. Connect MetaMask, join the presale, and follow tokenomics and roadmap updates." />
+  <meta name="description" content="The Last Pepe official memecoin portal. Join the presale, and follow tokenomics and roadmap updates." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta name="theme-color" content="#07130a" />
   <meta name="format-detection" content="telephone=no" />
@@ -14,13 +14,13 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="The Last Pepe" />
   <meta property="og:title" content="The Last Pepe | Official Memecoin" />
-  <meta property="og:description" content="Official memecoin launch portal with MetaMask integration, presale details, tokenomics, and roadmap." />
+  <meta property="og:description" content="Official memecoin launch portal with presale details, tokenomics, and roadmap." />
   <meta property="og:url" content="https://thelastpepe.com/" />
   <meta property="og:image" content="https://thelastpepe.com/og-image.jpg" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="The Last Pepe | Official Memecoin" />
-  <meta name="twitter:description" content="Official memecoin launch portal with MetaMask integration and presale details." />
+  <meta name="twitter:description" content="Official memecoin launch portal with presale details." />
   <meta name="twitter:image" content="https://thelastpepe.com/og-image.jpg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -156,71 +156,6 @@
 
     nav a:hover { color: var(--green); }
 
-    .wallet-wrap { position: relative; }
-
-    #wallet-btn {
-      border: none;
-      border-radius: 999px;
-      min-height: 44px;
-      padding: 10px 16px;
-      font-weight: 700;
-      background: var(--green);
-      color: #000;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      position: relative;
-      z-index: 10;
-      pointer-events: auto;
-      white-space: nowrap;
-    }
-
-    #wallet-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 14px rgba(0, 255, 102, 0.7);
-    }
-
-    #wallet-btn.connected { background: var(--green-soft); }
-
-    .wallet-menu {
-      position: absolute;
-      right: 0;
-      top: calc(100% + 10px);
-      width: min(92vw, 340px);
-      background: rgba(0, 0, 0, 0.95);
-      border: 2px solid var(--green);
-      border-radius: 14px;
-      padding: 12px;
-      display: none;
-      z-index: 1002;
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45);
-    }
-
-    .wallet-menu.active { display: block; }
-
-    .wallet-menu-item {
-      font-size: 12px;
-      line-height: 1.5;
-      color: #c9ffd1;
-      padding: 9px 10px;
-      background: rgba(0, 255, 100, 0.1);
-      border: 1px solid rgba(0, 255, 100, 0.28);
-      border-radius: 8px;
-      margin-bottom: 10px;
-      word-break: break-all;
-    }
-
-    .disconnect-btn {
-      width: 100%;
-      border: none;
-      border-radius: 8px;
-      min-height: 44px;
-      padding: 10px;
-      background: #ff6666;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
     main { padding-top: 84px; }
     section { padding: clamp(44px, 7vw, 70px) 16px; text-align: center; }
 
@@ -323,17 +258,6 @@
       border-color: var(--green-soft);
     }
 
-    .inline-status {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #c9ffd1;
-      background: rgba(0, 255, 100, 0.1);
-      border: 1px solid var(--green);
-      border-radius: 10px;
-      padding: 9px 12px;
-      word-break: break-word;
-    }
-
     .toast {
       position: fixed;
       right: 16px;
@@ -364,20 +288,11 @@
       nav a { display: none; }
       header { padding: 12px; }
       main { padding-top: 76px; }
-      .wallet-menu { right: 0; }
     }
 
     @media (max-width: 600px) {
       .logo { max-width: 48vw; overflow: hidden; text-overflow: ellipsis; }
-      #wallet-btn { padding: 10px 12px; font-size: 12px; }
       .btn { width: min(100%, 320px); }
-      .wallet-menu {
-        position: fixed;
-        top: 72px;
-        right: 12px;
-        left: 12px;
-        width: auto;
-      }
       .glow { opacity: 0.1; filter: blur(120px); }
     }
 
@@ -394,7 +309,7 @@
       "@type": "WebSite",
       "name": "The Last Pepe",
       "url": "https://thelastpepe.com/",
-      "description": "Official memecoin launch portal with MetaMask integration, presale details, tokenomics, and roadmap.",
+      "description": "Official memecoin launch portal with presale details, tokenomics, and roadmap.",
       "inLanguage": "en"
     }
   </script>
@@ -412,29 +327,13 @@
       <a href="#buy">Buy</a>
       <a href="#tokenomics">Tokenomics</a>
       <a href="#roadmap">Roadmap</a>
-
-      <div class="wallet-wrap">
-        <button
-          id="wallet-btn"
-          type="button"
-          aria-haspopup="menu"
-          aria-expanded="false"
-          aria-controls="wallet-menu"
-        >
-          Connect MetaMask
-        </button>
-        <div id="wallet-menu" class="wallet-menu" role="menu" aria-hidden="true">
-          <div id="wallet-address-item" class="wallet-menu-item"><strong>Address:</strong> Not connected</div>
-          <button id="disconnect-btn" class="disconnect-btn" type="button" role="menuitem">Disconnect</button>
-        </div>
-      </div>
     </nav>
   </header>
 
   <main id="main-content">
     <section class="hero" id="hero" aria-labelledby="hero-title">
       <h1 id="hero-title">The Last <span>Pepe</span></h1>
-      <p>Official memecoin launch portal. Wallet integration is MetaMask-only and uses a single hardened click handler.</p>
+      <p>Official memecoin launch portal.</p>
       <div class="buttons">
         <a href="#buy" class="btn buy">Buy Now</a>
         <a id="whitepaper-btn" class="btn alt" href="#" target="_blank" rel="noopener noreferrer">Whitepaper</a>
@@ -449,7 +348,6 @@
           <strong id="presale-wallet">0xYourTreasuryWalletAddress</strong>
           <button id="copy-wallet-btn" class="copy-btn" type="button">Copy Address</button>
         </p>
-        <div id="wallet-status" class="inline-status" aria-live="polite">Wallet: Not connected</div>
       </div>
     </section>
 
@@ -457,7 +355,7 @@
       <h2 id="buy-title">Buy</h2>
       <div class="card">
         <p style="line-height:1.8;color:#d8d8d8;">
-          Click <strong>Connect MetaMask</strong>, approve account access popup, then continue.
+          Send funds to the treasury address above, then follow official announcements.
         </p>
       </div>
     </section>
@@ -477,241 +375,18 @@
 
   <script>
     window.addEventListener('load', () => {
-      const walletBtnOld = document.getElementById('wallet-btn');
-      const walletMenu = document.getElementById('wallet-menu');
-      const walletAddressItem = document.getElementById('wallet-address-item');
-      const disconnectBtn = document.getElementById('disconnect-btn');
-      const walletStatus = document.getElementById('wallet-status');
       const copyWalletBtn = document.getElementById('copy-wallet-btn');
       const presaleWallet = document.getElementById('presale-wallet');
       const whitepaperBtn = document.getElementById('whitepaper-btn');
-      const walletWrap = document.querySelector('.wallet-wrap');
 
-      if (!walletBtnOld) {
-        console.error('[wallet] #wallet-btn not found');
-        return;
-      }
-
-      // Clone node to wipe any pre-existing/duplicate handlers from old scripts/cached snippets
-      const walletBtn = walletBtnOld.cloneNode(true);
-      walletBtnOld.parentNode.replaceChild(walletBtn, walletBtnOld);
-
-      const state = { connected: false, address: '' };
-      let providerEventsBound = false;
-      let isConnecting = false;
-
-      const shortAddress = (a) => (a ? `${a.slice(0, 6)}...${a.slice(-4)}` : 'Connect MetaMask');
-
-     <script>
-function isMobileDevice() {
-  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
-}
-
-function openMetaMaskDeeplink() {
-  const cleanUrl = window.location.href.replace(/^https?:\/\//, '');
-  const deeplink = `https://metamask.app.link/dapp/${cleanUrl}`;
-  window.open(deeplink, '_blank', 'noopener,noreferrer');
-}
-
-function getProvider() {
-  const eth = window.ethereum;
-  if (!eth) return null;
-
-  // MetaMask-only (safer when multiple wallets inject)
-  if (Array.isArray(eth.providers) && eth.providers.length) {
-    const mm = eth.providers.find((p) => p && p.isMetaMask);
-    return mm || null;
-  }
-
-  return eth.isMetaMask ? eth : null;
-}
-
-async function connectWallet() {
-  if (isConnecting) return;
-  isConnecting = true;
-  walletBtn.disabled = true;
-  walletBtn.textContent = 'Connecting...';
-
-  const provider = getProvider();
-
-  if (!provider) {
-    isConnecting = false;
-    walletBtn.disabled = false;
-    walletBtn.textContent = 'Connect MetaMask';
-
-    if (isMobileDevice()) {
-      showToast('Opening MetaMask app… If it does not open, install MetaMask first.', 'warning');
-      openMetaMaskDeeplink();
-    } else {
-      showToast('MetaMask not detected. Install/enable extension, unlock it, then refresh.', 'error');
-      window.open('https://metamask.io/download/', '_blank', 'noopener,noreferrer');
-    }
-    return;
-  }
-
-  try {
-    await provider.request({ method: 'eth_chainId' }); // wake provider
-    const accounts = await provider.request({ method: 'eth_requestAccounts' });
-    const account = accounts?.[0];
-    if (!account) throw new Error('No account returned from MetaMask');
-
-    state.connected = true;
-    state.address = account;
-    updateUI();
-    showToast('MetaMask connected successfully.');
-
-    const chainId = await provider.request({ method: 'eth_chainId' });
-    if (chainId !== '0x1') {
-      showToast('Warning: You are not on Ethereum Mainnet.', 'warning');
-    }
-  } catch (err) {
-    console.error('[wallet] connect error full:', err);
-    if (err?.code === 4001) {
-      showToast('Connection request was rejected in MetaMask.', 'warning');
-    } else if (err?.code === -32002) {
-      showToast('MetaMask request already pending. Open MetaMask popup and approve.', 'warning');
-    } else {
-      showToast(`Connection failed: ${err?.message || err}`, 'error');
-    }
-    state.connected = false;
-    state.address = '';
-    updateUI();
-  } finally {
-    isConnecting = false;
-    walletBtn.disabled = false;
-  }
-}
-</script>
-          walletBtn.textContent = 'Connect MetaMask';
-
-          if (isMobileDevice()) {
-            showToast('Opening MetaMask app… If it does not open, install MetaMask first.', 'warning');
-            openMetaMaskDeeplink();
-          } else {
-            showToast('MetaMask not detected. Install/enable the extension, unlock it, then refresh.', 'error');
-            window.open('https://metamask.io/download/', '_blank', 'noopener,noreferrer');
-          }
-          return;
-        }
-
-        try {
-          // Wake provider in some environments
-          await provider.request({ method: 'eth_chainId' });
-
-          const accounts = await provider.request({ method: 'eth_requestAccounts' });
-          const account = accounts?.[0];
-          if (!account) throw new Error('No account returned from MetaMask');
-
-          state.connected = true;
-          state.address = account;
-          updateUI();
-          showToast('MetaMask connected successfully.');
-
-          // Optional network warning (Ethereum mainnet = 0x1)
-          const chainId = await provider.request({ method: 'eth_chainId' });
-          if (chainId !== '0x1') {
-            showToast('Warning: You are not on Ethereum Mainnet.', 'warning');
-          }
-        } catch (err) {
-          console.error('[wallet] connect error full:', err);
-
-          if (err?.code === 4001) {
-            showToast('Connection request was rejected in MetaMask.', 'warning');
-          } else if (err?.code === -32002) {
-            showToast('MetaMask request already pending. Open MetaMask popup and approve.', 'warning');
-          } else {
-            showToast(`Connection failed: ${err?.message || err}`, 'error');
-          }
-
-          state.connected = false;
-          state.address = '';
-          updateUI();
-        } finally {
-          isConnecting = false;
-          walletBtn.disabled = false;
-        }
-      }
-
-      async function restoreSession() {
-        const provider = getProvider();
-        if (!provider) return;
-
-        try {
-          const accounts = await provider.request({ method: 'eth_accounts' });
-          const account = accounts?.[0];
-          if (account) {
-            state.connected = true;
-            state.address = account;
-          } else {
-            state.connected = false;
-            state.address = '';
-          }
-        } catch (_) {
-          state.connected = false;
-          state.address = '';
-        }
-        updateUI();
-      }
-
-      async function disconnectLocal() {
-        // MetaMask does not allow programmatic disconnect by dapp
-        state.connected = false;
-        state.address = '';
-        updateUI();
-        showToast('Disconnected locally.', 'warning');
-      }
-
-      function bindProviderEvents() {
-        const provider = getProvider();
-        if (!provider || typeof provider.on !== 'function' || providerEventsBound) return;
-
-        provider.on('accountsChanged', (accounts) => {
-          const account = accounts?.[0];
-          if (account) {
-            state.connected = true;
-            state.address = account;
-          } else {
-            state.connected = false;
-            state.address = '';
-          }
-          updateUI();
-        });
-
-        provider.on('chainChanged', () => {
-          restoreSession();
-        });
-
-        providerEventsBound = true;
-      }
-
-      // Single hardened click handler
-      walletBtn.addEventListener('click', async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-
-        if (state.connected) {
-          setMenuOpen(!walletMenu?.classList.contains('active'));
-        } else {
-          await connectWallet();
-        }
-      }, { capture: true });
-
-      if (disconnectBtn) {
-        disconnectBtn.addEventListener('click', async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          await disconnectLocal();
-        });
-      }
-
-      document.addEventListener('click', (e) => {
-        if (walletWrap && !walletWrap.contains(e.target)) setMenuOpen(false);
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') setMenuOpen(false);
-      });
+      const showToast = (message, type = '') => {
+        const t = document.createElement('div');
+        t.className = `toast ${type}`.trim();
+        t.setAttribute('role', 'status');
+        t.textContent = message;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2400);
+      };
 
       if (copyWalletBtn && presaleWallet) {
         copyWalletBtn.addEventListener('click', async () => {
@@ -758,12 +433,6 @@ async function connectWallet() {
           }
         });
       }
-
-      bindProviderEvents();
-      restoreSession();
-      updateUI();
-
-      console.log('[wallet] MetaMask final handler ready');
     });
   </script>
 </body>
